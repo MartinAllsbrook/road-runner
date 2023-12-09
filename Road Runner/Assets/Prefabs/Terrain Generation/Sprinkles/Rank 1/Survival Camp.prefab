@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1981559549667116349
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7376855918181911646}
+  - component: {fileID: 8515197870878483532}
+  - component: {fileID: 1623168669993045497}
+  - component: {fileID: 1286639395110582130}
+  m_Layer: 3
+  m_Name: Survival Camp
+  m_TagString: Sheltered Area
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7376855918181911646
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981559549667116349}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3115343392472595836}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8515197870878483532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981559549667116349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abeadaea6275c94992ae29803d21fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flatRadius: 16
+  blendRadius: 32
+--- !u!65 &1623168669993045497
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981559549667116349}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 27.97879, y: 6.4277873, z: 38.800354}
+  m_Center: {x: 0, y: 2.7138932, z: 0}
+--- !u!114 &1286639395110582130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981559549667116349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 65b8fe86cd8644346a13d6158fbd4d0f, type: 2}
+  isGlobal: 0
+  blendDistance: 4
+  weight: 1
+  priority: 1
+--- !u!1001 &3973018717892238037
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7376855918181911646}
+    m_Modifications:
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9185844
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.39522484
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 46.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448642894167109792, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+      propertyPath: m_Name
+      value: Survival Camp
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+--- !u!4 &3115343392472595836 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2024670630401648553, guid: f1dc769e96cf33f4c9d41616b0c3ca08, type: 3}
+  m_PrefabInstance: {fileID: 3973018717892238037}
+  m_PrefabAsset: {fileID: 0}

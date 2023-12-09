@@ -1,0 +1,56 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.Netcode;
+using UnityEngine;
+
+public class VehicleSpawner : NetworkBehaviour
+{
+    [SerializeField] private Transform[] vehicles;
+    [SerializeField] private float spawnTime;
+
+    [SerializeField] private int worldSize;
+    [SerializeField] private int worldPadding;
+
+    private int startArea;
+    private int endArea;
+
+    private void Start()
+    {
+        startArea = worldPadding;
+        endArea = worldSize - worldPadding;
+
+        StartCoroutine(SpawnVehiclesRoutine());
+    }
+
+    private IEnumerator SpawnVehiclesRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(spawnTime);
+
+
+            float x = Random.Range(startArea, endArea);
+            float z = Random.Range(startArea, endArea);
+
+            Vector3 spawnPos = new Vector3(x, 100, z);
+
+            SpawnVehicle(spawnPos);
+        }
+    }
+
+    public void SpawnVehicle(Vector3 position)
+    {
+        SpawnVehicleServerRpc(position);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnVehicleServerRpc(Vector3 position)
+    {
+        Transform vehicle = vehicles[Random.Range(0, vehicles.Length)];
+
+        Transform itemGameObject = Instantiate(vehicle, position, new Quaternion(0, 0, 0, 0));
+
+        NetworkObject itemNetworkObject = itemGameObject.GetComponent<NetworkObject>();
+        itemNetworkObject.Spawn(true);
+    }
+}

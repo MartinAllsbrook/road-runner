@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
+  m_Name: M249
+  m_EditorClassIdentifier: 
+  inventoryItem: 21
+  itemPickupPrefab: {fileID: 6516627989655229954, guid: 3201f104de2c1b341b88de666eb35e3d, type: 3}
+  itemPrefab: {fileID: 1748577935872603404, guid: 4e6f18c8c21150e40b2973174e562add, type: 3}
+  uiSprite: {fileID: 21300000, guid: 1cbd55fcaa8c4984d918b1ce8dfe6dc8, type: 3}
+  isGun: 0
