@@ -1,4 +1,4 @@
-using QFSW.QC.Utilities;
+using QFSW.QC;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -47,17 +47,20 @@ public class PlayerSpawner : NetworkBehaviour
         FreezePlayer();
     }
 
-/*    private void Update()
-    {
-        if (!IsOwner)
-            return;
-
-    }*/
-
+    // None of this shit is ok, the whole spawn routine needs serious improvement
     public void FreezePlayer()
     {
+        Pause();
         Time.timeScale = 0;
         _rigidbody.useGravity = false;
+    }
+
+    [Command]
+    public void UnfreezePlayerDebug()
+    {
+        Time.timeScale = 1;
+        _rigidbody.useGravity = true;
+        Unpause();
     }
 
     public void UnfreezePlayer()

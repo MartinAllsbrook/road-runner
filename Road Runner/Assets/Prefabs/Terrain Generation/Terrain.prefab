@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8762340282045984026}
-  - component: {fileID: 6451836479128290519}
-  - component: {fileID: 3629075484901468618}
   - component: {fileID: 2079987541488377761}
+  - component: {fileID: 3629075484901468618}
+  - component: {fileID: 6451836479128290519}
   - component: {fileID: 8463256600902518824}
   m_Layer: 0
   m_Name: Terrain
@@ -35,49 +35,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6451836479128290519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316009628726394368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a08310a78dc3ad04fa9f3d64a4b5383d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
-  terrainRadius: 2
-  treeManager: {fileID: 8463256600902518824}
-  chunkSize: 513
-  biomes:
-  - {fileID: 11400000, guid: 83a66b8ae8a0c6a4cb363a53d9b74360, type: 2}
-  - {fileID: 11400000, guid: 867f392ac08caa641827a71a01c245c3, type: 2}
-  - {fileID: 11400000, guid: 6469e3ac50d9e3848badd6a9550530a3, type: 2}
-  - {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
-  - {fileID: 11400000, guid: 292b3b25df35e104bb20e5dbb4af2c98, type: 2}
-  - {fileID: 11400000, guid: 9946f19af8979a841b3561e82f9e0a8e, type: 2}
---- !u!114 &3629075484901468618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316009628726394368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &2079987541488377761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,14 +48,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprinkleRanks:
-  - numToPlace: 2
-    sprinkles:
-    - {fileID: -2499524654122171120, guid: 326aeaa3294ee42459771883533dd2c2, type: 3}
-  - numToPlace: 10
+  - numToPlace: 5
     sprinkles:
     - {fileID: 6720956547210901410, guid: c79d9d7c86053fa4da04c3b5b449e908, type: 3}
     - {fileID: 8515197870878483532, guid: d1ef2cdd925cc414193ca57bc1e70ff3, type: 3}
     - {fileID: -6192187029121810723, guid: 5f8d1e6e312f4ec46bfb9841b0837815, type: 3}
+--- !u!114 &3629075484901468618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316009628726394368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2989582166
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &6451836479128290519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316009628726394368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a08310a78dc3ad04fa9f3d64a4b5383d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
+  terrainRadius: 1
+  treeManager: {fileID: 8463256600902518824}
+  chunkSize: 513
+  biomes:
+  - {fileID: 11400000, guid: 12a128db16459be49b838353906fba0e, type: 2}
+  - {fileID: 11400000, guid: 7b902c2d2cb4589468b685515ad78362, type: 2}
+  - {fileID: 11400000, guid: 46eb6c5a37ef8304889d12a7a8852173, type: 2}
+  - {fileID: 11400000, guid: 98773855ada463b459911429ba4298b5, type: 2}
+  - {fileID: 11400000, guid: 48241b54919f3c7468f010b2a64b654f, type: 2}
+  - {fileID: 11400000, guid: 1eaef0d1d06e071408840cb64dcd615a, type: 2}
 --- !u!114 &8463256600902518824
 MonoBehaviour:
   m_ObjectHideFlags: 0

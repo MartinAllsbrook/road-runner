@@ -70,7 +70,12 @@ public class SprinkleGenerator : MonoBehaviour
     {
         int placeableAreaSize = worldSize - (2 * newSprinkleRadius);
 
-        int x = newSprinkleRadius + _random.Next(placeableAreaSize); // TODO: Make this use Random.InsideUnitCircle
+        if (placeableAreaSize <= 0)
+        {
+            Debug.LogError("Sprinkle radius is too large for the world size. WorldSize: " + worldSize + " Sprinkle Diameter: " + (2 * newSprinkleRadius));
+        }
+
+        int x = newSprinkleRadius + _random.Next(placeableAreaSize);
         int z = newSprinkleRadius + _random.Next(placeableAreaSize);
         Vector2Int potentialPosition = new Vector2Int(x, z);
 

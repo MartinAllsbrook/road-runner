@@ -19,7 +19,7 @@ public class TreeScatter : MonoBehaviour
     [Header("Trees")]
     [Range(1, 10)] [SerializeField] private float treeUniformity;
     [SerializeField] private int numTrees;
-    [SerializeField] private MyTreeGroup[] treeGroups;
+    [SerializeField] private MyTreeGroup[] treeGroups; // TODO: Delete this
     [SerializeField] private float minHeight;
    
     private System.Random _random;

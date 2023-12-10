@@ -198,6 +198,7 @@ public class TerrainManager : NetworkBehaviour
                 _loadedChunks[new Vector2Int(i, j)].GetComponent<TreeScatter>().PlaceTrees(chunkSize, _treeSeed);
             }
         }
+
         Debug.Log("Done Loading Chunks");
         _serverUI.SetActive(false);
 

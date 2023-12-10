@@ -7,12 +7,10 @@ public class TreeGroup : MonoBehaviour
     [SerializeField] private int numTrees;
     [SerializeField] private GameObject[] treesToPlace;
 
-    [SerializeField] private GameObject[] trees;
+    [SerializeField] private GameObject[] trees; // TODO: make private / remove serialize field
 
     private int _treeIndex = -1;
     
- 
-
     public GameObject GetTree()
     {
         if (_treeIndex < numTrees-1)

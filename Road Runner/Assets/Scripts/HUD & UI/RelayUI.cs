@@ -11,6 +11,7 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.UI;
+using QFSW.QC;
 using UnityEngine.Windows;
 
 public class RelayUI : MonoBehaviour
@@ -52,27 +53,27 @@ public class RelayUI : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
+    // The standard server creation and joining methods are below, but they only work with terrain generation, not so good for testing.
+    #region Relay With Terrain
+
     private async void CreateRelay(string worldSeedInput)
     {
         try
         {
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2);
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2); // Wait for allocation to be created
 
-            string joinRelayCode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            
-            Debug.Log("Relay Code: " + joinRelayCode);
-            serverCodeDisplay.text = joinRelayCode;
-            
-            RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
-            
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+            string joinRelayCode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId); // Get the join code for the allocation
 
+            DisplayJoinCode(joinRelayCode);
+
+            RelayServerData relayServerData = new RelayServerData(allocation, "dtls"); // Create the relay server data using "Datagram Transport Layer Security" as the transport protocol
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData); // Set the relay server data (what we just created) in the UnityTransport component
             NetworkManager.Singleton.StartHost();
 
             int seed = int.Parse(worldSeedInput);
-            terrainManager.Set(seed, gameObject);
+            terrainManager.Set(seed, gameObject); // Send the seed and a reference to this UI to the TerrainManager so it can generate the terrain and disable this UI when it is done.
 
-            gameObject.SetActive(false);
+            gameObject.SetActive(false); // I'm not sure why this is here, when it is also done in the TerrainManager. I vaguely remember it fixing something.
         }
         catch (RelayServiceException e)
         {
@@ -84,15 +85,12 @@ public class RelayUI : MonoBehaviour
     {
         try
         {
-            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinRelayCode);
+            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinRelayCode); // Wait for allocation associated with the join code to be found and retrieved
 
-            Debug.Log("Relay Code: " + joinRelayCode);
-            serverCodeDisplay.text = joinRelayCode;
+            DisplayJoinCode(joinRelayCode);
 
-            RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls");
-            
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-
+            RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls"); // Create the relay server data using "Datagram Transport Layer Security" as the transport protocol
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData); // Set the relay server data (what we just created) in the UnityTransport component
             NetworkManager.Singleton.StartClient();
 
             terrainManager.Set(gameObject);
@@ -103,5 +101,62 @@ public class RelayUI : MonoBehaviour
         {
             Debug.Log(e);
         }
+    }
+
+    #endregion
+
+    // The below methods are for creating a testing without terrain generation, they should only be used for debugging.
+    #region Relay Without Terrain (Debug & Testing Only)
+
+    [Command("CreateRelayDebug")]
+    private async void CreateRelayDebug()
+    {
+        try
+        {
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2); // Wait for allocation to be created
+
+            string joinRelayCode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId); // Get the join code for the allocation
+
+            DisplayJoinCode(joinRelayCode);
+
+            RelayServerData relayServerData = new RelayServerData(allocation, "dtls"); // Create the relay server data using "Datagram Transport Layer Security" as the transport protocol
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData); // Set the relay server data (what we just created) in the UnityTransport component
+            NetworkManager.Singleton.StartHost();
+
+            gameObject.SetActive(false);
+        }
+        catch (RelayServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    [Command("JoinRelayDebug")]
+    private async void JoinRelayDebug(string joinRelayCode)
+    {
+        try
+        {
+            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinRelayCode); // Wait for allocation associated with the join code to be found and retrieved
+
+            DisplayJoinCode(joinRelayCode);
+
+            RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls"); // Create the relay server data using "Datagram Transport Layer Security" as the transport protocol
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData); // Set the relay server data (what we just created) in the UnityTransport component
+            NetworkManager.Singleton.StartClient();
+
+            gameObject.SetActive(false);
+        }
+        catch (RelayServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    #endregion
+
+    private void DisplayJoinCode(string joinRelayCode)
+    {
+        Debug.Log("Relay Code: " + joinRelayCode);
+        serverCodeDisplay.text = joinRelayCode;
     }
 }
