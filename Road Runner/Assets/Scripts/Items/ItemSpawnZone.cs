@@ -20,6 +20,9 @@ public class ItemSpawnZone : MonoBehaviour
 
     private IEnumerator SpawnItemRoutine()
     {
+        if (!ItemSpawner.Instance.IsServer)
+            yield return null;
+
         while (true)
         {
             yield return new WaitForSeconds(itemSpawnTimer);

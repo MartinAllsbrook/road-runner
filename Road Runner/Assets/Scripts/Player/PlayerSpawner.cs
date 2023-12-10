@@ -100,7 +100,17 @@ public class PlayerSpawner : NetworkBehaviour
 
     public void SpawnPlayer()
     {
-        Vector3 position = SprinkleGenerator.Instance.GetSpawnPoint();
+        Vector3 position;
+
+        if (SprinkleGenerator.Instance == null)
+        {
+            Debug.Log("Sprinkle generator is null");
+             position = new Vector3(0, 100, 0);
+            TeleportPlayerServerRpc(position);
+            return;
+        }
+            
+        position = SprinkleGenerator.Instance.GetSpawnPoint();
         Ray ray = new Ray(position, Vector3.down);
 
         if(Physics.Raycast(ray, out RaycastHit hitInfo, 120, layerMask))

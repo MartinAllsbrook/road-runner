@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Old Release Scenes/v0.0.4.unity
     guid: ec9d9e46853c2524c9fffa80df268861
   - enabled: 0
@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Legacy Testing Scenes/Eli Map.unity
     guid: bd3499bd681d81140b0b798c9ce0df54
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/v0.1.0.unity
     guid: c861ecd6c5616b740bf0de95e6585a68
   - enabled: 1

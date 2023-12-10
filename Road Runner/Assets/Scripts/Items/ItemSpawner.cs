@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using QFSW.QC;
 using static Inventory;
 
 public class ItemSpawner : NetworkBehaviour
@@ -18,9 +19,9 @@ public class ItemSpawner : NetworkBehaviour
         private set { }
     }
 
-    private void Start()
+    private void Awake()
     {
-        if (Instance == null) 
+        if (Instance == null)
             Instance = this;
 
         if (itemDictionary == null)
@@ -33,9 +34,6 @@ public class ItemSpawner : NetworkBehaviour
 
     public void SpawnItem(Vector3 position, Inventory.InventoryItem itemEnum)
     {
-        if (!IsServer) 
-            return;
-
         SpawnItemServerRpc(position, itemEnum);
     }
 
@@ -46,5 +44,20 @@ public class ItemSpawner : NetworkBehaviour
 
         NetworkObject itemNetworkObject = itemGameObject.GetComponent<NetworkObject>();
         itemNetworkObject.Spawn(true);
+    }
+
+    [Command]
+    public void SpawnItemDebug(int x, int y, int z, InventoryItem itemEnum)
+    {
+        Vector3 position = new Vector3(x, y, z);
+        SpawnItem(position, itemEnum);
+    }
+
+    [Command]
+    public void SpawnItemDebug(InventoryItem itemEnum)
+    {
+        Transform playerTransform = PlayerSpawner.localPlayerSpawner.transform;
+        Vector3 position = playerTransform.position + playerTransform.forward * 2;
+        SpawnItem(position, itemEnum);
     }
 }
