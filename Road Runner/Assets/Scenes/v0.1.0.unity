@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.4, g: 0.3137255, b: 0.22745098, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.003
@@ -1103,19 +1103,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6185322639346985016, guid: a952e66d8d22e4d4eaf66028a27e39a3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 389
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 6185322639346985016, guid: a952e66d8d22e4d4eaf66028a27e39a3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -111
+      value: 1280
       objectReference: {fileID: 0}
     - target: {fileID: 6185322639346985016, guid: a952e66d8d22e4d4eaf66028a27e39a3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6185322639346985016, guid: a952e66d8d22e4d4eaf66028a27e39a3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.38268343
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6185322639346985016, guid: a952e66d8d22e4d4eaf66028a27e39a3, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1127,7 +1127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6185322639346985016, guid: a952e66d8d22e4d4eaf66028a27e39a3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 45
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 6185322639346985016, guid: a952e66d8d22e4d4eaf66028a27e39a3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

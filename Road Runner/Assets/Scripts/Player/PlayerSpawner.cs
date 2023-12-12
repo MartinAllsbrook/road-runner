@@ -17,8 +17,12 @@ public class PlayerSpawner : NetworkBehaviour
 
     [SerializeField] private LayerMask layerMask;
 
+    private CameraController _cameraController;
+
     private PlayerInput _playerInput;
     private Rigidbody _rigidbody;
+
+    private Vector3 _limboPosition;
 
     private int numPauses;
     private bool paused;
@@ -27,11 +31,12 @@ public class PlayerSpawner : NetworkBehaviour
         get { return paused; } 
         private set { }
     }
-
+    
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _playerInput = GetComponent<PlayerInput>();
+        _cameraController = GetComponent<CameraController>();
 
         if (!IsOwner)
             return;
@@ -44,20 +49,42 @@ public class PlayerSpawner : NetworkBehaviour
         foreach (var modelObject in playerModel)
             modelObject.layer = 6;
 
-        FreezePlayer();
+        EnterLimbo();
+    }
+
+    [Command]
+    public void EnterLimbo()
+    {
+        _cameraController.SetLimbo(true);
+        _rigidbody.useGravity = false;
+        Pause();
+
+        transform.position = _limboPosition;
+    }
+
+    [Command]
+    public void ExitLimbo()
+    {
+        _cameraController.SetLimbo(false);
+        _rigidbody.useGravity = true;
+        Unpause();
+
+        Invoke("SpawnPlayer", 3);
     }
 
     // None of this shit is ok, the whole spawn routine needs serious improvement
     public void FreezePlayer()
     {
-        Pause();
+        Debug.LogError("Depreciated");
         Time.timeScale = 0;
+        Pause();
         _rigidbody.useGravity = false;
     }
 
     [Command]
     public void UnfreezePlayerDebug()
     {
+        Debug.LogError("Depreciated");
         Time.timeScale = 1;
         _rigidbody.useGravity = true;
         Unpause();
@@ -65,6 +92,7 @@ public class PlayerSpawner : NetworkBehaviour
 
     public void UnfreezePlayer()
     {
+        Debug.LogError("Depreciated");
         Time.timeScale = 1;
         _rigidbody.useGravity = true;
         Unpause();

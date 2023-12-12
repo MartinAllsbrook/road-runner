@@ -9,6 +9,7 @@ TagManager:
   - Terrain
   - No Wind Zone
   - Sheltered Area
+  - Bullet Crack
   layers:
   - Default
   - TransparentFX

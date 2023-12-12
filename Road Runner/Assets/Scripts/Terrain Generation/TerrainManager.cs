@@ -12,6 +12,8 @@ using Random = UnityEngine.Random;
 
 public class TerrainManager : NetworkBehaviour
 {
+    public static TerrainManager Instance;
+
     [SerializeField] private GameObject terrainChunk;
     [SerializeField] private int terrainRadius;
     [SerializeField] private TreeManager treeManager;
@@ -20,7 +22,6 @@ public class TerrainManager : NetworkBehaviour
 
     // Biomes
     [SerializeField] private Biome[] biomes;
-    public static TerrainManager Instance;
     public Biome[] Biomes
     {
         get { return biomes; }
@@ -44,12 +45,13 @@ public class TerrainManager : NetworkBehaviour
     // Tracking chunk loading
     private UnityEvent _onMapsGenerated;
     private int _numMapsGenerated = 0;
+
     private UnityEvent _onChunkLoaded;
     private int _numLoadedChunks = 0;
     private int _chunksToLoad;
-    private GameObject serverUI;
+
     // UI 
-    private GameObject _serverUI;
+    //private GameObject _serverUI;
 
     private readonly Quaternion _zeroRotation = new Quaternion(0, 0, 0, 0);
 
@@ -67,13 +69,13 @@ public class TerrainManager : NetworkBehaviour
 
     public void Set(GameObject serverUI)
     {
-        this.serverUI = serverUI;
+        //_serverUI = serverUI;
     }
 
     public void Set(int seed, GameObject serverUI) 
     {
         _worldSeed.Value = seed;
-        this.serverUI = serverUI;
+        //_serverUI = serverUI;
         GenerateTerrain(NetworkManager.Singleton.LocalClientId);
     }
 
@@ -94,7 +96,6 @@ public class TerrainManager : NetworkBehaviour
         treeManager.Initialize(biomes);
 
         masterSeed = seed;
-        _serverUI = serverUI;
 
         _terrainSize = terrainRadius * 2 + 1;
         _chunksToLoad = _terrainSize * _terrainSize;
@@ -200,8 +201,8 @@ public class TerrainManager : NetworkBehaviour
         }
 
         Debug.Log("Done Loading Chunks");
-        _serverUI.SetActive(false);
+        //_serverUI.SetActive(false);
 
-        PlayerSpawner.localPlayerSpawner.UnfreezePlayer();
+        PlayerSpawner.localPlayerSpawner.ExitLimbo();
     }
 }

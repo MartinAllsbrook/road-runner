@@ -13,12 +13,16 @@ public class CameraController : NetworkBehaviour
     [SerializeField] private float sensX;
     [SerializeField] private float sensY;
     [SerializeField] private float fovMultiplier;
+    [SerializeField] private Vector3 cameraLimboPosition;
+
     private float cameraTilt;
     private float _xRotation;
     private float _yRotation;
     private Camera mainCamera;
     private float zoom = 1f;
     private Rigidbody playerRigidbody;
+
+    private bool _inLimbo = false;
 
     void Start()
     {
@@ -34,6 +38,12 @@ public class CameraController : NetworkBehaviour
         if (!IsOwner) 
             return;
         
+        if (_inLimbo)
+        {
+            LimboUpdate();
+            return;
+        }
+
         GetCameraInputs();
         RotateCamera();
     }
@@ -43,10 +53,33 @@ public class CameraController : NetworkBehaviour
         if (!IsOwner)
             return;
 
+        if (_inLimbo)
+        {
+            LimboUpdate();
+            return;
+        }
+
         mainCamera.transform.position = cameraPosition.position;
 
         Vector3 velocityNoY = new Vector3 (playerRigidbody.velocity.x, 0, playerRigidbody.velocity.z);
         SetFov(velocityNoY.magnitude);
+    }
+
+    public void SetLimbo(bool inLimbo)
+    {
+        _inLimbo = inLimbo;
+    }
+
+    public void SetSensitivity(float sensitivity)
+    {
+        sensX = sensitivity;
+        sensY = sensitivity;
+    }
+
+    private void LimboUpdate()
+    {
+        mainCamera.transform.position = cameraLimboPosition;
+        mainCamera.transform.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward);
     }
 
     private void GetCameraInputs()
@@ -65,7 +98,6 @@ public class CameraController : NetworkBehaviour
 
     private void RotateCamera()
     {
-
         Quaternion rotation = Quaternion.Euler(_xRotation, _yRotation, cameraTilt);
         mainCamera.transform.rotation = rotation;
         cameraPosition.transform.rotation = rotation;
