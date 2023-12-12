@@ -102,7 +102,7 @@ public class RelayUI : MonoBehaviour
     // The below methods are for creating a testing without terrain generation, they should only be used for debugging.
     #region Relay Without Terrain (Debug & Testing Only)
 
-    [Command("CreateRelayDebug")]
+    [Command("CreateDebugServer")]
     private async void CreateRelayDebug()
     {
         try
@@ -117,7 +117,7 @@ public class RelayUI : MonoBehaviour
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData); // Set the relay server data (what we just created) in the UnityTransport component
             NetworkManager.Singleton.StartHost();
 
-            gameObject.SetActive(false);
+            UIManager.Instance.EnterLimbo();
         }
         catch (RelayServiceException e)
         {
@@ -125,7 +125,7 @@ public class RelayUI : MonoBehaviour
         }
     }
 
-    [Command("JoinRelayDebug")]
+    [Command("JoinDebugServer")]
     private async void JoinRelayDebug(string joinRelayCode)
     {
         try
@@ -138,7 +138,7 @@ public class RelayUI : MonoBehaviour
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData); // Set the relay server data (what we just created) in the UnityTransport component
             NetworkManager.Singleton.StartClient();
 
-            gameObject.SetActive(false);
+            UIManager.Instance.EnterLimbo();
         }
         catch (RelayServiceException e)
         {

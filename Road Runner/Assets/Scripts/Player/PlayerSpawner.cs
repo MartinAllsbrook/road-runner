@@ -140,34 +140,4 @@ public class PlayerSpawner : NetworkBehaviour
     {
         transform.position = position;
     }
-
-    #region Deprecated
-    // None of this shit is ok, the whole spawn routine needs serious improvement
-    public void FreezePlayer()
-    {
-        Debug.LogError("Depreciated");
-        Time.timeScale = 0;
-        Pause();
-        _rigidbody.useGravity = false;
-    }
-
-    [Command]
-    public void UnfreezePlayerDebug()
-    {
-        Debug.LogError("Depreciated");
-        Time.timeScale = 1;
-        _rigidbody.useGravity = true;
-        Unpause();
-    }
-
-    public void UnfreezePlayer()
-    {
-        Debug.LogError("Depreciated");
-        Time.timeScale = 1;
-        _rigidbody.useGravity = true;
-        Unpause();
-        Invoke("SpawnPlayer", 3);
-    }
-
-    #endregion
 }

@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class CameraController : NetworkBehaviour
 {
+    public static CameraController Instance; // This singleton instance is only used by the PausedUI/settings at the moment
+
     [Header("Camera")]
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private Transform orientation;
@@ -14,6 +16,16 @@ public class CameraController : NetworkBehaviour
     [SerializeField] private float sensY;
     [SerializeField] private float fovMultiplier;
     [SerializeField] private Vector3 cameraLimboPosition;
+
+    public Vector2 Sensitivity
+    {
+        get { return new Vector2(sensX, sensY); }
+        set 
+        { 
+            sensX = value.x;
+            sensY = value.y;
+        }
+    }
 
     private float cameraTilt;
     private float _xRotation;
@@ -28,6 +40,9 @@ public class CameraController : NetworkBehaviour
     {
         if (!IsOwner) 
             return;
+
+        if (Instance == null)
+            Instance = this;
         
         playerRigidbody = GetComponent<Rigidbody>();
         mainCamera = Camera.main;
@@ -68,12 +83,6 @@ public class CameraController : NetworkBehaviour
     public void SetLimbo(bool inLimbo)
     {
         _inLimbo = inLimbo;
-    }
-
-    public void SetSensitivity(float sensitivity)
-    {
-        sensX = sensitivity;
-        sensY = sensitivity;
     }
 
     private void LimboUpdate()
