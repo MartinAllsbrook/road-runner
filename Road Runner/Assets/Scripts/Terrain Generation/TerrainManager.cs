@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.TerrainUtils;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
@@ -55,45 +52,62 @@ public class TerrainManager : NetworkBehaviour
 
     private readonly Quaternion _zeroRotation = new Quaternion(0, 0, 0, 0);
 
-    static private NetworkVariable<int> _worldSeed;
-
-    private void Awake()
-    {
-    }
+    static private NetworkVariable<int> _worldSeed; // This is the seed that is sent to the server, stored accross the network
 
     private void Start()
     {
         _worldSeed = new NetworkVariable<int>();
-        NetworkManager.Singleton.OnClientConnectedCallback += GenerateTerrain;
+        NetworkManager.Singleton.OnClientConnectedCallback += TryGenerateTerrain;
     }
 
-    public void Set(GameObject serverUI)
-    {
-        //_serverUI = serverUI;
-    }
-
-    public void Set(int seed, GameObject serverUI) 
+    /// <summary>
+    /// Sort of a replacement for Start() for the TerrainManager, called by the RelayUI when a new server is created.
+    /// </summary>
+    /// <param name="seed">The world seed</param>
+    public void Set(int seed) 
     {
         _worldSeed.Value = seed;
-        //_serverUI = serverUI;
-        GenerateTerrain(NetworkManager.Singleton.LocalClientId);
+        TryGenerateTerrain(NetworkManager.Singleton.LocalClientId);
     }
 
-    public void GenerateTerrain(ulong clientId)
+    /// <summary>
+    /// Attempts to generate the terrain, making sure not to if anything will cause an error.
+    /// Also only generates the terrain for the local client.
+    /// </summary>
+    /// <param name="clientId">The clients ID</param>
+    private void TryGenerateTerrain(ulong clientId)
     {
         if (clientId != NetworkManager.Singleton.LocalClientId)
-            return; 
-
-        int seed = _worldSeed.Value;
-        if (seed == 0)
             return;
 
+        int seed = _worldSeed.Value; // Get the seed from the network variable
+        if (seed == 0)
+            return;
         Debug.Log("Seed: " + seed);
 
-        if (Instance == null) 
+        if (Instance == null)
+        {
             Instance = this;
+        }
+        else
+        {
+            Debug.LogError("There are multiple Terrain Managers in the scene!");
+            return;
+        }
 
-        treeManager.Initialize(biomes);
+        GenerateTerrain(seed); // This is where the fun really starts, all the basic checks have passed and we are ready to generate the terrain
+    }
+
+    /// <summary>
+    /// Start
+    /// Starts a predictable terrain generation process.
+    /// </summary>
+    /// <param name="seed">The terrain's seed</param>
+    private void GenerateTerrain(int seed)
+    {
+        UIManager.Instance.StartTerrainLoading();
+        
+        treeManager.Initialize(biomes); 
 
         masterSeed = seed;
 
@@ -104,7 +118,7 @@ public class TerrainManager : NetworkBehaviour
         _onMapsGenerated.AddListener(OnMapGenerated);
         _onChunkLoaded = new UnityEvent();
         _onChunkLoaded.AddListener(OnChunkLoaded);
-
+        
         _sprinkleGenerator = GetComponent<SprinkleGenerator>();
 
         GenerateSeeds();
@@ -116,6 +130,9 @@ public class TerrainManager : NetworkBehaviour
         InitializeTerrain();
     }
 
+    /// <summary>
+    /// Generates predictable random numbers for the terrain generation so that all terrains match.
+    /// </summary>
     private void GenerateSeeds()
     {
         // TODO: Switch this to non static System.Random
@@ -140,6 +157,9 @@ public class TerrainManager : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Tells all the chunks to generate their noise maps (height, moisture, strangeness, etc.)
+    /// </summary>
     private void InitializeTerrain()
     {
         //_activeChunks = new GameObject[_terrainSize, _terrainSize];
@@ -161,6 +181,9 @@ public class TerrainManager : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Tallys the number of maps that have been generated, and when all the maps have been generated, calls WhenMapsGenerated()
+    /// </summary>
     private void OnMapGenerated()
     {
         _numMapsGenerated++;
@@ -168,6 +191,9 @@ public class TerrainManager : NetworkBehaviour
             WhenMapsGenerated();
     }
 
+    /// <summary>
+    /// Once the maps have been generated, this function tells the chunks to place sprinkles, blend them, and draw chunk meshes.
+    /// </summary>
     private void WhenMapsGenerated()
     {
         _sprinkleGenerator.FindSprinkleHeights(_loadedChunks);
@@ -183,6 +209,9 @@ public class TerrainManager : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Similar to OnMapGenerated(), this function tallies the number of chunks that have been loaded, and when all the chunks have been loaded, calls DoneLoading()
+    /// </summary>
     private void OnChunkLoaded()
     {
         _numLoadedChunks++;
@@ -190,6 +219,10 @@ public class TerrainManager : NetworkBehaviour
             DoneLoading();
     }
 
+    /// <summary>
+    /// Tells the TreeScatter to place trees.
+    /// Finishes Process.
+    /// </summary>
     private void DoneLoading()
     {
         for(int i = 0; i < _terrainSize; i++)
@@ -200,9 +233,8 @@ public class TerrainManager : NetworkBehaviour
             }
         }
 
+        // Once finished
         Debug.Log("Done Loading Chunks");
-        //_serverUI.SetActive(false);
-
-        PlayerSpawner.localPlayerSpawner.ExitLimbo();
+        PlayerSpawner.localPlayerSpawner.EnterLimbo();
     }
 }

@@ -49,7 +49,9 @@ public class PlayerSpawner : NetworkBehaviour
         foreach (var modelObject in playerModel)
             modelObject.layer = 6;
 
-        EnterLimbo();
+        _rigidbody.useGravity = false;
+        _cameraController.SetLimbo(true);
+        Pause(); //???
     }
 
     [Command]
@@ -57,46 +59,23 @@ public class PlayerSpawner : NetworkBehaviour
     {
         _cameraController.SetLimbo(true);
         _rigidbody.useGravity = false;
+        UIManager.Instance.EnterLimbo();
+
         Pause();
 
         transform.position = _limboPosition;
     }
 
     [Command]
-    public void ExitLimbo()
+    public void ExitLimbo() // The only way to exit limbo is the limbo UI and doing so spawns the player
     {
         _cameraController.SetLimbo(false);
         _rigidbody.useGravity = true;
+        UIManager.Instance.ExitLimbo();
+
         Unpause();
 
-        Invoke("SpawnPlayer", 3);
-    }
-
-    // None of this shit is ok, the whole spawn routine needs serious improvement
-    public void FreezePlayer()
-    {
-        Debug.LogError("Depreciated");
-        Time.timeScale = 0;
-        Pause();
-        _rigidbody.useGravity = false;
-    }
-
-    [Command]
-    public void UnfreezePlayerDebug()
-    {
-        Debug.LogError("Depreciated");
-        Time.timeScale = 1;
-        _rigidbody.useGravity = true;
-        Unpause();
-    }
-
-    public void UnfreezePlayer()
-    {
-        Debug.LogError("Depreciated");
-        Time.timeScale = 1;
-        _rigidbody.useGravity = true;
-        Unpause();
-        Invoke("SpawnPlayer", 3);
+        SpawnPlayer();
     }
 
     public void Unpause()
@@ -132,8 +111,8 @@ public class PlayerSpawner : NetworkBehaviour
 
         if (SprinkleGenerator.Instance == null)
         {
-            Debug.Log("Sprinkle generator is null");
-             position = new Vector3(0, 100, 0);
+            Debug.LogWarning("Sprinkle generator is null");
+             position = new Vector3(32, 100, 32);
             TeleportPlayerServerRpc(position);
             return;
         }
@@ -144,6 +123,7 @@ public class PlayerSpawner : NetworkBehaviour
         if(Physics.Raycast(ray, out RaycastHit hitInfo, 120, layerMask))
         {
             position.y = hitInfo.point.y;
+            transform.position = position; // Just in case the server doesn't do it (trial)
             TeleportPlayerServerRpc(position);
             return;
         }
@@ -160,4 +140,34 @@ public class PlayerSpawner : NetworkBehaviour
     {
         transform.position = position;
     }
+
+    #region Deprecated
+    // None of this shit is ok, the whole spawn routine needs serious improvement
+    public void FreezePlayer()
+    {
+        Debug.LogError("Depreciated");
+        Time.timeScale = 0;
+        Pause();
+        _rigidbody.useGravity = false;
+    }
+
+    [Command]
+    public void UnfreezePlayerDebug()
+    {
+        Debug.LogError("Depreciated");
+        Time.timeScale = 1;
+        _rigidbody.useGravity = true;
+        Unpause();
+    }
+
+    public void UnfreezePlayer()
+    {
+        Debug.LogError("Depreciated");
+        Time.timeScale = 1;
+        _rigidbody.useGravity = true;
+        Unpause();
+        Invoke("SpawnPlayer", 3);
+    }
+
+    #endregion
 }

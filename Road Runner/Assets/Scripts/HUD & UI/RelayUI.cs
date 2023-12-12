@@ -71,9 +71,7 @@ public class RelayUI : MonoBehaviour
             NetworkManager.Singleton.StartHost();
 
             int seed = int.Parse(worldSeedInput);
-            terrainManager.Set(seed, gameObject); // Send the seed and a reference to this UI to the TerrainManager so it can generate the terrain and disable this UI when it is done.
-
-            gameObject.SetActive(false); // I'm not sure why this is here, when it is also done in the TerrainManager. I vaguely remember it fixing something.
+            terrainManager.Set(seed); // Send the seed to the TerrainManager.
         }
         catch (RelayServiceException e)
         {
@@ -92,10 +90,6 @@ public class RelayUI : MonoBehaviour
             RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls"); // Create the relay server data using "Datagram Transport Layer Security" as the transport protocol
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData); // Set the relay server data (what we just created) in the UnityTransport component
             NetworkManager.Singleton.StartClient();
-
-            terrainManager.Set(gameObject);
-
-            gameObject.SetActive(false);
         }
         catch (RelayServiceException e)
         {
