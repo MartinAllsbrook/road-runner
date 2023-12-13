@@ -73,8 +73,8 @@ public class InventoryDisplay : MonoBehaviour
 
     private void CreateDisplayArrays(int inventoryKey, int width, int height)
     {
-        Button[,] inventoryButtons = new Button[width, height];
-        inventoryImages.Add(inventoryKey, new Image[width, height]);
+        Button[,] inventoryButtons = new Button[width, height]; // Array to hold all inventory slots
+        inventoryImages.Add(inventoryKey, new Image[width, height]); // Add this inventory to the dictionary of inventory display's images
 
         invetoryDisplays.Add(inventoryKey, Instantiate(inventoryBackdrop, transform.position, transform.rotation, transform));
         invetoryDisplays[inventoryKey].anchoredPosition = new Vector2(10, nextInventoryYPosition); // Positioning the inventory display

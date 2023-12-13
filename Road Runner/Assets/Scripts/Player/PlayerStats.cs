@@ -21,6 +21,8 @@ public class PlayerStats : NetworkBehaviour
     private float food = 100f;
     private float water = 100f;
 
+    private bool _inLimbo;
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -43,12 +45,18 @@ public class PlayerStats : NetworkBehaviour
         if (!IsOwner)
             return;
 
+        if (_inLimbo)
+            return;
+
         UpdateFoodAndWater();
     }
 
     private void UpdateFoodAndWater()
     {
         if (!IsOwner)
+            return;
+
+        if (_inLimbo)
             return;
 
         ChangeFood(-Time.deltaTime * foodDecayRate);
@@ -69,13 +77,19 @@ public class PlayerStats : NetworkBehaviour
     {
         if (!IsOwner)
             return;
-        
+
+        if (_inLimbo)
+            return;
+
         hudController.PlayHitMarker();
     }
 
     public void ChangeFood(float value)
     {
         if (!IsOwner)
+            return;
+
+        if (_inLimbo)
             return;
 
         float newfoodValue = food + value;
@@ -88,6 +102,9 @@ public class PlayerStats : NetworkBehaviour
         if (!IsOwner)
             return;
 
+        if (_inLimbo)
+            return;
+
         float newWaterValue = water + value;
         water = Mathf.Clamp(newWaterValue, 0f, 100f);
         hudController.UpdateWaterBar(water);
@@ -96,6 +113,9 @@ public class PlayerStats : NetworkBehaviour
     public void ChangeHealth(float value)
     {
         if (!IsOwner)
+            return;
+
+        if (_inLimbo)
             return;
 
         float newHealthValue = health + value;
@@ -110,10 +130,15 @@ public class PlayerStats : NetworkBehaviour
     {
         Debug.Log(health);
         GetComponent<BaseInventory>().DropAllItems();
-        Respawn();
+
+        _inLimbo = true;
+        GetComponent<PlayerSpawner>().EnterLimbo();
     }
 
-    private void Respawn()
+    /// <summary>
+    /// Resets the player's stats and exits stat limbo, allowing for stat upadates again
+    /// </summary>
+    public void ResetAndRespawn()
     {
         health = 100f;
         hudController.UpdateHealthBar(health);
@@ -124,6 +149,6 @@ public class PlayerStats : NetworkBehaviour
         water = 100f;
         hudController.UpdateWaterBar(water);
 
-        GetComponent<PlayerSpawner>().SpawnPlayer();
+        _inLimbo = false;
     }
 }

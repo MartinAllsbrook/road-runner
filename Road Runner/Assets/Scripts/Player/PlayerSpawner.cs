@@ -13,8 +13,6 @@ public class PlayerSpawner : NetworkBehaviour
 
     [SerializeField] private GameObject[] playerModel;
 
-    [SerializeField] private TerrainManager terrainManager;
-
     [SerializeField] private LayerMask layerMask;
 
     private CameraController _cameraController;
@@ -22,7 +20,7 @@ public class PlayerSpawner : NetworkBehaviour
     private PlayerInput _playerInput;
     private Rigidbody _rigidbody;
 
-    private Vector3 _limboPosition;
+    private Vector3 _limboPosition = new Vector3(-1024, -1024, -1024);
 
     private int numPauses;
     private bool paused;
@@ -51,19 +49,21 @@ public class PlayerSpawner : NetworkBehaviour
 
         _rigidbody.useGravity = false;
         _cameraController.SetLimbo(true);
-        Pause(); //???
     }
 
     [Command]
     public void EnterLimbo()
     {
+        if (!IsOwner)
+            return;
+
         _cameraController.SetLimbo(true);
         _rigidbody.useGravity = false;
         UIManager.Instance.EnterLimbo();
 
         Pause();
 
-        transform.position = _limboPosition;
+        TeleportPlayerServerRpc(_limboPosition);
     }
 
     [Command]
@@ -73,11 +73,14 @@ public class PlayerSpawner : NetworkBehaviour
         _rigidbody.useGravity = true;
         UIManager.Instance.ExitLimbo();
 
-        Unpause();
+        GetComponent<PlayerStats>().ResetAndRespawn();
 
         SpawnPlayer();
+
+        Unpause();
     }
 
+    [Command]
     public void Unpause()
     {
         numPauses--;
@@ -93,6 +96,7 @@ public class PlayerSpawner : NetworkBehaviour
         Cursor.visible = false;
     }
 
+    [Command]
     public void Pause()
     {
         numPauses++;
@@ -105,6 +109,7 @@ public class PlayerSpawner : NetworkBehaviour
         Cursor.visible = true;
     }
 
+    [Command("Respawn")]
     public void SpawnPlayer()
     {
         Vector3 position;
@@ -123,7 +128,6 @@ public class PlayerSpawner : NetworkBehaviour
         if(Physics.Raycast(ray, out RaycastHit hitInfo, 120, layerMask))
         {
             position.y = hitInfo.point.y;
-            transform.position = position; // Just in case the server doesn't do it (trial)
             TeleportPlayerServerRpc(position);
             return;
         }
@@ -138,6 +142,6 @@ public class PlayerSpawner : NetworkBehaviour
     [ClientRpc]
     private void TeleportPlayerClientRpc(Vector3 position)
     {
-        transform.position = position;
+        _rigidbody.position = position + Vector3.up;
     }
 }

@@ -48,7 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprinkleRanks:
-  - numToPlace: 5
+  - numToPlace: 1
+    sprinkles:
+    - {fileID: -2499524654122171120, guid: 326aeaa3294ee42459771883533dd2c2, type: 3}
+  - numToPlace: 6
     sprinkles:
     - {fileID: 6720956547210901410, guid: c79d9d7c86053fa4da04c3b5b449e908, type: 3}
     - {fileID: 8515197870878483532, guid: d1ef2cdd925cc414193ca57bc1e70ff3, type: 3}
@@ -65,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2989582166
+  GlobalObjectIdHash: 2974082728
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0

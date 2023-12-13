@@ -26,7 +26,7 @@ public class BulletHolePool : ObjectPool
         
         bulletHole.SetActive(true);
         
-        bulletHole.GetComponent<ParticleSystem>().Play();
+        bulletHole.GetComponent<BulletHole>().PlayEffects();
         
         _currentIndex++;
     }
