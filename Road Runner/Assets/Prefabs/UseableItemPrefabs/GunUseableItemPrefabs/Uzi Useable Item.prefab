@@ -1,133 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1399913791243456745
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5713729823117712540}
-  - component: {fileID: 1844253222832994954}
-  m_Layer: 0
-  m_Name: Fire Audio
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5713729823117712540
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399913791243456745}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 59639543601607638}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &1844253222832994954
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399913791243456745}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 80358bef62e69ee469e46c4181a5fc31, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &3087360488183855572
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +139,7 @@ GameObject:
   - component: {fileID: 59639543601607638}
   - component: {fileID: 2342597819938288641}
   m_Layer: 0
-  m_Name: Uzi Useable ITem
+  m_Name: Uzi Useable Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -288,9 +160,9 @@ Transform:
   m_Children:
   - {fileID: 4963829771343659827}
   - {fileID: 6606582809051602196}
-  - {fileID: 5713729823117712540}
   - {fileID: 2628142845838763985}
   - {fileID: 4815614432309898071}
+  - {fileID: 6756135409656407147}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2342597819938288641
@@ -305,12 +177,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5538582bd216ec4f80f92d4f2f04965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useAudio: {fileID: 1844253222832994954}
-  isUseAudioLocal: 0
-  seccondaryUseAudio: {fileID: 0}
-  isSeccondaryUseAudioLocal: 1
-  reloadAudio: {fileID: 2783020647654331222}
-  isReloadAudioLocal: 1
   bullet: {fileID: 0}
   magSize: 30
   singleShot: 0
@@ -318,11 +184,14 @@ MonoBehaviour:
   fireRate: 0.1
   reloadTime: 0.9
   bulletSpeed: 250
-  bulletExitPoint: {fileID: 0}
   accuracy: 2
-  aimOffset: {x: -0.5, y: 0.33, z: 0}
   zoom: 1.4
+  bulletExitPoint: {fileID: 2628142845838763985}
+  aimOffset: {x: -0.5, y: 0.33, z: 0}
+  gunshotSoundPool: {fileID: 8289298037634377577}
   muzzleFlash: {fileID: 4631850055487326362}
+  seccondaryUseAudio: {fileID: 0}
+  reloadAudio: {fileID: 2783020647654331222}
 --- !u!1 &8715005620172619921
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,6 +223,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 59639543601607638}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1223483351310845113
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 59639543601607638}
+    m_Modifications:
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8260864540019326360, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+      propertyPath: m_Name
+      value: Gunshot Sound Pool
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+--- !u!4 &6756135409656407147 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5564253398141690066, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+  m_PrefabInstance: {fileID: 1223483351310845113}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8289298037634377577 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7202151930401317840, guid: 807f92e242b95504ca22a869cca9c54d, type: 3}
+  m_PrefabInstance: {fileID: 1223483351310845113}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34f5c7f13adce184ab5965c2cf7a2b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4963829771343796665
 PrefabInstance:
   m_ObjectHideFlags: 0

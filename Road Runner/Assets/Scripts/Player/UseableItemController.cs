@@ -3,7 +3,14 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using QFSW.QC;
 
+/// <summary>
+/// Sets the current item and controls it's inputs and server actions
+/// 
+/// 1. Gets input from the player and passes it to the current item
+/// 2. Allows UseableItems to perform actions accross the server without having to be network objects
+/// </summary>
 public class UseableItemController : NetworkBehaviour 
 {
     public static UseableItemController Instance;
@@ -12,16 +19,10 @@ public class UseableItemController : NetworkBehaviour
     [SerializeField] private Transform handPosition;
     [SerializeField] private ItemSO fists;
 
-    [Header("Inputs")]
-    [SerializeField] private KeyCode useKey = KeyCode.Mouse0;
-    [SerializeField] private KeyCode seccondaryUseKey = KeyCode.Mouse1;
-    [SerializeField] private KeyCode reloadKey = KeyCode.R;
-
     private bool _useInput;
     private bool _seccondaryInput;
     private bool _reloadInput;
 
-    private ItemSO currentItemSo;
     private GameObject currentItemPrefab;
     private UseableItem currentUseableItem;
 
@@ -49,49 +50,40 @@ public class UseableItemController : NetworkBehaviour
             Instance = this;
 
         hudController = GameObject.Find("HUD").GetComponent<HUDController>();
-
-        // magazine = new Magazine(gunSo.magSize);
     }
 
+    /// <summary>
+    /// Passes input to the current item
+    /// </summary>
     private void Update()
     {
         if (!IsOwner)
             return;
 
-        //timeSinceLastShot += Time.deltaTime;
-
         if (_useInput)
-            currentUseableItem.UseItem();
-
-        if (_seccondaryInput)
-            currentUseableItem.SeccondaryUseItem();
+            currentUseableItem.OnUseItemInput();
 
         if (_reloadInput)
-            currentUseableItem.ReloadItem();
+            currentUseableItem.OnReloadItemInput();
     }
 
-    public void SetUseInput(InputAction.CallbackContext context)
-    {
-        _useInput = context.action.IsPressed();
-    }
-    public void SetSeccondaryUseInput(InputAction.CallbackContext context)
-    {
-        _seccondaryInput = context.action.IsPressed();
-    }
-
-    public void SetReloadInput(InputAction.CallbackContext context)
-    {
-        _reloadInput = context.action.IsPressed();
-    }
-
+    /// <summary>
+    /// Sets the current item, within the scope of this class
+    /// </summary>
+    /// <param name="itemSO">The scriptable object of the item you want to equip</param>
+    [Command("SetHandItemDebug")]
     public void SetItem(ItemSO itemSO)
     {
         Destroy(currentItemPrefab);
-        currentItemSo = itemSO;
         currentItemPrefab =  Instantiate(itemSO.GetItemPrefab(), handPosition.position, handPosition.rotation, handPosition);
         currentUseableItem = currentItemPrefab.GetComponent<UseableItem>();
         currentUseableItem.IsOwner = IsOwner;
     }
+
+    // Methods called by UseableItems to perform actions accross the server without having to be network objects themselves
+    #region Server Actions
+
+    #region Primary Use
 
     [ServerRpc(RequireOwnership = false)]
     public void UseServerRpc()
@@ -108,6 +100,10 @@ public class UseableItemController : NetworkBehaviour
         currentUseableItem.UseServerAction();
     }
 
+    #endregion
+
+    #region Seccondary Use
+
     [ServerRpc(RequireOwnership = false)]
     public void SeccondaryUseServerRpc()
     {
@@ -115,13 +111,17 @@ public class UseableItemController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void SeccondaryUseClientRpc()
+    private void SeccondaryUseClientRpc()
     {
-        if (IsOwner)
+        if (IsOwner) // TODO: figure out why this is needed and coommented out eslewhere
             return;
 
         currentUseableItem.SeccondaryUseServerAction();
     }
+
+    #endregion
+
+    #region Reload
 
     [ServerRpc(RequireOwnership = false)]
     public void ReloadServerRpc()
@@ -130,11 +130,34 @@ public class UseableItemController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void ReloadClientRpc()
+    private void ReloadClientRpc()
     {
 /*        if(IsOwner) 
             return;*/
 
         currentUseableItem.ReloadServerAction();
     }
+
+    #endregion
+
+    #endregion
+
+    // Methods called by InputSystem events
+    #region Getting Inputs
+
+    public void SetUseInput(InputAction.CallbackContext context)
+    {
+        _useInput = context.action.IsPressed();
+    }
+    public void SetSeccondaryUseInput(InputAction.CallbackContext context)
+    {
+        currentUseableItem.OnSeccondaryUseItemInput(context);
+    }
+
+    public void SetReloadInput(InputAction.CallbackContext context)
+    {
+        _reloadInput = context.action.IsPressed();
+    }
+
+    #endregion
 }

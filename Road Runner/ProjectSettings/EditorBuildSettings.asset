@@ -14,10 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Legacy Testing Scenes/Eli Map.unity
     guid: bd3499bd681d81140b0b798c9ce0df54
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/v0.1.0.unity
     guid: c861ecd6c5616b740bf0de95e6585a68
-  - enabled: 0
-    path: Assets/Scenes/Testing Scenes/Gun Testing.unity
+  - enabled: 1
+    path: Assets/Scenes/Testing Scenes/Weapons Testing.unity
     guid: 92a77907127f4a54bbadad9ca3584240
   m_configObjects: {}

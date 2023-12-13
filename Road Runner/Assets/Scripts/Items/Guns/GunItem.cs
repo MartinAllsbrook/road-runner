@@ -5,25 +5,32 @@ using System.Collections.Generic;
 using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GunItem : UseableItem
 {
-    [Header("Gun")]
+    [Header("References")]
     [SerializeField] private GameObject bullet;
-    //[SerializeField] private Transform cameraPosition;
 
+    [Header("Gun Stats")]
     [SerializeField] private int magSize;
     [SerializeField] private bool singleShot;
     [SerializeField] private float damage;
     [SerializeField] private float fireRate;
     [SerializeField] private float reloadTime;
     [SerializeField] private int bulletSpeed;
-    [SerializeField] private Transform bulletExitPoint;
     [SerializeField] private float accuracy;
-    [SerializeField] private Vector3 aimOffset;
     [SerializeField] private float zoom = 1.4f;
 
+    [Header("Gun Settings")]
+    [SerializeField] private Transform bulletExitPoint;
+    [SerializeField] private Vector3 aimOffset;
+
+    [Header("Gunshots & Audio")]
+    [SerializeField] private EffectPool gunshotSoundPool;
     [SerializeField] private GameObject muzzleFlash;
+    [SerializeField] protected AudioSource seccondaryUseAudio;
+    [SerializeField] protected AudioSource reloadAudio;
 
     private Magazine magazine;
     private bool reloading = false;
@@ -44,18 +51,16 @@ public class GunItem : UseableItem
         {
             triggerLifted = true;
         }
-
-        GetInputs();
     }
 
-    private void GetInputs()
+    public override void OnSeccondaryUseItemInput(InputAction.CallbackContext context)
     {
         if (!isOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (context.started)
             StartAim();
 
-        if (Input.GetKeyUp(KeyCode.Mouse1))
+        if (context.canceled)
             StopAim();
     }
 
@@ -72,21 +77,13 @@ public class GunItem : UseableItem
         UseableItemController.Instance.GetComponent<CameraController>().SetZoom(1);
     }
 
-    public override void UseItem()
+    public override void OnUseItemInput()
     {
-        base.UseItem();
         TryShootLoop();
     }
 
-    public override void SeccondaryUseItem()
+    public override void OnReloadItemInput()
     {
-        base.SeccondaryUseItem();
-    }
-
-    public override void ReloadItem()
-    {
-        base.ReloadItem();
-
         if (!reloading)
             StartCoroutine(Reload());
     }
@@ -153,19 +150,10 @@ public class GunItem : UseableItem
         reloading = false;
     }
 
-    public void PlayReloadAudio()
-    {
-
-    }
-
-    public void PlayFireAudio()
-    {
-
-    }
-
     public override void UseServerAction()
     {
         base.UseServerAction();
+        gunshotSoundPool.PlayEffect();
         StartCoroutine(FlashCoroutine());
     }
 

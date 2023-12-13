@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2679334488881847894}
   - component: {fileID: 5693042134580174941}
   - component: {fileID: 6395985888876584423}
-  - component: {fileID: 1681018343606615665}
   - component: {fileID: 8584038052254596596}
+  - component: {fileID: 1681018343606615665}
   - component: {fileID: 2609502664297185263}
   - component: {fileID: 2168411699179998783}
   m_Layer: 0
@@ -63,8 +63,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f7128935503ae499e5891aef55e95e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToPool: {fileID: 8494559112012149561, guid: 99bc579b5e171b1419f14afffbe3adca, type: 3}
+  effectToPool: {fileID: 694453059388007180, guid: 99bc579b5e171b1419f14afffbe3adca, type: 3}
   poolSize: 64
+--- !u!114 &8584038052254596596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3017228783983974828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3823680312
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &1681018343606615665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,26 +110,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f0aca54f563d3be479ef04186f3aa4d7, type: 2}
   - {fileID: 11400000, guid: 861f8f4db417d7543bb6596a8f5459f7, type: 2}
   - {fileID: 11400000, guid: 8b791ea92eba05b40af6d8f2bbc12b8d, type: 2}
---- !u!114 &8584038052254596596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3017228783983974828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3098295435
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &2609502664297185263
 MonoBehaviour:
   m_ObjectHideFlags: 0

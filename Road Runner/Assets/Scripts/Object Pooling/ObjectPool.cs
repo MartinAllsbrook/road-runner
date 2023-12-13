@@ -16,7 +16,7 @@ public class ObjectPool : MonoBehaviour
         
         for (int i = 0; i < poolSize; i++)
         {
-            tmp = Instantiate(objectToPool);
+            tmp = Instantiate(objectToPool, transform.position, transform.rotation, transform);
             tmp.SetActive(false);
             pooledObjects[i] = tmp;
         }

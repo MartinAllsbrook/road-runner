@@ -58,7 +58,7 @@ public class BulletNetworkManager : NetworkBehaviour
     {
         Quaternion holeDirection = Quaternion.LookRotation(normal);
 
-        BulletHolePool.Instance.PlaceBulletHole(point, holeDirection);
+        BulletHolePool.Instance.PlaceEffect(point, holeDirection);
         // Instantiate(bulletHole, point, holeDirection);
     }
 }

@@ -6,9 +6,8 @@ public abstract class ConsumableItem : UseableItem
 {
     private bool used = false;
 
-    public override void UseItem()
+    public override void OnUseItemInput()
     {
-        base.UseItem();
         if (!used)
         {
             used = true;
