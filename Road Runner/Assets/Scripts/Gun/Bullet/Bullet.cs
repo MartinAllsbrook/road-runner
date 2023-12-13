@@ -53,11 +53,10 @@ public class Bullet : MonoBehaviour
         // Debug.Log("Bullet with owner ID " + ownerId + " hit something");
         if (collision.transform.CompareTag("Player"))
         {
-            PlayerStats.Instance.PlayHitMarker();
-            // Debug.Log("Local Bullet Hit");
-            PlayerStats playerStats= collision.transform.GetComponent<PlayerStats>();
-            
-            BulletNetworkManager.Instance.BulletHitPlayer(playerStats.NetworkObject, _damage);
+            HUDController.Instance.PlayHitMarker(); // Local
+
+            Player playerThatWasHit = collision.transform.GetComponent<Player>();            
+            BulletNetworkManager.Instance.BulletHitPlayer(playerThatWasHit.NetworkObject, _damage);
         }
         else
         {

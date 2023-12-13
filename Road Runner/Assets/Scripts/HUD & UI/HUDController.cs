@@ -8,7 +8,9 @@ using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
 {
-    [Header("Display References")]
+    public static HUDController Instance;
+
+    [Header("References")]
     [SerializeField] private TextMeshProUGUI ammoCountText;
     [SerializeField] private Animator reloadAnimator;
     [SerializeField] private GameObject hitMarker;
@@ -16,6 +18,8 @@ public class HUDController : MonoBehaviour
     [SerializeField] private InventoryDisplay inventoryDisplay;
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject mapCamera;
+
+    [Header("Stat Displays")]
     [SerializeField] private Image healthBar;
     [SerializeField] private Image foodBar;
     [SerializeField] private Image waterBar;
@@ -32,8 +36,17 @@ public class HUDController : MonoBehaviour
     private bool inventoryOpen = false;
     private bool mapOpen = false;
 
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(this);
+    }
+
     private void Update()
     {
+        // TODO: Use the new input system and move this to the UI Manager
         if (Input.GetKeyDown(pauseKey))
             ToggleEscMenu();
         
@@ -44,6 +57,8 @@ public class HUDController : MonoBehaviour
             ToggleMap();
     }
 
+    // TODO: Move this to the UI Manager
+    #region Stuff the should be in the UI Manager
     public void ToggleEscMenu()
     {
         if (!escMenuOpen)
@@ -93,7 +108,9 @@ public class HUDController : MonoBehaviour
             PlayerSpawner.localPlayerSpawner.Unpause();
         }
     }
+    #endregion
 
+    #region Gun HUD Stuff
     public void SetAmmoCountDisplay(int ammoCount, int maxAmmoCount)
     {
         string ammoCountString = ammoCount.ToString();
@@ -113,7 +130,9 @@ public class HUDController : MonoBehaviour
     {
         reloadAnimator.gameObject.SetActive(false);
     }
-    
+    #endregion
+
+    #region Hitmarker
     public void PlayHitMarker()
     {
         StartCoroutine(PlayHitmarkerCoroutine(0.1f, Color.green));
@@ -130,7 +149,9 @@ public class HUDController : MonoBehaviour
         hitMarker.SetActive(false);
         
     }
+    #endregion
 
+    #region Update Stat Displays
     public void UpdateHealthBar(float healthValue)
     {
         healthBar.rectTransform.sizeDelta = new Vector2(healthValue * 5, 30);
@@ -145,4 +166,5 @@ public class HUDController : MonoBehaviour
     {
         waterBar.rectTransform.sizeDelta = new Vector2(waterValue * 5, 30);
     }
+    #endregion
 }

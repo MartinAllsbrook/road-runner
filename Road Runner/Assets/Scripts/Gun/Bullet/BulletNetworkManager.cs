@@ -17,24 +17,24 @@ public class BulletNetworkManager : NetworkBehaviour
     }
 
     #region Bullet Hit Player
-    public void BulletHitPlayer(NetworkObject playerStatsNetworkObject, float damage)
+    public void BulletHitPlayer(NetworkObject playerNetworkObject, float damage)
     {
-        BulletHitPlayerServerRpc(playerStatsNetworkObject, damage);
+        BulletHitPlayerServerRpc(playerNetworkObject, damage);
     }
     
     [ServerRpc(RequireOwnership = false)]
-    private void BulletHitPlayerServerRpc(NetworkObjectReference playerStatsNetworkObjectReference, float damage)
+    private void BulletHitPlayerServerRpc(NetworkObjectReference playerNetworkObjectReference, float damage)
     {
-        BulletHitPlayerClientRpc(playerStatsNetworkObjectReference, damage);
+        BulletHitPlayerClientRpc(playerNetworkObjectReference, damage);
     }
     
     [ClientRpc]
-    private void BulletHitPlayerClientRpc(NetworkObjectReference playerStatsNetworkObjectReference, float damage)
+    private void BulletHitPlayerClientRpc(NetworkObjectReference playerNetworkObjectReference, float damage)
     {
         // Getting player that got hit
-        playerStatsNetworkObjectReference.TryGet(out NetworkObject playerStatsNetworkObject);
-        PlayerStats playerStats = playerStatsNetworkObject.GetComponent<PlayerStats>();
-        playerStats.ChangeHealth(-damage);
+        playerNetworkObjectReference.TryGet(out NetworkObject playerNetworkObject);
+        Player player = playerNetworkObject.GetComponent<Player>();
+        player.HitWithBullet(damage);
     }
     #endregion
 
