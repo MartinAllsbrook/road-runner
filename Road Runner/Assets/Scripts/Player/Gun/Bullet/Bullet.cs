@@ -8,11 +8,15 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float maxTimeActive;
+
+    private float _minDistanceForCrack = 250f;
     
     private Rigidbody _rigidbody;
 
-    private float timeActive;
-    private float damage = 20;
+    private float _timeActive = 0f;
+    private float _estimatedDistanceTraveled = 0f;
+
+    private float _damage = 20;
     
     private void Awake()
     {
@@ -22,22 +26,28 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        timeActive += Time.deltaTime;
+        _timeActive += Time.deltaTime;
+        _estimatedDistanceTraveled += speed * Time.deltaTime;
 
-        if (timeActive >= maxTimeActive)
+        if (_timeActive >= maxTimeActive)
         {
             gameObject.SetActive(false);
         }
     }
 
-    public void FireBullet(Vector3 velocity, float dmg)
+    public void FireBullet(Vector3 velocity, float damage)
     {
-        timeActive = 0;
+        _timeActive = 0;
+        _estimatedDistanceTraveled = 0;
         
         _rigidbody.velocity = velocity;
-        damage = dmg;
+        _damage = damage;
     }
 
+    /// <summary>
+    /// When bullet hits something check if it was a player or environment and react accordingly
+    /// </summary>
+    /// <param name="collision">Default Collision parameter</param>
     private void OnCollisionEnter(Collision collision)
     {
         // Debug.Log("Bullet with owner ID " + ownerId + " hit something");
@@ -47,7 +57,7 @@ public class Bullet : MonoBehaviour
             // Debug.Log("Local Bullet Hit");
             PlayerStats playerStats= collision.transform.GetComponent<PlayerStats>();
             
-            BulletNetworkManager.Instance.BulletHitPlayer(playerStats.NetworkObject, damage);
+            BulletNetworkManager.Instance.BulletHitPlayer(playerStats.NetworkObject, _damage);
         }
         else
         {
@@ -59,5 +69,17 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Distance Traveled: " + _estimatedDistanceTraveled + " VS Min: " + _minDistanceForCrack);
 
+        if (_estimatedDistanceTraveled < _minDistanceForCrack)
+            return;
+
+        if (other.CompareTag("Bullet Crack")) // TODO: Make this a layer?
+        {
+            Debug.Log("Crack Success");
+            BulletNetworkManager.Instance.SpawnBulletCrack(transform.position);
+        }
+    }
 }

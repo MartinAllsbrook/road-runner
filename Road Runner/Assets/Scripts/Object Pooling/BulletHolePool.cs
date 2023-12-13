@@ -11,5 +11,7 @@ public class BulletHolePool : EffectPool
     {
         if (Instance == null)
             Instance = this;
+
+        Debug.LogError("Depreciated please delete me");
     }
 }

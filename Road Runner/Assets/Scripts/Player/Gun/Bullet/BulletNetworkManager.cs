@@ -8,17 +8,15 @@ public class BulletNetworkManager : NetworkBehaviour
 {
     public static BulletNetworkManager Instance;
 
-    [SerializeField] private Transform bulletHole;
-
+    [SerializeField] private EffectPool bulletHolePool;
+    [SerializeField] private EffectPool bulletCrackPool;
     private void Start()
     {
         if (Instance == null)
             Instance = this;
     }
-    
-    // =====================================================
-    // Bullet Hit Player Bullet Hit Player Bullet Hit Player
-    // =====================================================
+
+    #region Bullet Hit Player
     public void BulletHitPlayer(NetworkObject playerStatsNetworkObject, float damage)
     {
         BulletHitPlayerServerRpc(playerStatsNetworkObject, damage);
@@ -38,27 +36,45 @@ public class BulletNetworkManager : NetworkBehaviour
         PlayerStats playerStats = playerStatsNetworkObject.GetComponent<PlayerStats>();
         playerStats.ChangeHealth(-damage);
     }
+    #endregion
 
-    // ====================================================================
-    // Bullet Hit Environment Bullet Hit Environment Bullet Hit Environment
-    // ====================================================================
+    #region Bullet Hit Environment
     public void BulletHitEnvironment(Vector3 point, Vector3 normal)
     {
         SpawnBulletHoleServerRpc(point, normal);
     }
     
     [ServerRpc(RequireOwnership = false)]
-    public void SpawnBulletHoleServerRpc(Vector3 point, Vector3 normal)
+    private void SpawnBulletHoleServerRpc(Vector3 point, Vector3 normal)
     {
         SpawnBulletHoleClientRpc(point, normal);
     }
     
     [ClientRpc]
-    public void SpawnBulletHoleClientRpc(Vector3 point, Vector3 normal)
+    private void SpawnBulletHoleClientRpc(Vector3 point, Vector3 normal)
     {
         Quaternion holeDirection = Quaternion.LookRotation(normal);
 
-        BulletHolePool.Instance.PlaceEffect(point, holeDirection);
-        // Instantiate(bulletHole, point, holeDirection);
+        bulletHolePool.PlaceEffect(point, holeDirection);
     }
+    #endregion
+
+    #region Bullet Causes Bullet Crack
+    public void SpawnBulletCrack(Vector3 point)
+    {
+        SpawnBulletCrackServerRpc(point);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnBulletCrackServerRpc(Vector3 point)
+    {
+        SpawnBulletCrackClientRpc(point);
+    }
+    
+    [ClientRpc]
+    private void SpawnBulletCrackClientRpc(Vector3 point)
+    {
+        bulletCrackPool.PlaceEffect(point, Quaternion.identity);
+    }
+    #endregion
 }

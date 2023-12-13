@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10000
   maxTimeActive: 3
+  minDistanceForCrack: 250
 --- !u!54 &6556564904722137926
 Rigidbody:
   m_ObjectHideFlags: 0
