@@ -10,7 +10,8 @@ public class EnemyNPCSpawner : NetworkBehaviour
 
     public enum EnemyType
     {
-        EnemyNPC
+        EnemyNPC,
+        NavMeshEnemyNPC,
     }
 
     [Command]

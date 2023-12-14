@@ -11,6 +11,10 @@ public class TerrainManager : NetworkBehaviour
 {
     public static TerrainManager Instance;
 
+    [Header("Refenences")]
+    [SerializeField] private NavMeshManager navMeshManager;
+
+    [Header("Terrain Generation")]
     [SerializeField] private GameObject terrainChunk;
     [SerializeField] private int terrainRadius;
     [SerializeField] private TreeManager treeManager;
@@ -236,5 +240,7 @@ public class TerrainManager : NetworkBehaviour
         // Once finished
         Debug.Log("Done Loading Chunks");
         PlayerSpawner.localPlayerSpawner.EnterLimbo();
+
+        // Generate NavMesh
     }
 }

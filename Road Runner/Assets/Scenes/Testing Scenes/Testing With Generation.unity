@@ -346,6 +346,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08310a78dc3ad04fa9f3d64a4b5383d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &884609186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1157662459516754636, guid: 242914aaf140a124a821354d260a14e8, type: 3}
+  m_PrefabInstance: {fileID: 4748343524117354496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &884609187 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4101379791705203099, guid: 242914aaf140a124a821354d260a14e8, type: 3}
+  m_PrefabInstance: {fileID: 4748343524117354496}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884609186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &884609189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884609186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b486d979b813a504c885ac6f8fe80216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navMeshSurface: {fileID: 884609187}
 --- !u!1 &1053725982
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3629075484901468618, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2974082728
+      value: 2713764317
       objectReference: {fileID: 0}
     - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: biomes.Array.data[0]
@@ -1409,7 +1438,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1157662459516754636, guid: 242914aaf140a124a821354d260a14e8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 884609189}
   m_SourcePrefab: {fileID: 100100000, guid: 242914aaf140a124a821354d260a14e8, type: 3}
 --- !u!1001 &5552440897400961360
 PrefabInstance:
@@ -1522,7 +1554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584038052254596596, guid: b7cd658654a3a574d97f38ffb53dd097, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2497639015
+      value: 3011751308
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

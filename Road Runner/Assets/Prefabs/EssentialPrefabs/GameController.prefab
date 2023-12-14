@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3823680312
+  GlobalObjectIdHash: 3098295435
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -208,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 4052359956121919187, guid: 18ef45a510984824da0e7eff4da82c53, type: 3}
+  - {fileID: 6054560078628120099, guid: cb63f292e5d57bd4cab6010ee8fc822a, type: 3}
 --- !u!1 &8166685882722132641
 GameObject:
   m_ObjectHideFlags: 0
