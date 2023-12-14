@@ -6,9 +6,14 @@ using UnityEngine;
 
 public class EnemyNPC : NetworkBehaviour
 {
-    [SerializeField] private float maxHealth = 100f;   
+    [Header("Enemy Stats")]
+    [SerializeField] private float maxHealth = 100f;
+
+    [Header("Enemy References")]
+    [SerializeField] private CustomEffect deathEffects;
 
     private float _currentHealth;
+    private bool _alive = true;
 
     public override void OnNetworkSpawn()
     {
@@ -18,6 +23,9 @@ public class EnemyNPC : NetworkBehaviour
 
     public void DealDamage(float damage)
     {
+        if (!_alive)
+            return;
+
         DealDamageServerRpc(damage);
     }
 
@@ -34,12 +42,23 @@ public class EnemyNPC : NetworkBehaviour
     }
 
     public void TakeDamage(float damage)
-    {
+    { 
         _currentHealth -= damage;
         if (_currentHealth <= 0)
         {
-            RemoveFromWorldServerRpc();
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        _alive = false;
+
+        CustomEffect deathEffect = Instantiate(deathEffects, transform.position, Quaternion.identity);
+        deathEffect.PlayEffects();
+
+        if (IsOwner)
+            RemoveFromWorldServerRpc();
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -52,5 +71,6 @@ public class EnemyNPC : NetworkBehaviour
     {
         gameObject.SetActive(false);
         base.OnNetworkDespawn();
+        Destroy(gameObject);
     }
 }

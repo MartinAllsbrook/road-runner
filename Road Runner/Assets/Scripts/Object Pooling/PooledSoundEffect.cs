@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PooledSoundEffect : PooledEffect
+public class PooledSoundEffect : CustomEffect
 {
     [SerializeField] private AudioSource _sound;
 
