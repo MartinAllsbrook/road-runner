@@ -60,6 +60,8 @@ public class RelayUI : MonoBehaviour
     {
         try
         {
+            UIManager.Instance.StartCreatingServer();
+
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2); // Wait for allocation to be created
 
             string joinRelayCode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId); // Get the join code for the allocation
@@ -72,6 +74,7 @@ public class RelayUI : MonoBehaviour
 
             int seed = int.Parse(worldSeedInput);
             terrainManager.Set(seed); // Send the seed to the TerrainManager.
+
         }
         catch (RelayServiceException e)
         {
@@ -83,6 +86,8 @@ public class RelayUI : MonoBehaviour
     {
         try
         {
+            UIManager.Instance.StartJoiningServer();
+            
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinRelayCode); // Wait for allocation associated with the join code to be found and retrieved
 
             DisplayJoinCode(joinRelayCode);

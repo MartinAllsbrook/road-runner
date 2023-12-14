@@ -5,19 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Old Release Scenes/v0.0.4.unity
-    guid: ec9d9e46853c2524c9fffa80df268861
-  - enabled: 0
-    path: Assets/Scenes/Legacy Testing Scenes/Martin's Testing Environment.unity
-    guid: 8e5715c256533bd4da381233d2991af7
-  - enabled: 0
-    path: Assets/Scenes/Legacy Testing Scenes/Eli Map.unity
-    guid: bd3499bd681d81140b0b798c9ce0df54
   - enabled: 1
-    path: Assets/Scenes/v0.1.0.unity
+    path: Assets/Scenes/00_Main.unity
     guid: c861ecd6c5616b740bf0de95e6585a68
   - enabled: 0
-    path: Assets/Scenes/Testing Scenes/Gun Testing.unity
+    path: Assets/Scenes/Testing Scenes/Weapons Testing.unity
     guid: 92a77907127f4a54bbadad9ca3584240
   m_configObjects: {}

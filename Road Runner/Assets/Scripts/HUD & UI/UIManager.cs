@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mapUI; // This is seen when the player opens their map
 
     [Header("Info Screens")]
+    [SerializeField] private GameObject joiningServerScreen;
+    [SerializeField] private GameObject creatingServerScreen;
     [SerializeField] private GameObject terrainLoadingScreen;
 
     private void Awake()
@@ -43,10 +45,24 @@ public class UIManager : MonoBehaviour
         titleScreenUI.SetActive(true); // Make sure the title screen is active when the game starts
     }
 
+    #region Initial UI Routine
+
     public void ContinueFromTitleScreen()
     {
         DisableAll();
         serverUI.SetActive(true);
+    }
+
+    public void StartJoiningServer()
+    {
+        serverUI.SetActive(false);
+        joiningServerScreen.SetActive(true);
+    }
+
+    public void StartCreatingServer()
+    {
+        serverUI.SetActive(false);
+        creatingServerScreen.SetActive(true);
     }
 
     /// <summary>
@@ -54,9 +70,12 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void StartTerrainLoading()
     {
-        serverUI.SetActive(false);
+        joiningServerScreen.SetActive(false);
+        creatingServerScreen.SetActive(false);
         terrainLoadingScreen.SetActive(true);
     }
+
+    #endregion
 
     public void EnterLimbo()
     {
@@ -75,6 +94,8 @@ public class UIManager : MonoBehaviour
     /// </summary>
     private void DisableAll()
     {
+        creatingServerScreen.SetActive(false);
+        joiningServerScreen.SetActive(false);
         titleScreenUI.SetActive(false);
         debugHUD.SetActive(false);
         basicHUD.SetActive(false);

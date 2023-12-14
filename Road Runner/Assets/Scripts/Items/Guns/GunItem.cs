@@ -5,25 +5,39 @@ using System.Collections.Generic;
 using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GunItem : UseableItem
 {
-    [Header("Gun")]
+    [Header("References")]
     [SerializeField] private GameObject bullet;
-    //[SerializeField] private Transform cameraPosition;
 
+    [Header("Gun Stats")]
     [SerializeField] private int magSize;
     [SerializeField] private bool singleShot;
     [SerializeField] private float damage;
     [SerializeField] private float fireRate;
     [SerializeField] private float reloadTime;
     [SerializeField] private int bulletSpeed;
-    [SerializeField] private Transform bulletExitPoint;
-    [SerializeField] private float accuracy;
-    [SerializeField] private Vector3 aimOffset;
     [SerializeField] private float zoom = 1.4f;
 
+    [Header("Gun Accuracy")]
+    [SerializeField] private float minInaccuracy = 0.05f;
+    [SerializeField] private float maxInaccuracy = 1f;
+    [SerializeField] private float inaccuracyIncreasePercentPerShot = 0.1f;
+    [SerializeField] private float inaccuracyDecreaseRate = 0.1f;
+    private float _inaccuracyPercent;
+    private float _inaccuracy;
+
+    [Header("Gun Settings")]
+    [SerializeField] private Transform bulletExitPoint;
+    [SerializeField] private Vector3 aimOffset;
+
+    [Header("Gunshots & Audio")]
+    [SerializeField] private EffectPool gunshotSoundPool;
     [SerializeField] private GameObject muzzleFlash;
+    [SerializeField] protected AudioSource seccondaryUseAudio;
+    [SerializeField] protected AudioSource reloadAudio;
 
     private Magazine magazine;
     private bool reloading = false;
@@ -40,28 +54,34 @@ public class GunItem : UseableItem
     {
         timeSinceLastShot += Time.deltaTime;
 
+        DecreaseInaccuracy(); // always decrease inaccuracy because a real person would always be trying to aim better
+
         if (!triggerLifted && Input.GetKeyUp(KeyCode.Mouse0))
         {
             triggerLifted = true;
         }
-
-        GetInputs();
     }
 
-    private void GetInputs()
+    private void LateUpdate()
+    {
+        if (isOwner)
+            HUDController.Instance.SetCrosshaireInaccuracy(_inaccuracy);
+    }
+
+    public override void OnSeccondaryUseItemInput(InputAction.CallbackContext context)
     {
         if (!isOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (context.started)
             StartAim();
 
-        if (Input.GetKeyUp(KeyCode.Mouse1))
+        if (context.canceled)
             StopAim();
     }
 
     private void StartAim()
     {
-        Debug.Log(zoom);
+        //Debug.Log(zoom);
         transform.position += (aimOffset.x * transform.right + aimOffset.y * transform.up + aimOffset.z * transform.forward);
         UseableItemController.Instance.GetComponent<CameraController>().SetZoom(zoom);
     }
@@ -72,21 +92,13 @@ public class GunItem : UseableItem
         UseableItemController.Instance.GetComponent<CameraController>().SetZoom(1);
     }
 
-    public override void UseItem()
+    public override void OnUseItemInput()
     {
-        base.UseItem();
         TryShootLoop();
     }
 
-    public override void SeccondaryUseItem()
+    public override void OnReloadItemInput()
     {
-        base.SeccondaryUseItem();
-    }
-
-    public override void ReloadItem()
-    {
-        base.ReloadItem();
-
         if (!reloading)
             StartCoroutine(Reload());
     }
@@ -112,7 +124,7 @@ public class GunItem : UseableItem
 
         UseableItemController.Instance.HudController.SetAmmoCountDisplay(ammoCount - 1, magSize);
         timeSinceLastShot = 0;
-        Fire(accuracy);
+        Fire(_inaccuracy);
 
         UseableItemController.Instance.UseServerRpc();
     }
@@ -120,6 +132,25 @@ public class GunItem : UseableItem
     protected virtual void Fire(float accuracy) 
     { 
         CreateBullet(accuracy);
+        IncreaseInaccuracy();
+    }
+
+    private void IncreaseInaccuracy()
+    {
+        _inaccuracyPercent = Mathf.Lerp(_inaccuracyPercent, 1, inaccuracyIncreasePercentPerShot);
+        _inaccuracy = CalculateInaccuracy(_inaccuracyPercent);
+    }
+
+    private void DecreaseInaccuracy()
+    {
+        _inaccuracyPercent -= inaccuracyDecreaseRate * Time.deltaTime;
+        _inaccuracyPercent = Mathf.Clamp(_inaccuracyPercent, 0, 1);
+        _inaccuracy = CalculateInaccuracy(_inaccuracyPercent);
+    }
+
+    private float CalculateInaccuracy(float inaccuracyPercent)
+    { 
+        return Mathf.Lerp(minInaccuracy, maxInaccuracy, inaccuracyPercent);
     }
 
     protected void CreateBullet(float accuracy)
@@ -153,19 +184,10 @@ public class GunItem : UseableItem
         reloading = false;
     }
 
-    public void PlayReloadAudio()
-    {
-
-    }
-
-    public void PlayFireAudio()
-    {
-
-    }
-
     public override void UseServerAction()
     {
         base.UseServerAction();
+        gunshotSoundPool.PlayEffect();
         StartCoroutine(FlashCoroutine());
     }
 

@@ -34,7 +34,7 @@ public class ItemSpawnZone : MonoBehaviour
     {
         Vector3 itemPosition = GetRandomPointInBounds();
         Inventory.InventoryItem item = possibleItems[Random.Range(0, possibleItems.Length)];    
-        Debug.Log("Spawning " + item + " at " + itemPosition);
+        //Debug.Log("Spawning " + item + " at " + itemPosition);
 
         ItemSpawner.Instance.SpawnItem(itemPosition, item);
     }

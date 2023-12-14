@@ -8,9 +8,8 @@ public class StatEffectItem : ConsumableItem
     [SerializeField] private int deltaFood;
     [SerializeField] private int deltaWater;
     [SerializeField] private int deltaHealth;
-    public override void UseItem()
+    public override void OnUseItemInput()
     {
-        base.UseItem();
         PlayerStats.Instance.ChangeFood(deltaFood);
         PlayerStats.Instance.ChangeWater(deltaWater);
         PlayerStats.Instance.ChangeHealth(deltaHealth);

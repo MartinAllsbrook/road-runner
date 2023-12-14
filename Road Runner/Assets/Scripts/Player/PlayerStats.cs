@@ -27,15 +27,8 @@ public class PlayerStats : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        if (!IsOwner)
-        {
-            Destroy(GetComponent<PlayerInput>());
-            return;
-        }
-
         if (Instance == null)
             Instance = this;
-
 
         hudController = GameObject.Find("HUD").GetComponent<HUDController>();
     }
@@ -71,17 +64,6 @@ public class PlayerStats : NetworkBehaviour
         { 
             ChangeHealth(-Time.deltaTime * healthDecayRate);
         }
-    }
-
-    public void PlayHitMarker()
-    {
-        if (!IsOwner)
-            return;
-
-        if (_inLimbo)
-            return;
-
-        hudController.PlayHitMarker();
     }
 
     public void ChangeFood(float value)

@@ -1,54 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class UseableItem : MonoBehaviour
 {
-    [SerializeField] protected AudioSource useAudio;
-    [SerializeField] protected bool isUseAudioLocal = true;
-    [SerializeField] protected AudioSource seccondaryUseAudio;
-    [SerializeField] protected bool isSeccondaryUseAudioLocal = true;
-    [SerializeField] protected AudioSource reloadAudio;
-    [SerializeField] protected bool isReloadAudioLocal = true;
-
-    protected bool isOwner;
-    public bool IsOwner { 
+    protected bool isOwner; // Used to determine if the local player owns this item
+    public bool IsOwner // Property used by UseableItemController to set isOwner
+    { 
         private get { return isOwner; } 
         set { isOwner = value; }
     }
 
-    protected void EquipItem()
+    #region Virtual On Input Methods
+    public virtual void OnUseItemInput()
     {
 
     }
 
-    public virtual void UseItem()
+    public virtual void OnReloadItemInput()
     {
 
     }
 
-    public virtual void ReloadItem()
+    public virtual void OnSeccondaryUseItemInput(InputAction.CallbackContext context)
     {
 
     }
 
-    public virtual void SeccondaryUseItem()
-    {
+    #endregion
 
-    }
+    #region Virtual Server Action Methods
 
     public virtual void UseServerAction()
     {
-        useAudio.Play();
+
     }
 
-    public void SeccondaryUseServerAction()
+    public virtual void SeccondaryUseServerAction()
     {
-        seccondaryUseAudio.Play();
+
     }
 
-    public void ReloadServerAction()
+    public virtual void ReloadServerAction()
     {
-        reloadAudio.Play();
+
     }
+
+    #endregion
 }
