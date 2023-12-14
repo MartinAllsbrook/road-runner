@@ -1522,9 +1522,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'v0.1.1
+  m_text: 'v0.1.1 - Weapons Update 1!
 
-    An Open World Survival Game by Martin Allsbrook
+    An Open World Survival Game by Martin
+    Allsbrook
 
     martinallsbrook.com/portfolio/road-runner/
 
@@ -1555,7 +1556,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18.65
+  m_fontSize: 27.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1845,7 +1846,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 159
+  m_fontSize: 188.05
   m_fontSizeBase: 52
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4996,7 +4997,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47.6
+  m_fontSize: 59.5
   m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5130,7 +5131,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 159
+  m_fontSize: 188.05
   m_fontSizeBase: 52
   m_fontWeight: 400
   m_enableAutoSizing: 1
