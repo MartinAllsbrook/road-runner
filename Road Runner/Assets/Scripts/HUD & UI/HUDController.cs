@@ -18,6 +18,7 @@ public class HUDController : MonoBehaviour
     [SerializeField] private InventoryDisplay inventoryDisplay;
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject mapCamera;
+    [SerializeField] private CrosshaireController crosshaireController;
 
     [Header("Stat Displays")]
     [SerializeField] private Image healthBar;
@@ -117,6 +118,11 @@ public class HUDController : MonoBehaviour
         string maxAmmoString = maxAmmoCount.ToString();
 
         ammoCountText.text = ammoCountString + " / " + maxAmmoString;
+    }
+
+    public void SetCrosshaireInaccuracy(float inaccurcy)
+    {
+        crosshaireController.SetCrosshaireInaccuracy(inaccurcy);
     }
 
     public void PlayReloadUIAnimation(float duration)

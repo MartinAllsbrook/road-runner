@@ -19,8 +19,15 @@ public class GunItem : UseableItem
     [SerializeField] private float fireRate;
     [SerializeField] private float reloadTime;
     [SerializeField] private int bulletSpeed;
-    [SerializeField] private float accuracy;
     [SerializeField] private float zoom = 1.4f;
+
+    [Header("Gun Accuracy")]
+    [SerializeField] private float minInaccuracy = 0.05f;
+    [SerializeField] private float maxInaccuracy = 1f;
+    [SerializeField] private float inaccuracyIncreasePercentPerShot = 0.1f;
+    [SerializeField] private float inaccuracyDecreaseRate = 0.1f;
+    private float _inaccuracyPercent;
+    private float _inaccuracy;
 
     [Header("Gun Settings")]
     [SerializeField] private Transform bulletExitPoint;
@@ -47,10 +54,18 @@ public class GunItem : UseableItem
     {
         timeSinceLastShot += Time.deltaTime;
 
+        DecreaseInaccuracy(); // always decrease inaccuracy because a real person would always be trying to aim better
+
         if (!triggerLifted && Input.GetKeyUp(KeyCode.Mouse0))
         {
             triggerLifted = true;
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (isOwner)
+            HUDController.Instance.SetCrosshaireInaccuracy(_inaccuracy);
     }
 
     public override void OnSeccondaryUseItemInput(InputAction.CallbackContext context)
@@ -66,7 +81,7 @@ public class GunItem : UseableItem
 
     private void StartAim()
     {
-        Debug.Log(zoom);
+        //Debug.Log(zoom);
         transform.position += (aimOffset.x * transform.right + aimOffset.y * transform.up + aimOffset.z * transform.forward);
         UseableItemController.Instance.GetComponent<CameraController>().SetZoom(zoom);
     }
@@ -109,7 +124,7 @@ public class GunItem : UseableItem
 
         UseableItemController.Instance.HudController.SetAmmoCountDisplay(ammoCount - 1, magSize);
         timeSinceLastShot = 0;
-        Fire(accuracy);
+        Fire(_inaccuracy);
 
         UseableItemController.Instance.UseServerRpc();
     }
@@ -117,6 +132,25 @@ public class GunItem : UseableItem
     protected virtual void Fire(float accuracy) 
     { 
         CreateBullet(accuracy);
+        IncreaseInaccuracy();
+    }
+
+    private void IncreaseInaccuracy()
+    {
+        _inaccuracyPercent = Mathf.Lerp(_inaccuracyPercent, 1, inaccuracyIncreasePercentPerShot);
+        _inaccuracy = CalculateInaccuracy(_inaccuracyPercent);
+    }
+
+    private void DecreaseInaccuracy()
+    {
+        _inaccuracyPercent -= inaccuracyDecreaseRate * Time.deltaTime;
+        _inaccuracyPercent = Mathf.Clamp(_inaccuracyPercent, 0, 1);
+        _inaccuracy = CalculateInaccuracy(_inaccuracyPercent);
+    }
+
+    private float CalculateInaccuracy(float inaccuracyPercent)
+    { 
+        return Mathf.Lerp(minInaccuracy, maxInaccuracy, inaccuracyPercent);
     }
 
     protected void CreateBullet(float accuracy)

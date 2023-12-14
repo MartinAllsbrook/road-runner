@@ -56,8 +56,11 @@ MonoBehaviour:
   fireRate: 0.2
   reloadTime: 1.5
   bulletSpeed: 500
-  accuracy: 1
   zoom: 1.5
+  minInaccuracy: 0.05
+  maxInaccuracy: 1.5
+  inaccuracyIncreasePercentPerShot: 0.4
+  inaccuracyDecreaseRate: 0.7
   bulletExitPoint: {fileID: 8859724988650737300}
   aimOffset: {x: -0.5, y: 0.25, z: -0.5}
   gunshotSoundPool: {fileID: 4083067789817751548}
