@@ -310,6 +310,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8705280627476501274, guid: 242914aaf140a124a821354d260a14e8, type: 3}
   m_PrefabInstance: {fileID: 1608073006110401858}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8860516609234180564 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7829478300631235734, guid: 242914aaf140a124a821354d260a14e8, type: 3}
+  m_PrefabInstance: {fileID: 1608073006110401858}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b486d979b813a504c885ac6f8fe80216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1630197851099600305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -324,8 +335,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3629075484901468618, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2500703158
+      value: 3225911626
       objectReference: {fileID: 0}
+    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+      propertyPath: navMeshManager
+      value: 
+      objectReference: {fileID: 8860516609234180564}
     - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: biomes.Array.data[0]
       value: 

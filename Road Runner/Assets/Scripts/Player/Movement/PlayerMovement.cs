@@ -308,9 +308,12 @@ public class PlayerMovement : NetworkBehaviour
 
     #region NoClip
 
-    [Command]
+    [Command("ToggleFlyMode", MonoTargetType.All)]
     private void ToggleNoClip()
     {
+        if(!IsOwner)
+            return;
+
         if (_inNoClipMode)
         {
             _inNoClipMode = false;

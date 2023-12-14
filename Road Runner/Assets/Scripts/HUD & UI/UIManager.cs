@@ -22,10 +22,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject inventoryUI; // This is seen when the player opens their inventory
     [SerializeField] private GameObject mapUI; // This is seen when the player opens their map
 
-    [Header("Info Screens")]
+    [Header("Loading Screens")]
+    // Step 1
     [SerializeField] private GameObject joiningServerScreen;
     [SerializeField] private GameObject creatingServerScreen;
+    // Step 2
     [SerializeField] private GameObject terrainLoadingScreen;
+    // Step 3
+    [SerializeField] private GameObject generatingNavMeshScreen;
 
     private void Awake()
     {
@@ -45,13 +49,13 @@ public class UIManager : MonoBehaviour
         titleScreenUI.SetActive(true); // Make sure the title screen is active when the game starts
     }
 
-    #region Initial UI Routine
-
     public void ContinueFromTitleScreen()
     {
         DisableAll();
         serverUI.SetActive(true);
     }
+
+    #region Loading screens
 
     public void StartJoiningServer()
     {
@@ -75,6 +79,12 @@ public class UIManager : MonoBehaviour
         terrainLoadingScreen.SetActive(true);
     }
 
+    public void StartGeneratingNavMesh()
+    {
+        terrainLoadingScreen.SetActive(false);
+        generatingNavMeshScreen.SetActive(true);
+    }
+
     #endregion
 
     public void EnterLimbo()
@@ -94,17 +104,23 @@ public class UIManager : MonoBehaviour
     /// </summary>
     private void DisableAll()
     {
+        // Loading Screens
+        generatingNavMeshScreen.SetActive(false);
         creatingServerScreen.SetActive(false);
         joiningServerScreen.SetActive(false);
+        terrainLoadingScreen.SetActive(false);
+
+        // UIs
         titleScreenUI.SetActive(false);
-        debugHUD.SetActive(false);
-        basicHUD.SetActive(false);
         serverUI.SetActive(false);
         limboUI.SetActive(false);
         pauseUI.SetActive(false);
         inventoryUI.SetActive(false);
         mapUI.SetActive(false);
-        terrainLoadingScreen.SetActive(false);
+        
+        // HUDs
+        basicHUD.SetActive(false);
+        debugHUD.SetActive(false);
     }
 
     // Basic UI Element Toggling for QC and Debugging

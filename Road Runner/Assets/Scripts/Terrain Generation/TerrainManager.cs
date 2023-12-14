@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
@@ -237,10 +238,18 @@ public class TerrainManager : NetworkBehaviour
             }
         }
 
+        OnTerrainFinished();
+    }
+
+    private void OnTerrainFinished()
+    {
         // Once finished
         Debug.Log("Done Loading Chunks");
-        PlayerSpawner.localPlayerSpawner.EnterLimbo();
 
         // Generate NavMesh
+        UIManager.Instance.StartGeneratingNavMesh();
+        navMeshManager.BakeNavMesh();
+
+        PlayerSpawner.localPlayerSpawner.EnterLimbo();
     }
 }
