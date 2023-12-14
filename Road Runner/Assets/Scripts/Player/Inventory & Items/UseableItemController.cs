@@ -49,7 +49,7 @@ public class UseableItemController : NetworkBehaviour
         if (Instance == null)
             Instance = this;
 
-        hudController = GameObject.Find("HUD").GetComponent<HUDController>();
+        hudController = HUDController.Instance;
     }
 
     /// <summary>
