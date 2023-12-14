@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/00_Main.unity
     guid: c861ecd6c5616b740bf0de95e6585a68
   - enabled: 0
-    path: Assets/Scenes/Testing Scenes/Weapons Testing.unity
+    path: Assets/Scenes/Testing Scenes/Testing.unity
     guid: 92a77907127f4a54bbadad9ca3584240
   m_configObjects: {}
