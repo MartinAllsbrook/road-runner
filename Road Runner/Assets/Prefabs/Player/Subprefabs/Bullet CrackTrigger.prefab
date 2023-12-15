@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2815222807785171222}
   - component: {fileID: 3782640913043884837}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bullet CrackTrigger
   m_TagString: Bullet Crack
   m_Icon: {fileID: 0}

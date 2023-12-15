@@ -4,6 +4,7 @@ using System.Threading;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using QFSW.QC;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -24,7 +25,10 @@ public class PlayerMovement : NetworkBehaviour
 
     [SerializeField] private Transform orientation;
 
-    
+    [Header("NoClip")]
+    [SerializeField] private float noClipSpeed = 10f;
+    private bool _inNoClipMode = false;
+    private Rigidbody _rigidbody;
 
     private float slideTimer;
 
@@ -59,16 +63,34 @@ public class PlayerMovement : NetworkBehaviour
         WallRunning,
     }
 
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+    }
+
     private void Update()
     {
+        if (!IsOwner || _inNoClipMode)
+            return;
+
         GetInputs();
     }
 
     private void FixedUpdate()
     {
-        if (IsOwner)
-            UpdateState(state);
+        if (!IsOwner)
+            return;
+        
+        if (_inNoClipMode)
+        {
+            NoClipFixedUpdated();
+            return;
+        }
+
+        UpdateState(state);
     }
+
+    #region Input
 
     private void GetInputs()
     {
@@ -107,6 +129,10 @@ public class PlayerMovement : NetworkBehaviour
     {
         walkInput = context.action.IsPressed();
     }
+
+    #endregion
+
+    #region State Controll
 
     private bool OnSlope(out RaycastHit slopeHit, float maxSlopeAngle)
     {
@@ -233,6 +259,10 @@ public class PlayerMovement : NetworkBehaviour
     {
         slideTimer = time;
     }
+    
+    #endregion
+
+    #region Getters
 
     public float GetHorizontalInput()
     {
@@ -273,4 +303,55 @@ public class PlayerMovement : NetworkBehaviour
     {
         return Vector3.ProjectOnPlane(direction, slopeHit.normal);
     }
+
+    #endregion
+
+    #region NoClip
+
+    [Command("ToggleFlyMode", MonoTargetType.All)]
+    private void ToggleNoClip()
+    {
+        if(!IsOwner)
+            return;
+
+        if (_inNoClipMode)
+        {
+            _inNoClipMode = false;
+            _rigidbody.useGravity = true;
+        }
+        else
+        {
+            _inNoClipMode = true;
+            _rigidbody.useGravity = false;
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ToggleNoClipServerRpc()
+    {
+        ToggleNoClipClientRpc();
+    }
+
+    [ClientRpc]
+    private void ToggleNoClipClientRpc()
+    {
+        // Do stuff if this is needed
+        // Github Copilot said do nothing lol
+    }
+
+    private void NoClipFixedUpdated()
+    {
+        float upDownInput = 0;
+        if (jumpInput)
+            upDownInput += 1;
+        if (crouchInput)
+            upDownInput -= 1;
+
+        Vector3 moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput + orientation.up * upDownInput;
+        Vector3 newPosition = transform.position + moveDirection * noClipSpeed * Time.fixedDeltaTime;
+
+        _rigidbody.MovePosition(newPosition);
+    }
+
+    #endregion
 }

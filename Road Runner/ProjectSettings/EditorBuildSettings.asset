@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/00_Main.unity
     guid: c861ecd6c5616b740bf0de95e6585a68
   - enabled: 0
-    path: Assets/Scenes/Testing Scenes/Weapons Testing.unity
-    guid: 92a77907127f4a54bbadad9ca3584240
+    path: Assets/Scenes/Testing V2/Testing NavMesh.unity
+    guid: 913ffafc22fa4a249ade90d0577ced8a
+  - enabled: 0
+    path: Assets/Scenes/Testing V2/Testing.unity
+    guid: 0fb3842e7cdf493419e2e8fb44639a41
   m_configObjects: {}

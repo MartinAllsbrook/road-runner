@@ -60,7 +60,8 @@ public class RelayUI : MonoBehaviour
     {
         try
         {
-            UIManager.Instance.StartCreatingServer();
+            UIManager.Instance.StartLoadingScreen();
+            UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.ConnectingToServer);
 
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2); // Wait for allocation to be created
 
@@ -86,7 +87,8 @@ public class RelayUI : MonoBehaviour
     {
         try
         {
-            UIManager.Instance.StartJoiningServer();
+            UIManager.Instance.StartLoadingScreen();
+            UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.ConnectingToServer);
             
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinRelayCode); // Wait for allocation associated with the join code to be found and retrieved
 

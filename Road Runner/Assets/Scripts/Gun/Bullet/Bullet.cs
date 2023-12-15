@@ -45,7 +45,7 @@ public class Bullet : MonoBehaviour
     }
 
     /// <summary>
-    /// When bullet hits something check if it was a player or environment and react accordingly
+    /// When bullet hits something check if it was a player, an enemy or the environment and react accordingly
     /// </summary>
     /// <param name="collision">Default Collision parameter</param>
     private void OnCollisionEnter(Collision collision)
@@ -57,6 +57,13 @@ public class Bullet : MonoBehaviour
 
             Player playerThatWasHit = collision.transform.GetComponent<Player>();            
             BulletNetworkManager.Instance.BulletHitPlayer(playerThatWasHit.NetworkObject, _damage);
+        }
+        else if(collision.transform.CompareTag("Enemy NPC"))
+        {
+            HUDController.Instance.PlayHitMarker(); // Local
+
+            EnemyNPC enemyThatWasHit = collision.transform.GetComponent<EnemyNPC>();
+            enemyThatWasHit.DealDamage(_damage);
         }
         else
         {

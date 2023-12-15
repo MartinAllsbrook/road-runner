@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using QFSW.QC;
+using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// The UI Manager tracks, eneables and disables the games UI elements.
@@ -22,10 +24,33 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject inventoryUI; // This is seen when the player opens their inventory
     [SerializeField] private GameObject mapUI; // This is seen when the player opens their map
 
-    [Header("Info Screens")]
-    [SerializeField] private GameObject joiningServerScreen;
-    [SerializeField] private GameObject creatingServerScreen;
-    [SerializeField] private GameObject terrainLoadingScreen;
+    [Header("Loading Screens")]
+    [SerializeField] private GameObject loadingScreen; // This is seen when the game is loading
+    [SerializeField] private TextMeshProUGUI loadingScreenText; // This is the text that is displayed on the loading screen
+    [SerializeField] private Slider loadingBar ; // This is the loading bar that is displayed on the loading screen
+
+    private string[] _loadingScreenTexts =
+    {
+        "Connecting to server",
+        "Joining Server",
+        "Generating Terrain Maps", 
+        "Placing Landmarks", 
+        "Drawing Terrain",
+        "Scattering Trees",
+        "Generating NavMesh",
+    };
+
+    public enum LoadingScreenTexts
+    {
+        ConnectingToServer,
+        JoiningServer,
+        GeneratingTerrainMaps,
+        PlacingLandmarks,
+        DrawingTerrain,
+        ScatteringTrees,
+        GeneratingNavMesh,
+    }
+
 
     private void Awake()
     {
@@ -38,6 +63,10 @@ public class UIManager : MonoBehaviour
             Debug.LogError("There are multiple UI Managers in the scene!");
             Destroy(this);
         }
+
+        // Setting up loading screen
+        loadingBar.value = 0;
+        loadingBar.maxValue = _loadingScreenTexts.Length;
     }
 
     private void Start()
@@ -45,15 +74,27 @@ public class UIManager : MonoBehaviour
         titleScreenUI.SetActive(true); // Make sure the title screen is active when the game starts
     }
 
-    #region Initial UI Routine
-
     public void ContinueFromTitleScreen()
     {
         DisableAll();
         serverUI.SetActive(true);
     }
 
-    public void StartJoiningServer()
+    #region Loading screens
+
+    public void StartLoadingScreen()
+    {
+        serverUI.SetActive(false);
+        loadingScreen.SetActive(true);
+    }
+
+    public void SetLoadingScreenText(LoadingScreenTexts text)
+    {
+        loadingScreenText.text = _loadingScreenTexts[(int)text];
+        loadingBar.value = (int)text;
+    }
+
+/*    public void StartJoiningServer()
     {
         serverUI.SetActive(false);
         joiningServerScreen.SetActive(true);
@@ -75,6 +116,12 @@ public class UIManager : MonoBehaviour
         terrainLoadingScreen.SetActive(true);
     }
 
+    public void StartGeneratingNavMesh()
+    {
+        terrainLoadingScreen.SetActive(false);
+        generatingNavMeshScreen.SetActive(true);
+    }*/
+
     #endregion
 
     public void EnterLimbo()
@@ -94,17 +141,20 @@ public class UIManager : MonoBehaviour
     /// </summary>
     private void DisableAll()
     {
-        creatingServerScreen.SetActive(false);
-        joiningServerScreen.SetActive(false);
+        // Loading Screens
+        loadingScreen.SetActive(false);
+
+        // UIs
         titleScreenUI.SetActive(false);
-        debugHUD.SetActive(false);
-        basicHUD.SetActive(false);
         serverUI.SetActive(false);
         limboUI.SetActive(false);
         pauseUI.SetActive(false);
         inventoryUI.SetActive(false);
         mapUI.SetActive(false);
-        terrainLoadingScreen.SetActive(false);
+        
+        // HUDs
+        basicHUD.SetActive(false);
+        debugHUD.SetActive(false);
     }
 
     // Basic UI Element Toggling for QC and Debugging
@@ -149,12 +199,6 @@ public class UIManager : MonoBehaviour
     public void ToggleMapUIDebug()
     {
         mapUI.SetActive(!mapUI.activeSelf);
-    }
-
-    [Command("ToggleTerrainLoadingScreen")]
-    public void ToggleTerrainLoadingScreenDebug()
-    {
-        terrainLoadingScreen.SetActive(!terrainLoadingScreen.activeSelf);
     }
 
     #endregion

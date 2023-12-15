@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
@@ -11,6 +13,10 @@ public class TerrainManager : NetworkBehaviour
 {
     public static TerrainManager Instance;
 
+    [Header("Refenences")]
+    [SerializeField] private NavMeshManager navMeshManager;
+
+    [Header("Terrain Generation")]
     [SerializeField] private GameObject terrainChunk;
     [SerializeField] private int terrainRadius;
     [SerializeField] private TreeManager treeManager;
@@ -24,6 +30,9 @@ public class TerrainManager : NetworkBehaviour
         get { return biomes; }
         private set { }
     }
+
+    [Header("Loading")]
+    [SerializeField] private float loadingPauseTime = 0.3f;
 
     // Sizes LMAO
     private int _terrainSize;
@@ -105,7 +114,7 @@ public class TerrainManager : NetworkBehaviour
     /// <param name="seed">The terrain's seed</param>
     private void GenerateTerrain(int seed)
     {
-        UIManager.Instance.StartTerrainLoading();
+        // TODO: maybe a seed geenrating screen? Probably not that useful lol
         
         treeManager.Initialize(biomes); 
 
@@ -127,7 +136,7 @@ public class TerrainManager : NetworkBehaviour
 
         _loadedChunks = new Dictionary<Vector2Int, MeshTerrainChunk>();
 
-        InitializeTerrain();
+        StartCoroutine(InitializeTerrain());
     }
 
     /// <summary>
@@ -159,10 +168,14 @@ public class TerrainManager : NetworkBehaviour
 
     /// <summary>
     /// Tells all the chunks to generate their noise maps (height, moisture, strangeness, etc.)
+    /// This could be turned into a coroutine to make the loading screen more accurate. TODO: Think about it
     /// </summary>
-    private void InitializeTerrain()
+    private IEnumerator InitializeTerrain()
     {
-        //_activeChunks = new GameObject[_terrainSize, _terrainSize];
+        yield return new WaitForSeconds(loadingPauseTime);
+        Debug.Log("[Loading Sequence] Start Generating Maps...");
+        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingTerrainMaps);
+
         int chunkWidth = chunkSize - 1;
 
         for (int x = 0; x < _terrainSize; x++)
@@ -179,6 +192,8 @@ public class TerrainManager : NetworkBehaviour
                 _loadedChunks.Add(chunkPosition, chunk);
             }
         }
+
+        Debug.Log("[Loading Sequence] Genrating Maps Finished");
     }
 
     /// <summary>
@@ -188,15 +203,25 @@ public class TerrainManager : NetworkBehaviour
     {
         _numMapsGenerated++;
         if (_numMapsGenerated >= _chunksToLoad)
-            WhenMapsGenerated();
+            StartCoroutine(WhenMapsGenerated());
     }
 
     /// <summary>
     /// Once the maps have been generated, this function tells the chunks to place sprinkles, blend them, and draw chunk meshes.
     /// </summary>
-    private void WhenMapsGenerated()
+    private IEnumerator WhenMapsGenerated()
     {
+        yield return new WaitForSeconds(loadingPauseTime); 
+        Debug.Log("[Loading Sequence] Start Generating Sprinkles...");
+        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.PlacingLandmarks);
+
         _sprinkleGenerator.FindSprinkleHeights(_loadedChunks);
+
+        Debug.Log("[Loading Sequence] Sprinkles Finished");
+  
+        yield return new WaitForSeconds(loadingPauseTime);
+        Debug.Log("[Loading Sequence] Start Drawing Terrain...");
+        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.DrawingTerrain);
 
         for (int x = 0; x < _terrainSize; x++)
         {
@@ -207,25 +232,30 @@ public class TerrainManager : NetworkBehaviour
                 chunk.DecorateAndDraw(_onChunkLoaded);
             }
         }
+
+        Debug.Log("[Loading Sequence] Drawing Terrain Finished");
     }
 
     /// <summary>
-    /// Similar to OnMapGenerated(), this function tallies the number of chunks that have been loaded, and when all the chunks have been loaded, calls DoneLoading()
+    /// Similar to OnMapGenerated(), this function tallies the number of chunks that have been loaded, and when all the chunks have been loaded, continues
     /// </summary>
     private void OnChunkLoaded()
     {
         _numLoadedChunks++;
         if (_numLoadedChunks >= _chunksToLoad)
-            DoneLoading();
+            StartCoroutine(FinalLoadingRoutine());
     }
 
     /// <summary>
-    /// Tells the TreeScatter to place trees.
-    /// Finishes Process.
+    /// Coroutine that places trees, waits, and bakes the navmesh.
     /// </summary>
-    private void DoneLoading()
+    private IEnumerator FinalLoadingRoutine()
     {
-        for(int i = 0; i < _terrainSize; i++)
+        yield return new WaitForSeconds(loadingPauseTime); 
+        Debug.Log("[Loading Sequence] Start Generating Trees...");
+        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.ScatteringTrees);
+
+        for (int i = 0; i < _terrainSize; i++)
         {
             for (int j = 0; j < _terrainSize; j++)
             {
@@ -233,8 +263,20 @@ public class TerrainManager : NetworkBehaviour
             }
         }
 
-        // Once finished
-        Debug.Log("Done Loading Chunks");
+        Debug.Log("[Loading Sequence] Trees Finished");
+
+        yield return new WaitForSeconds(loadingPauseTime); 
+        Debug.Log("[Loading Sequence] Start Generating NavMesh...");
+        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingNavMesh);
+
+        navMeshManager.BakeNavMesh();
+
+        Debug.Log("[Loading Sequence] NavMesh Finished");
+        yield return null;
+
         PlayerSpawner.localPlayerSpawner.EnterLimbo();
+        yield return null;
     }
+
+
 }

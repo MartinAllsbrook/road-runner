@@ -11,18 +11,13 @@ using QFSW.QC;
 /// </summary>
 public class Player : NetworkBehaviour
 {
-    public static Player Instance;
+    public static Player LocalPlayerInstance; // Singleton instance of the local player
 
     private PlayerStats _playerStats;
     private PlayerSpawner _playerSpawner;
     private PlayerFXController _playerFXController;
     // private PlayerMovement playerMovement;
 
-
-    private void Awake()
-    {
-        
-    }
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -33,8 +28,8 @@ public class Player : NetworkBehaviour
             return;
         }
 
-        if (Instance == null)
-            Instance = this;
+        if (LocalPlayerInstance == null)
+            LocalPlayerInstance = this;
 
         _playerStats = GetComponent<PlayerStats>();
         _playerSpawner = GetComponent<PlayerSpawner>();
@@ -47,6 +42,16 @@ public class Player : NetworkBehaviour
         if (IsOwner)
         {
             _playerStats.ChangeHealth(-bulletDamage);
+            _playerFXController.PlayHitWithBulletFX();
+        }
+    }
+
+    [Command]
+    public void TakeDamage(float damage)
+    {
+        if (IsOwner)
+        {
+            _playerStats.ChangeHealth(-damage);
             _playerFXController.PlayHitWithBulletFX();
         }
     }

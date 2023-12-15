@@ -5,16 +5,16 @@ using UnityEngine.UIElements;
 
 public class EffectPool : MonoBehaviour
 {
-    protected PooledEffect[] pooledEffects;
-    [SerializeField] protected PooledEffect effectToPool;
+    protected CustomEffect[] pooledEffects;
+    [SerializeField] protected CustomEffect effectToPool;
     [SerializeField] protected int poolSize;
 
     private int _currentIndex;
 
     private void Start()
     {
-        pooledEffects = new PooledEffect[poolSize];
-        PooledEffect container;
+        pooledEffects = new CustomEffect[poolSize];
+        CustomEffect container;
 
         for (int i = 0; i < poolSize; i++)
         {
@@ -24,12 +24,12 @@ public class EffectPool : MonoBehaviour
         }
     }
 
-    protected PooledEffect GetNextPooledEffect()
+    protected CustomEffect GetNextCustomEffect()
     {
         if (_currentIndex >= poolSize)
             _currentIndex = 0;
 
-        PooledEffect effect = pooledEffects[_currentIndex];
+        CustomEffect effect = pooledEffects[_currentIndex];
         effect.gameObject.SetActive(true);
         _currentIndex++;
 
@@ -38,7 +38,7 @@ public class EffectPool : MonoBehaviour
 
     public void PlaceEffect(Vector3 position, Quaternion rotation)
     {
-        PooledEffect effect = GetNextPooledEffect();
+        CustomEffect effect = GetNextCustomEffect();
         effect.transform.position = position;
         effect.transform.rotation = rotation;
         effect.PlayEffects();
@@ -46,11 +46,11 @@ public class EffectPool : MonoBehaviour
 
     public void PlayEffect()
     {
-        PooledEffect effect = GetNextPooledEffect();
+        CustomEffect effect = GetNextCustomEffect();
         effect.PlayEffects();
     }
 
-    /*    protected PooledEffect GetPooledEffect()
+    /*    protected CustomEffect GetCustomEffect()
         {
             for (int i = 0; i < poolSize; i++)
             {
