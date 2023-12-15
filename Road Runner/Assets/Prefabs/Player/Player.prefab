@@ -5217,7 +5217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3601959125
+  GlobalObjectIdHash: 229663110
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -5561,7 +5561,7 @@ MonoBehaviour:
   sensX: 5
   sensY: 5
   fovMultiplier: 1
-  cameraLimboPosition: {x: 768, y: 768, z: 768}
+  cameraLimboPosition: {x: 1280, y: 1280, z: 1280}
 --- !u!114 &8639077940336665161
 MonoBehaviour:
   m_ObjectHideFlags: 0

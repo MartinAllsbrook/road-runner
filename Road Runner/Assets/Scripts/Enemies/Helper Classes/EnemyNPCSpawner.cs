@@ -22,9 +22,11 @@ public class EnemyNPCSpawner : NetworkBehaviour
         base.OnNetworkSpawn();
         if (IsServer)
         {
-            StartCoroutine(SpawnEnemyRoutine());
+            TerrainManager.onTerrainGenerated.AddListener(() => 
+            {
+                StartCoroutine(SpawnEnemyRoutine());
+            });
         }
-        
     }
 
     private IEnumerator SpawnEnemyRoutine()

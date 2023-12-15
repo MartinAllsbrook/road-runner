@@ -12,6 +12,8 @@ using Random = UnityEngine.Random;
 public class TerrainManager : NetworkBehaviour
 {
     public static TerrainManager Instance; // Singleton
+    public static bool terrainGenerated = false;
+    public static UnityEvent onTerrainGenerated;
 
     [Header("Refenences")]
     [SerializeField] private NavMeshManager navMeshManager;
@@ -73,6 +75,8 @@ public class TerrainManager : NetworkBehaviour
     
     private void Start()
     {
+        onTerrainGenerated = new UnityEvent(); // This needs to hapen as soon as possible so that the things can subscribe to it
+
         _worldSeed = new NetworkVariable<int>();
         NetworkManager.Singleton.OnClientConnectedCallback += TryGenerateTerrain;
     }
@@ -226,7 +230,7 @@ public class TerrainManager : NetworkBehaviour
         if (_numMapsGenerated >= _chunksToLoad)
         {
             StartCoroutine(WhenMapsGenerated());
-            CompleteSection("Noise-Map Generation"); // Reported ~2,000ms
+            CompleteSection("Noise-Map Generation"); // Reported 2,000ms - 3x3 | 5,500ms - 5x5 -> Eh it's coroutine-ified
         }
     }
 
@@ -243,7 +247,7 @@ public class TerrainManager : NetworkBehaviour
 
         sprinkleGenerator.FindHeightsAndPlace(_loadedChunks); 
 
-        CompleteSection("Landmark / Sprinkle Placement"); // Reported ~9ms -> Great
+        CompleteSection("Landmark / Sprinkle Placement"); // Reported 9ms - 3x3 | 9ms - 5x5 -> Great
 
         UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.DrawingTerrain);
         yield return SequencePause();
@@ -256,20 +260,22 @@ public class TerrainManager : NetworkBehaviour
                 MeshTerrainChunk chunk = _loadedChunks[new Vector2Int(x,z)];
 
                 chunk.DecorateAndDraw(_onChunkLoaded);
+                yield return null;
             }
         }
-
-        CompleteSection("Decorating and drawing"); // Reported ~10,000ms
     }
 
     /// <summary>
     /// Similar to OnMapGenerated(), this function tallies the number of chunks that have been loaded, and when all the chunks have been loaded, continues
     /// </summary>
-    private void OnChunkLoaded()
+    private void OnChunkLoaded() // TODO: This is a bit of a misnomer, it's not really loaded, it's decorated and drawn, ALSO this is not needed since DecorateAndDraw is not async
     {
         _numLoadedChunks++;
         if (_numLoadedChunks >= _chunksToLoad)
+        {
+            CompleteSection("Decorating and drawing"); // Reported 10,000ms - 3x3 | 26,000ms - 5x5 -> This is the big one, but we can improve it
             StartCoroutine(FinalLoadingRoutine());
+        }
     }
 
     /// <summary>
@@ -289,20 +295,26 @@ public class TerrainManager : NetworkBehaviour
             }
         }
 
-        CompleteSection("Tree Placement"); // Reported ~28ms -> WOWOWOW That's the power of object pooling
+        CompleteSection("Tree Placement"); // Reported 28ms - 3x3 | 103ms - 5x5 -> WOWOWOW That's the power of object pooling
 
         UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingNavMesh);
         yield return SequencePause(); 
         timer.Restart();
 
-        navMeshManager.BakeNavMesh();
+        if (IsServer)
+            navMeshManager.BakeNavMesh();
+        else
+            Destroy(navMeshManager);
 
-        CompleteSection("NavMesh Baking"); // Reported 8,000ms -> I Don't think we can do much about this, I wonder how long it will take on the 5x5 map
+        CompleteSection("NavMesh Baking"); // Reported 8,000ms - 3x3 | 25,000 - 5x5 -> I Don't think we can do much about this
         yield return null;
+
+        timer.Stop();
+
+        terrainGenerated = true;
+        onTerrainGenerated.Invoke();
 
         PlayerSpawner.localPlayerSpawner.EnterLimbo();
         yield return null;
     }
-
-
 }
