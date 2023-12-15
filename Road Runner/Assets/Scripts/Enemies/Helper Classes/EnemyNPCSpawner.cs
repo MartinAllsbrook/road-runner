@@ -23,7 +23,7 @@ public class EnemyNPCSpawner : NetworkBehaviour
     [Command]
     private void SpawnEnemy(EnemyType enemyType)
     {
-        SpawnEnemyServerRpc(enemyType, Player.Instance.transform.position);
+        SpawnEnemyServerRpc(enemyType, Player.LocalPlayerInstance.transform.position);
     }
 
     [ServerRpc(RequireOwnership = false)]

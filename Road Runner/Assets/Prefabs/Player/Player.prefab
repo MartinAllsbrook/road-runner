@@ -5297,6 +5297,7 @@ MonoBehaviour:
   crouchKey: 306
   walkKey: 304
   orientation: {fileID: 5245515006638257613}
+  noClipSpeed: 10
   movementStates:
   - {fileID: 3467850248826823159}
   - {fileID: 8529273315728307873}

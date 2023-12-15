@@ -261,6 +261,10 @@ PrefabInstance:
       propertyPath: m_NavMeshData
       value: 
       objectReference: {fileID: 23800000, guid: 2fab2ab86d6688c4fabe3194d531ab48, type: 2}
+    - target: {fileID: 3367006771499959513, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: m_LayerMask.m_Bits
+      value: 6199
+      objectReference: {fileID: 0}
     - target: {fileID: 5395292537125789822, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -943,6 +947,7 @@ GameObject:
   - component: {fileID: 582040119}
   - component: {fileID: 582040118}
   - component: {fileID: 582040117}
+  - component: {fileID: 582040121}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1036,6 +1041,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1501059830}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &582040121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582040116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 2
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &646206386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1419,7 +1443,7 @@ Transform:
   m_GameObject: {fileID: 1103265839}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.02, z: 0}
+  m_LocalPosition: {x: 0, y: -1.19, z: 0}
   m_LocalScale: {x: 64, y: 0.2, z: 64}
   m_ConstrainProportionsScale: 1
   m_Children: []

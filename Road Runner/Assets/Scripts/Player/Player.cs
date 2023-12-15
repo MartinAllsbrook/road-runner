@@ -11,7 +11,7 @@ using QFSW.QC;
 /// </summary>
 public class Player : NetworkBehaviour
 {
-    public static Player Instance;
+    public static Player LocalPlayerInstance; // Singleton instance of the local player
 
     private PlayerStats _playerStats;
     private PlayerSpawner _playerSpawner;
@@ -33,8 +33,8 @@ public class Player : NetworkBehaviour
             return;
         }
 
-        if (Instance == null)
-            Instance = this;
+        if (LocalPlayerInstance == null)
+            LocalPlayerInstance = this;
 
         _playerStats = GetComponent<PlayerStats>();
         _playerSpawner = GetComponent<PlayerSpawner>();

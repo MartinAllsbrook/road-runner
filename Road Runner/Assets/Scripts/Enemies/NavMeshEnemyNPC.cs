@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using QFSW.QC;
+using Unity.Netcode;
 
 public class NavMeshEnemyNPC : EnemyNPC
 {
@@ -12,8 +13,12 @@ public class NavMeshEnemyNPC : EnemyNPC
     [SerializeField] private Vector3 patrolCenter = new Vector3(0, 0, 0);
     [SerializeField] private float maxPatrolDistance = 32f;
 
-    // Patroling
-    //private Vector3 _currentPatrolPoint = Vector3.zero;
+    [Header("Vision")]
+    [SerializeField] private float visionRange = 32f;
+    [SerializeField] private Transform visionOrigin;
+    [SerializeField] private float visionAngle = 90f;
+    [Tooltip("Everything the enemy can see except the LocalPlayer layer")] [SerializeField] private LayerMask canSee;
+    [Tooltip("The LocalPlayer layer")] [SerializeField] private LayerMask localPayer;
 
     private void Start()
     {
@@ -22,10 +27,42 @@ public class NavMeshEnemyNPC : EnemyNPC
 
     private void Update()
     {
+        if (CanSeeLocalPlayer())
+        {
+            SetTargetToLocalPlayer();
+        }
+        
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             GoToRandomPoint();
         }
+    }
+
+    private bool CanSeeLocalPlayer()
+    {
+        if (Physics.CheckSphere(visionOrigin.position, visionRange, localPayer))
+        {
+            Vector3 localPlayerPosition = Player.LocalPlayerInstance.transform.position + Vector3.up * 0.4f;
+            Vector3 directionToPlayer = localPlayerPosition - visionOrigin.position;
+            float angleBetweenEnemyAndPlayer = Vector3.Angle(visionOrigin.forward, directionToPlayer);
+            //Debug.Log("Player In Range, Angle: " + angleBetweenEnemyAndPlayer);
+            
+            if (angleBetweenEnemyAndPlayer < visionAngle)
+            {
+                float distanceToPlayer = directionToPlayer.magnitude;
+                Ray ray = new Ray(visionOrigin.position, directionToPlayer);
+
+                if (!Physics.Raycast(ray, out RaycastHit hit, distanceToPlayer, canSee))
+                {
+                    Debug.DrawRay(visionOrigin.position, directionToPlayer, Color.red);
+                    return true;
+                }
+                //Debug.DrawRay(visionOrigin.position, directionToPlayer, Color.yellow);
+                //return false;
+            }
+            //Debug.DrawRay(visionOrigin.position, directionToPlayer, Color.green);
+        }
+        return false;
     }
 
     private void GoToRandomPoint()
@@ -42,10 +79,17 @@ public class NavMeshEnemyNPC : EnemyNPC
         return hit.position;
     }
 
-    [Command ("BotsFollowMe", MonoTargetType.All)]
-    private void SetDestinationHere()
+    [Command ("BotsTargetMe", MonoTargetType.All)]
+    private void SetTargetToLocalPlayer()
     {
-        Vector3 destination = Player.Instance.transform.position;
-        agent.SetDestination(destination);
+        Vector3 destination = Player.LocalPlayerInstance.transform.position;
+        SetTargetPositionServerRpc(destination);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetTargetPositionServerRpc(Vector3 targetPosition)
+    {
+        NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, maxPatrolDistance, 1);
+        agent.SetDestination(hit.position);
     }
 }

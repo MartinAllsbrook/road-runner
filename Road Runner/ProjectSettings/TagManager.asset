@@ -18,8 +18,8 @@ TagManager:
   - Post Processing
   - Water
   - UI
-  - Friendly Player
-  - Player
+  - Local Player
+  - Remote Player
   - Bullet
   - ItemPickup
   - Vehicle
