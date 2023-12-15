@@ -20,14 +20,18 @@ public class NavMeshEnemyNPC : EnemyNPC
     [Tooltip("Everything the enemy can see except the LocalPlayer layer")] [SerializeField] private LayerMask canSee;
     [Tooltip("The LocalPlayer layer")] [SerializeField] private LayerMask localPayer;
 
+    protected bool _canSeeLocalPlayer = false;
+
     private void Start()
     {
         GoToRandomPoint();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        if (CanSeeLocalPlayer())
+        _canSeeLocalPlayer = CanSeeLocalPlayer();
+
+        if (_canSeeLocalPlayer)
         {
             SetTargetToLocalPlayer();
         }
@@ -38,23 +42,22 @@ public class NavMeshEnemyNPC : EnemyNPC
         }
     }
 
-    private bool CanSeeLocalPlayer()
+    protected bool CanSeeLocalPlayer()
     {
         if (Physics.CheckSphere(visionOrigin.position, visionRange, localPayer))
         {
-            Vector3 localPlayerPosition = Player.LocalPlayerInstance.transform.position + Vector3.up * 0.4f;
-            Vector3 directionToPlayer = localPlayerPosition - visionOrigin.position;
-            float angleBetweenEnemyAndPlayer = Vector3.Angle(visionOrigin.forward, directionToPlayer);
+            Vector3 vectorToPlayer = GetVectorToLocalPlayer();
+            float angleBetweenEnemyAndPlayer = Vector3.Angle(visionOrigin.forward, vectorToPlayer);
             //Debug.Log("Player In Range, Angle: " + angleBetweenEnemyAndPlayer);
             
             if (angleBetweenEnemyAndPlayer < visionAngle)
             {
-                float distanceToPlayer = directionToPlayer.magnitude;
-                Ray ray = new Ray(visionOrigin.position, directionToPlayer);
+                float distanceToPlayer = vectorToPlayer.magnitude;
+                Ray ray = new Ray(visionOrigin.position, vectorToPlayer);
 
                 if (!Physics.Raycast(ray, out RaycastHit hit, distanceToPlayer, canSee))
                 {
-                    Debug.DrawRay(visionOrigin.position, directionToPlayer, Color.red);
+                    Debug.DrawRay(visionOrigin.position, vectorToPlayer, Color.red);
                     return true;
                 }
                 //Debug.DrawRay(visionOrigin.position, directionToPlayer, Color.yellow);
@@ -63,6 +66,13 @@ public class NavMeshEnemyNPC : EnemyNPC
             //Debug.DrawRay(visionOrigin.position, directionToPlayer, Color.green);
         }
         return false;
+    }
+
+    protected Vector3 GetVectorToLocalPlayer()
+    {
+        Vector3 localPlayerPosition = Player.LocalPlayerInstance.transform.position + Vector3.up * 0.5f;
+        Vector3 vectorToPlayer = localPlayerPosition - transform.position;
+        return vectorToPlayer;
     }
 
     private void GoToRandomPoint()

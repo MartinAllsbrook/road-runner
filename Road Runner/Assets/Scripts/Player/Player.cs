@@ -18,11 +18,6 @@ public class Player : NetworkBehaviour
     private PlayerFXController _playerFXController;
     // private PlayerMovement playerMovement;
 
-
-    private void Awake()
-    {
-        
-    }
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -47,6 +42,16 @@ public class Player : NetworkBehaviour
         if (IsOwner)
         {
             _playerStats.ChangeHealth(-bulletDamage);
+            _playerFXController.PlayHitWithBulletFX();
+        }
+    }
+
+    [Command]
+    public void TakeDamage(float damage)
+    {
+        if (IsOwner)
+        {
+            _playerStats.ChangeHealth(-damage);
             _playerFXController.PlayHitWithBulletFX();
         }
     }

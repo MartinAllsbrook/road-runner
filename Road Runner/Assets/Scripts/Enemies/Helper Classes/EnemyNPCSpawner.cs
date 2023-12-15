@@ -12,6 +12,7 @@ public class EnemyNPCSpawner : NetworkBehaviour
     {
         EnemyNPC,
         NavMeshEnemyNPC,
+        HostileEnemyNPC
     }
 
     [Command]
