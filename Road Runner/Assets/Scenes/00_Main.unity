@@ -567,6 +567,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3832688424018191842, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4398257355789625092, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -577,6 +581,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4398257355789625092, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
       propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5338341366984338538, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5649508330529101091, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
@@ -730,10 +738,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: sprinkleRanks.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: sprinkleRanks.Array.data[0].numToPlace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: sprinkleRanks.Array.data[1].numToPlace
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
@@ -741,7 +753,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: sprinkleRanks.Array.data[1].sprinkles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: sprinkleRanks.Array.data[0].sprinkles.Array.data[0]
+      value: 
+      objectReference: {fileID: -2499524654122171120, guid: 326aeaa3294ee42459771883533dd2c2, type: 3}
+    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: sprinkleRanks.Array.data[1].sprinkles.Array.data[0]
       value: 
       objectReference: {fileID: 8515197870878483532, guid: 221280d5d7831f345bb3eb9e1c3a5679, type: 3}
     - target: {fileID: 2648873749012872315, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
@@ -786,10 +806,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2935390251777952128, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5698785632482808166, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: terrainRadius
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495417418160160114, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}

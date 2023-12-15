@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using QFSW.QC;
+using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// The UI Manager tracks, eneables and disables the games UI elements.
@@ -23,13 +25,32 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mapUI; // This is seen when the player opens their map
 
     [Header("Loading Screens")]
-    // Step 1
-    [SerializeField] private GameObject joiningServerScreen;
-    [SerializeField] private GameObject creatingServerScreen;
-    // Step 2
-    [SerializeField] private GameObject terrainLoadingScreen;
-    // Step 3
-    [SerializeField] private GameObject generatingNavMeshScreen;
+    [SerializeField] private GameObject loadingScreen; // This is seen when the game is loading
+    [SerializeField] private TextMeshProUGUI loadingScreenText; // This is the text that is displayed on the loading screen
+    [SerializeField] private Slider loadingBar ; // This is the loading bar that is displayed on the loading screen
+
+    private string[] _loadingScreenTexts =
+    {
+        "Connecting to server",
+        "Joining Server",
+        "Generating Terrain Maps", 
+        "Placing Landmarks", 
+        "Drawing Terrain",
+        "Scattering Trees",
+        "Generating NavMesh",
+    };
+
+    public enum LoadingScreenTexts
+    {
+        ConnectingToServer,
+        JoiningServer,
+        GeneratingTerrainMaps,
+        PlacingLandmarks,
+        DrawingTerrain,
+        ScatteringTrees,
+        GeneratingNavMesh,
+    }
+
 
     private void Awake()
     {
@@ -42,6 +63,10 @@ public class UIManager : MonoBehaviour
             Debug.LogError("There are multiple UI Managers in the scene!");
             Destroy(this);
         }
+
+        // Setting up loading screen
+        loadingBar.value = 0;
+        loadingBar.maxValue = _loadingScreenTexts.Length;
     }
 
     private void Start()
@@ -57,7 +82,19 @@ public class UIManager : MonoBehaviour
 
     #region Loading screens
 
-    public void StartJoiningServer()
+    public void StartLoadingScreen()
+    {
+        serverUI.SetActive(false);
+        loadingScreen.SetActive(true);
+    }
+
+    public void SetLoadingScreenText(LoadingScreenTexts text)
+    {
+        loadingScreenText.text = _loadingScreenTexts[(int)text];
+        loadingBar.value = (int)text;
+    }
+
+/*    public void StartJoiningServer()
     {
         serverUI.SetActive(false);
         joiningServerScreen.SetActive(true);
@@ -83,7 +120,7 @@ public class UIManager : MonoBehaviour
     {
         terrainLoadingScreen.SetActive(false);
         generatingNavMeshScreen.SetActive(true);
-    }
+    }*/
 
     #endregion
 
@@ -105,10 +142,7 @@ public class UIManager : MonoBehaviour
     private void DisableAll()
     {
         // Loading Screens
-        generatingNavMeshScreen.SetActive(false);
-        creatingServerScreen.SetActive(false);
-        joiningServerScreen.SetActive(false);
-        terrainLoadingScreen.SetActive(false);
+        loadingScreen.SetActive(false);
 
         // UIs
         titleScreenUI.SetActive(false);
@@ -165,12 +199,6 @@ public class UIManager : MonoBehaviour
     public void ToggleMapUIDebug()
     {
         mapUI.SetActive(!mapUI.activeSelf);
-    }
-
-    [Command("ToggleTerrainLoadingScreen")]
-    public void ToggleTerrainLoadingScreenDebug()
-    {
-        terrainLoadingScreen.SetActive(!terrainLoadingScreen.activeSelf);
     }
 
     #endregion
