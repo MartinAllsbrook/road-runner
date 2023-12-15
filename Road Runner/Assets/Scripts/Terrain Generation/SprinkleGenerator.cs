@@ -35,7 +35,9 @@ public class SprinkleGenerator : MonoBehaviour
     private List<PlacedSprinkle> _sprinkleMap;
 
     private System.Random _random;
-   
+
+    #region Sprinkle Generation / Placement
+
     public void GenerateSprinkles(int chunkWidth, int terrainRadius, int seed)
     {
         if (Instance == null) 
@@ -68,6 +70,7 @@ public class SprinkleGenerator : MonoBehaviour
         _sprinkleMap.Add(placedSprinkle);
     }
 
+    // Recursive function to get a unique position for a sprinkle
     private Vector2Int GetUniquePosition(int newSprinkleRadius, int worldSize)
     {
         int placeableAreaSize = worldSize - (2 * newSprinkleRadius);
@@ -102,12 +105,14 @@ public class SprinkleGenerator : MonoBehaviour
         return potentialPosition;
     }
 
+    #endregion
+
     public List<PlacedSprinkle> GetSprinkleMap()
     {
         return _sprinkleMap;
     }
 
-    public void FindSprinkleHeights(Dictionary<Vector2Int, MeshTerrainChunk> loadedChunks)
+    public void FindHeightsAndPlace(Dictionary<Vector2Int, MeshTerrainChunk> loadedChunks)
     {
         foreach(KeyValuePair<Vector2Int, MeshTerrainChunk> keyValuePair in loadedChunks)
         {

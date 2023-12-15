@@ -11,21 +11,19 @@ using Random = UnityEngine.Random;
 
 public class TerrainManager : NetworkBehaviour
 {
-    public static TerrainManager Instance;
+    public static TerrainManager Instance; // Singleton
 
     [Header("Refenences")]
     [SerializeField] private NavMeshManager navMeshManager;
+    [SerializeField] private TreeManager treeManager;
+    [SerializeField] private SprinkleGenerator sprinkleGenerator;
+    [Tooltip("The chunk that will be instantiated to form the terrain")] [SerializeField] private GameObject terrainChunk;
 
     [Header("Terrain Generation")]
-    [SerializeField] private GameObject terrainChunk;
-    [SerializeField] private int terrainRadius;
-    [SerializeField] private TreeManager treeManager;
-    private SprinkleGenerator _sprinkleGenerator;
-    [SerializeField] private int chunkSize;
-
-    // Biomes
-    [SerializeField] private Biome[] biomes;
-    public Biome[] Biomes
+    [Tooltip("TrueTerrainSize = (terrainRadius x 2 + 1) * chunksize")] [SerializeField] private int terrainRadius;
+    [Tooltip("The size of an individual chunk")] [SerializeField] private int chunkSize;
+    [Tooltip("A list of biome to be generated on the terrain")] [SerializeField] private Biome[] biomes;
+    public Biome[] Biomes // TODO: Should this just be a getter?
     {
         get { return biomes; }
         private set { }
@@ -34,35 +32,45 @@ public class TerrainManager : NetworkBehaviour
     [Header("Loading")]
     [SerializeField] private float loadingPauseTime = 0.3f;
 
-    // Sizes LMAO
-    private int _terrainSize;
+    private int _terrainSize; // Size
 
-    // Tracking chunks
-    private GameObject[,] _activeChunks;
+    //private GameObject[,] _activeChunks; 
     private Dictionary<Vector2Int, MeshTerrainChunk> _loadedChunks;
 
-    // Seeding & Random Numbers
-    private int masterSeed;
+    private int masterSeed; // All seeds and stuff
     private int[] _perlinNoiseSeeds;
     private int _sprinkleSeed;
     private int _treeSeed;
     private int[,] poiSeeds;
 
-    // Tracking chunk loading
-    private UnityEvent _onMapsGenerated;
+    private UnityEvent _onMapsGenerated; // This is an event that is called when all the maps have been generated
     private int _numMapsGenerated = 0;
 
-    private UnityEvent _onChunkLoaded;
+    private UnityEvent _onChunkLoaded; // This is an event that is called when all the chunks have been loaded
     private int _numLoadedChunks = 0;
     private int _chunksToLoad;
 
-    // UI 
-    //private GameObject _serverUI;
-
-    private readonly Quaternion _zeroRotation = new Quaternion(0, 0, 0, 0);
-
     static private NetworkVariable<int> _worldSeed; // This is the seed that is sent to the server, stored accross the network
 
+    #region Loading Screen Debugging Stuff
+    private Stopwatch timer = new Stopwatch(); // Stopwatch for testing and debugging
+    private float _totalTimeElapsed = 0f;
+    
+    private void CompleteSection(string sectionName)
+    {
+        float elapsedMS = timer.ElapsedMilliseconds;
+        _totalTimeElapsed += elapsedMS;
+        Debug.Log("[Terrain Generation Sequence] " + sectionName + " completed in " + elapsedMS.ToString() + "ms, Total time elapsed: " + _totalTimeElapsed.ToString() + "ms");
+        timer.Restart();
+    }
+
+    private WaitForSeconds SequencePause()
+    {
+        Debug.Log("[Terrain Waiting] About to Wait for " + loadingPauseTime.ToString() + "s");
+        return new WaitForSeconds(loadingPauseTime);
+    }
+    #endregion
+    
     private void Start()
     {
         _worldSeed = new NetworkVariable<int>();
@@ -70,7 +78,8 @@ public class TerrainManager : NetworkBehaviour
     }
 
     /// <summary>
-    /// Sort of a replacement for Start() for the TerrainManager, called by the RelayUI when a new server is created.
+    /// Sort of a replacement for Start() for the Server's TerrainManager, called by the RelayUI when a new server is created.
+    /// Only used by the server.
     /// </summary>
     /// <param name="seed">The world seed</param>
     public void Set(int seed) 
@@ -81,44 +90,54 @@ public class TerrainManager : NetworkBehaviour
 
     /// <summary>
     /// Attempts to generate the terrain, making sure not to if anything will cause an error.
-    /// Also only generates the terrain for the local client.
+    /// Generates the terrain for the local client and the server.
     /// </summary>
     /// <param name="clientId">The clients ID</param>
     private void TryGenerateTerrain(ulong clientId)
     {
+        timer.Start();
+        _totalTimeElapsed = 0;
+
+        Debug.Log("[Terrain] TryGenerateTerrain attempt made");
+        // TryGenerateTerrain is called every time a client connects to the server,
+        // so we need this check to make sure that the client that just connected is the local client,
+        // because if the localClient just connected they probably need a terrain to play on.
         if (clientId != NetworkManager.Singleton.LocalClientId)
             return;
 
         int seed = _worldSeed.Value; // Get the seed from the network variable
         if (seed == 0)
+        {
+            // TODO: Maybe check if the server host entered 0 as the seed and if so, generate a random seed / do something about it?
+            //Debug.LogError("[Terrain] Seed is 0, this should never happen! If you set the seed to 0 please don't, because right now my program is asuming shit is broken because of you");
             return;
-        Debug.Log("Seed: " + seed);
+        }
+        Debug.Log("[Terrain] Seed: " + seed);
 
         if (Instance == null)
-        {
-            Instance = this;
-        }
+            Instance = this;       
         else
         {
-            Debug.LogError("There are multiple Terrain Managers in the scene!");
+            Debug.LogError("[Terrain] There are multiple Terrain Managers in the scene!");
             return;
         }
+
+        CompleteSection("Pregeneration Checks"); // Reported 2ms
 
         GenerateTerrain(seed); // This is where the fun really starts, all the basic checks have passed and we are ready to generate the terrain
     }
 
     /// <summary>
-    /// Start
     /// Starts a predictable terrain generation process.
     /// </summary>
     /// <param name="seed">The terrain's seed</param>
     private void GenerateTerrain(int seed)
     {
-        // TODO: maybe a seed geenrating screen? Probably not that useful lol
-        
-        treeManager.Initialize(biomes); 
-
         masterSeed = seed;
+
+        _loadedChunks = new Dictionary<Vector2Int, MeshTerrainChunk>();
+
+        treeManager.Initialize(biomes);
 
         _terrainSize = terrainRadius * 2 + 1;
         _chunksToLoad = _terrainSize * _terrainSize;
@@ -127,16 +146,18 @@ public class TerrainManager : NetworkBehaviour
         _onMapsGenerated.AddListener(OnMapGenerated);
         _onChunkLoaded = new UnityEvent();
         _onChunkLoaded.AddListener(OnChunkLoaded);
-        
-        _sprinkleGenerator = GetComponent<SprinkleGenerator>();
 
-        GenerateSeeds();
+        CompleteSection("Variable Initialization"); // Reported ~57ms -> supprized this is the longest part but 57ms is like nothing so it's fine
 
-        _sprinkleGenerator.GenerateSprinkles(chunkSize - 1, terrainRadius, _sprinkleSeed);
+        GenerateSeeds(); 
 
-        _loadedChunks = new Dictionary<Vector2Int, MeshTerrainChunk>();
+        CompleteSection("Seed Generation"); // Reported ~0ms
 
-        StartCoroutine(InitializeTerrain());
+        sprinkleGenerator.GenerateSprinkles(chunkSize - 1, terrainRadius, _sprinkleSeed); 
+
+        CompleteSection("Sprinkle position generation"); // Reported ~0ms
+
+        StartCoroutine(GenerateMaps());
     }
 
     /// <summary>
@@ -166,15 +187,16 @@ public class TerrainManager : NetworkBehaviour
         }
     }
 
+    #region SECTION: Generate Maps
     /// <summary>
     /// Tells all the chunks to generate their noise maps (height, moisture, strangeness, etc.)
     /// This could be turned into a coroutine to make the loading screen more accurate. TODO: Think about it
     /// </summary>
-    private IEnumerator InitializeTerrain()
+    private IEnumerator GenerateMaps()
     {
-        yield return new WaitForSeconds(loadingPauseTime);
-        Debug.Log("[Loading Sequence] Start Generating Maps...");
         UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingTerrainMaps);
+        yield return SequencePause();
+        timer.Restart();
 
         int chunkWidth = chunkSize - 1;
 
@@ -184,16 +206,15 @@ public class TerrainManager : NetworkBehaviour
             {
                 Vector2Int chunkPosition = new Vector2Int(x, z);
 
-                GameObject newChunk = Instantiate(terrainChunk, new Vector3(chunkPosition.x * (chunkWidth), 0, chunkPosition.y * (chunkWidth)), _zeroRotation, transform);
+                GameObject newChunk = Instantiate(terrainChunk, new Vector3(chunkPosition.x * (chunkWidth), 0, chunkPosition.y * (chunkWidth)), Quaternion.identity, transform);
                 MeshTerrainChunk chunk = newChunk.GetComponent<MeshTerrainChunk>();
 
-                chunk.CreateMaps(_perlinNoiseSeeds, _onMapsGenerated, chunkSize, terrainRadius); // Need batter name for this function, Initiialize chunk?
+                chunk.CreateMaps(_perlinNoiseSeeds, _onMapsGenerated, chunkSize, terrainRadius); // This calls coroutines under the hood
 
                 _loadedChunks.Add(chunkPosition, chunk);
             }
         }
 
-        Debug.Log("[Loading Sequence] Genrating Maps Finished");
     }
 
     /// <summary>
@@ -203,25 +224,30 @@ public class TerrainManager : NetworkBehaviour
     {
         _numMapsGenerated++;
         if (_numMapsGenerated >= _chunksToLoad)
+        {
             StartCoroutine(WhenMapsGenerated());
+            CompleteSection("Noise-Map Generation"); // Reported ~2,000ms
+        }
     }
+
+    #endregion
 
     /// <summary>
     /// Once the maps have been generated, this function tells the chunks to place sprinkles, blend them, and draw chunk meshes.
     /// </summary>
     private IEnumerator WhenMapsGenerated()
     {
-        yield return new WaitForSeconds(loadingPauseTime); 
-        Debug.Log("[Loading Sequence] Start Generating Sprinkles...");
         UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.PlacingLandmarks);
+        yield return SequencePause();
+        timer.Restart();
 
-        _sprinkleGenerator.FindSprinkleHeights(_loadedChunks);
+        sprinkleGenerator.FindHeightsAndPlace(_loadedChunks); 
 
-        Debug.Log("[Loading Sequence] Sprinkles Finished");
-  
-        yield return new WaitForSeconds(loadingPauseTime);
-        Debug.Log("[Loading Sequence] Start Drawing Terrain...");
+        CompleteSection("Landmark / Sprinkle Placement"); // Reported ~9ms -> Great
+
         UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.DrawingTerrain);
+        yield return SequencePause();
+        timer.Restart();
 
         for (int x = 0; x < _terrainSize; x++)
         {
@@ -233,7 +259,7 @@ public class TerrainManager : NetworkBehaviour
             }
         }
 
-        Debug.Log("[Loading Sequence] Drawing Terrain Finished");
+        CompleteSection("Decorating and drawing"); // Reported ~10,000ms
     }
 
     /// <summary>
@@ -251,9 +277,9 @@ public class TerrainManager : NetworkBehaviour
     /// </summary>
     private IEnumerator FinalLoadingRoutine()
     {
-        yield return new WaitForSeconds(loadingPauseTime); 
-        Debug.Log("[Loading Sequence] Start Generating Trees...");
         UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.ScatteringTrees);
+        yield return SequencePause(); 
+        timer.Restart();
 
         for (int i = 0; i < _terrainSize; i++)
         {
@@ -263,15 +289,15 @@ public class TerrainManager : NetworkBehaviour
             }
         }
 
-        Debug.Log("[Loading Sequence] Trees Finished");
+        CompleteSection("Tree Placement"); // Reported ~28ms -> WOWOWOW That's the power of object pooling
 
-        yield return new WaitForSeconds(loadingPauseTime); 
-        Debug.Log("[Loading Sequence] Start Generating NavMesh...");
         UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingNavMesh);
+        yield return SequencePause(); 
+        timer.Restart();
 
         navMeshManager.BakeNavMesh();
 
-        Debug.Log("[Loading Sequence] NavMesh Finished");
+        CompleteSection("NavMesh Baking"); // Reported 8,000ms -> I Don't think we can do much about this, I wonder how long it will take on the 5x5 map
         yield return null;
 
         PlayerSpawner.localPlayerSpawner.EnterLimbo();

@@ -90,6 +90,7 @@ public class UIManager : MonoBehaviour
 
     public void SetLoadingScreenText(LoadingScreenTexts text)
     {
+        Debug.Log("[Loading Screen] Setting loading screen text to: " + _loadingScreenTexts[(int)text]);
         loadingScreenText.text = _loadingScreenTexts[(int)text];
         loadingBar.value = (int)text;
     }

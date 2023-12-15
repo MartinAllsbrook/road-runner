@@ -342,29 +342,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8860516609234180564}
     - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[0]
+      propertyPath: sprinkleGenerator
       value: 
-      objectReference: {fileID: 11400000, guid: 83a66b8ae8a0c6a4cb363a53d9b74360, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9946f19af8979a841b3561e82f9e0a8e, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 867f392ac08caa641827a71a01c245c3, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6469e3ac50d9e3848badd6a9550530a3, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: 292b3b25df35e104bb20e5dbb4af2c98, type: 2}
+      objectReference: {fileID: 739216961325664784}
     - target: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -410,6 +390,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+--- !u!114 &739216961325664784 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2079987541488377761, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+  m_PrefabInstance: {fileID: 1630197851099600305}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be0786971ed2b694db9ec82564ead893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8000000704390887595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}

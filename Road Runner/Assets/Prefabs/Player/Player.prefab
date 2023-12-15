@@ -5561,7 +5561,7 @@ MonoBehaviour:
   sensX: 5
   sensY: 5
   fovMultiplier: 1
-  cameraLimboPosition: {x: 768, y: 512, z: 768}
+  cameraLimboPosition: {x: 768, y: 768, z: 768}
 --- !u!114 &8639077940336665161
 MonoBehaviour:
   m_ObjectHideFlags: 0

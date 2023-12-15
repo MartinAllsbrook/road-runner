@@ -587,6 +587,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5544963010723210606, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5
+      objectReference: {fileID: 0}
     - target: {fileID: 5649508330529101091, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -736,34 +740,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: sprinkleRanks.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: sprinkleRanks.Array.data[0].numToPlace
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: sprinkleRanks.Array.data[1].numToPlace
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: sprinkleRanks.Array.data[0].sprinkles.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: sprinkleRanks.Array.data[1].sprinkles.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: sprinkleRanks.Array.data[0].sprinkles.Array.data[0]
-      value: 
-      objectReference: {fileID: -2499524654122171120, guid: 326aeaa3294ee42459771883533dd2c2, type: 3}
-    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: sprinkleRanks.Array.data[1].sprinkles.Array.data[0]
-      value: 
-      objectReference: {fileID: 8515197870878483532, guid: 221280d5d7831f345bb3eb9e1c3a5679, type: 3}
     - target: {fileID: 2648873749012872315, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2500703158
