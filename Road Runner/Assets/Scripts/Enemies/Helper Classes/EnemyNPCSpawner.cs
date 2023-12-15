@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using QFSW.QC;
+using UnityEngine.AI;
+using Unity.AI.Navigation;
 
 public class EnemyNPCSpawner : NetworkBehaviour
 {
@@ -15,6 +17,26 @@ public class EnemyNPCSpawner : NetworkBehaviour
         HostileEnemyNPC
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (IsServer)
+        {
+            StartCoroutine(SpawnEnemyRoutine());
+        }
+        
+    }
+
+    private IEnumerator SpawnEnemyRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+
+            SpawnEnemy(EnemyType.HostileEnemyNPC);
+        }
+    }
+
     [Command]
     private void SpawnEnemy(EnemyType enemyType, Vector3 positon)
     {
@@ -23,6 +45,15 @@ public class EnemyNPCSpawner : NetworkBehaviour
 
     [Command]
     private void SpawnEnemy(EnemyType enemyType)
+    {
+        Vector3 position = SprinkleGenerator.Instance.GetPointInSprinkleOnNavmesh();
+        
+        SpawnEnemyServerRpc(enemyType, position);
+        Debug.Log("Spawned Enemy at: " + position);
+    }
+
+    [Command("SpawnEnemyHere")]
+    private void SpawnEnemyDebug(EnemyType enemyType)
     {
         SpawnEnemyServerRpc(enemyType, Player.LocalPlayerInstance.transform.position);
     }

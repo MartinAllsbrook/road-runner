@@ -22,6 +22,12 @@ public class NavMeshEnemyNPC : EnemyNPC
 
     protected bool _canSeeLocalPlayer = false;
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        
+    }
+
     private void Start()
     {
         GoToRandomPoint();
@@ -84,10 +90,17 @@ public class NavMeshEnemyNPC : EnemyNPC
 
     private Vector3 GetPatrolPoint()
     {
+/*        Vector3 randomPoint = patrolCenter + Random.insideUnitSphere * maxPatrolDistance;
+        NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, maxPatrolDistance, 1);*/
+        return SprinkleGenerator.Instance.GetPointInSprinkleOnNavmesh();
+    }
+
+    /*private Vector3 GetPatrolPoint()
+    {
         Vector3 randomPoint = patrolCenter + Random.insideUnitSphere * maxPatrolDistance;
         NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, maxPatrolDistance, 1);
         return hit.position;
-    }
+    }*/
 
     [Command ("BotsTargetMe", MonoTargetType.All)]
     private void SetTargetToLocalPlayer()

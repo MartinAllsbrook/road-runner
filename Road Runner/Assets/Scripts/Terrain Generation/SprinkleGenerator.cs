@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 [Serializable]
 public class SprinkleRank
@@ -137,5 +139,24 @@ public class SprinkleGenerator : MonoBehaviour
 
         Vector2 position = UnityEngine.Random.insideUnitCircle * placedSprinkle.sprinkle.FlatRadius + placedSprinkle.position;
         return new Vector3(position.x, 100, position.y);
+    }
+
+    public Vector3 GetPointInSprinkleOnNavmesh()
+    {
+        Vector3 position = GetSpawnPoint();
+
+        if (!Physics.Raycast(position, Vector3.down, out RaycastHit raycastHit, 128))
+        {
+            Debug.Log("Couldn't find a point to spawn enemy at near: " + position);
+            return Vector3.zero;
+        }
+
+        if (!NavMesh.SamplePosition(raycastHit.point, out NavMeshHit navmeshHit, 128, 1))
+        {
+            Debug.Log("Couldn't find a NavMesh point to spawn enemy at near: " + raycastHit.point);
+            return Vector3.zero;
+        }
+
+        return navmeshHit.position;
     }
 }
