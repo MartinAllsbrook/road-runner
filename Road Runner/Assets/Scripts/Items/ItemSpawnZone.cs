@@ -13,9 +13,18 @@ public class ItemSpawnZone : MonoBehaviour
 
     private void Start()
     {
-        boxCollider = GetComponent<BoxCollider>();
+        if (!ItemSpawner.Instance.IsServer)
+        {
+            enabled = false;
+            return;
+        }
 
-        StartCoroutine(SpawnItemRoutine());
+        TerrainManager.onTerrainGenerated.AddListener(() =>
+        {
+            boxCollider = GetComponent<BoxCollider>();
+
+            StartCoroutine(SpawnItemRoutine());
+        });
     }
 
     private IEnumerator SpawnItemRoutine()

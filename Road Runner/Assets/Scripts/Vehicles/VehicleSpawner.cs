@@ -16,10 +16,19 @@ public class VehicleSpawner : NetworkBehaviour
 
     private void Start()
     {
-        startArea = worldPadding;
-        endArea = worldSize - worldPadding;
+        if (!IsServer)
+        {
+            enabled = false;
+            return;
+        }
 
-        StartCoroutine(SpawnVehiclesRoutine());
+        TerrainManager.onTerrainGenerated.AddListener(() =>
+        {
+            startArea = worldPadding;
+            endArea = worldSize - worldPadding;
+
+            StartCoroutine(SpawnVehiclesRoutine());
+        });
     }
 
     private IEnumerator SpawnVehiclesRoutine()
@@ -38,9 +47,17 @@ public class VehicleSpawner : NetworkBehaviour
         }
     }
 
+    // if we are the server, we can skip the server rpc and just spawn the thing
     public void SpawnVehicle(Vector3 position)
     {
-        SpawnVehicleServerRpc(position);
+        Transform vehicle = vehicles[Random.Range(0, vehicles.Length)];
+
+        Transform itemGameObject = Instantiate(vehicle, position, new Quaternion(0, 0, 0, 0));
+
+        NetworkObject itemNetworkObject = itemGameObject.GetComponent<NetworkObject>();
+        itemNetworkObject.Spawn(true);
+
+        //SpawnVehicleServerRpc(position);
     }
 
     [ServerRpc(RequireOwnership = false)]
