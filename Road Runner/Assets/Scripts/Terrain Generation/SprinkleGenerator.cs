@@ -131,7 +131,7 @@ public class SprinkleGenerator : MonoBehaviour
                     float roatation = (float)_random.NextDouble() * 360f;
                     Quaternion sprinkleRotation = Quaternion.Euler(0, roatation, 0);
 
-                    Instantiate(placedSprinkle.sprinkle, sprinkleWorldPosition, sprinkleRotation);
+                    Instantiate(placedSprinkle.sprinkle, sprinkleWorldPosition, sprinkleRotation, transform);
                 }
             }
         }

@@ -740,6 +740,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: sprinkleRanks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: sprinkleRanks.Array.data[0].numToPlace
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: sprinkleRanks.Array.data[0].sprinkles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: sprinkleRanks.Array.data[0].sprinkles.Array.data[0]
+      value: 
+      objectReference: {fileID: 8515197870878483532, guid: 221280d5d7831f345bb3eb9e1c3a5679, type: 3}
     - target: {fileID: 2648873749012872315, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2500703158
@@ -786,11 +802,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698785632482808166, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: terrainRadius
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495417418160160114, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: m_Name
       value: Environment
+      objectReference: {fileID: 0}
+    - target: {fileID: 7551315496070248640, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 69599
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -967,6 +987,10 @@ PrefabInstance:
     - target: {fileID: 3017228783983974828, guid: b7cd658654a3a574d97f38ffb53dd097, type: 3}
       propertyPath: m_Name
       value: GameController
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084800020226452126, guid: b7cd658654a3a574d97f38ffb53dd097, type: 3}
+      propertyPath: spawnTime
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8584038052254596596, guid: b7cd658654a3a574d97f38ffb53dd097, type: 3}
       propertyPath: GlobalObjectIdHash

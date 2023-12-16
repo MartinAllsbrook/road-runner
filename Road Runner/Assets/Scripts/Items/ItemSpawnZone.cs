@@ -13,12 +13,6 @@ public class ItemSpawnZone : MonoBehaviour
 
     private void Start()
     {
-        if (!ItemSpawner.Instance.IsServer)
-        {
-            enabled = false;
-            return;
-        }
-
         TerrainManager.onTerrainGenerated.AddListener(() =>
         {
             boxCollider = GetComponent<BoxCollider>();
@@ -30,7 +24,12 @@ public class ItemSpawnZone : MonoBehaviour
     private IEnumerator SpawnItemRoutine()
     {
         if (!ItemSpawner.Instance.IsServer)
-            yield return null;
+        {
+            Debug.LogWarning("Disableing Item Spawn Zone on Client"); // could also destroy this object or something
+            enabled = false;
+            yield return null; 
+            StopAllCoroutines();
+        }
 
         while (true)
         {

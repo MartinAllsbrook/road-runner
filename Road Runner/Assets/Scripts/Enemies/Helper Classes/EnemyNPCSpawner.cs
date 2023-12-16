@@ -22,7 +22,10 @@ public class EnemyNPCSpawner : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         if (!IsServer)
+        {
+            Debug.LogWarning("Disableing Enemy Spawner on Client");
             return;
+        }
 
         TerrainManager.onTerrainGenerated.AddListener(() => 
         {

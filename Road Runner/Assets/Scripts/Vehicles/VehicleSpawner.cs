@@ -14,10 +14,12 @@ public class VehicleSpawner : NetworkBehaviour
     private int startArea;
     private int endArea;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         if (!IsServer)
         {
+            Debug.LogWarning("Disableing Vehicle Spawner on Client");
             enabled = false;
             return;
         }
