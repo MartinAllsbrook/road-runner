@@ -127,13 +127,13 @@ public class GunItem : UseableItem
         timeSinceLastShot = 0;
         Fire(_inaccuracy);
 
-        parentItemController.UseServerRpc();
     }
 
     protected virtual void Fire(float accuracy) 
-    { 
+    {
         CreateBullet(accuracy);
         IncreaseInaccuracy();
+        parentItemController.UseServerRpc();
     }
 
     #region Inaccuracy

@@ -37,7 +37,6 @@ public class UseableItemController : NetworkBehaviour
         Inspecting,
         Aim,
         Reloading,
-        Recoil,
     }
 
     #endregion
