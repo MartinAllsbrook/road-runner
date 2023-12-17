@@ -32,24 +32,36 @@ public class ItemSpawner : NetworkBehaviour
         }
     }
 
+    // if we are the server, we can skip the server rpc and just spawn the thing
     public void SpawnItem(Vector3 position, Inventory.InventoryItem itemEnum)
-    {
-        SpawnItemServerRpc(position, itemEnum);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnItemServerRpc(Vector3 position, Inventory.InventoryItem itemEnum)
     {
         GameObject itemGameObject = Instantiate(itemDictionary[itemEnum].GetItemPickupPrefab(), position + Vector3.up * 2.5f, new Quaternion(0, 0, 0, 0));
 
         NetworkObject itemNetworkObject = itemGameObject.GetComponent<NetworkObject>();
         itemNetworkObject.Spawn(true);
+
+        //SpawnItemServerRpc(position, itemEnum);
+    }
+
+    #region Stuff for Clients, needed for QC & debugging
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnItemServerRpc(Vector3 position, Inventory.InventoryItem itemEnum)
+    {
+        SpawnItem(position, itemEnum);
     }
 
     [Command]
     public void SpawnItemDebug(int x, int y, int z, InventoryItem itemEnum)
     {
         Vector3 position = new Vector3(x, y, z);
+
+        if (!IsServer)
+        {
+            SpawnItemServerRpc(position, itemEnum);
+            return;
+        }
+
         SpawnItem(position, itemEnum);
     }
 
@@ -58,6 +70,13 @@ public class ItemSpawner : NetworkBehaviour
     {
         Transform playerTransform = PlayerSpawner.localPlayerSpawner.transform;
         Vector3 position = playerTransform.position + playerTransform.forward * 2;
+        if (!IsServer)
+        {
+            SpawnItemServerRpc(position, itemEnum);
+            return;
+        }
         SpawnItem(position, itemEnum);
     }
+
+    #endregion
 }

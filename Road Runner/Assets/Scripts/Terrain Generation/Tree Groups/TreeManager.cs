@@ -20,13 +20,13 @@ public class TreeManager : MonoBehaviour
 
         for (int i = 0;i < biomes.Length;i++)
         {
-            baseTreeGroups[i] = Instantiate(biomes[i].GetTreeGroup());
+            baseTreeGroups[i] = Instantiate(biomes[i].GetTreeGroup(), transform);
             baseTreeGroups[i].GenerateTreeGroup();
         }
 
         for (int i = 0; i < baseTreeGroups.Length; i++)
         {
-            treeGroups[i] = Instantiate(baseTreeGroups[i]);
+            treeGroups[i] = Instantiate(baseTreeGroups[i], transform);
         }
     }
 
@@ -42,7 +42,7 @@ public class TreeManager : MonoBehaviour
         }
         else // Make new tree group to place new trees
         {
-            treeGroups[i] = Instantiate(baseTreeGroups[i].gameObject).GetComponent<TreeGroup>();
+            treeGroups[i] = Instantiate(baseTreeGroups[i].gameObject, transform).GetComponent<TreeGroup>();
             tree = treeGroups[i].GetTree();
             tree.SetActive(true);
             tree.transform.rotation = rotation;

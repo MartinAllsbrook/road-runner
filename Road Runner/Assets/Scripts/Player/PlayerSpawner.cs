@@ -80,7 +80,6 @@ public class PlayerSpawner : NetworkBehaviour
         Unpause();
     }
 
-    [Command]
     public void Unpause()
     {
         numPauses--;
@@ -96,7 +95,6 @@ public class PlayerSpawner : NetworkBehaviour
         Cursor.visible = false;
     }
 
-    [Command]
     public void Pause()
     {
         numPauses++;
@@ -109,7 +107,6 @@ public class PlayerSpawner : NetworkBehaviour
         Cursor.visible = true;
     }
 
-    [Command("Respawn")]
     public void SpawnPlayer()
     {
         Vector3 position;
@@ -117,15 +114,15 @@ public class PlayerSpawner : NetworkBehaviour
         if (SprinkleGenerator.Instance == null)
         {
             Debug.LogWarning("Sprinkle generator is null");
-             position = new Vector3(32, 100, 32);
+            position = new Vector3(32, 100, 32);
             TeleportPlayerServerRpc(position);
             return;
         }
-            
+
         position = SprinkleGenerator.Instance.GetSpawnPoint();
         Ray ray = new Ray(position, Vector3.down);
 
-        if(Physics.Raycast(ray, out RaycastHit hitInfo, 120, layerMask))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, 120, layerMask))
         {
             position.y = hitInfo.point.y;
             TeleportPlayerServerRpc(position);
@@ -133,6 +130,7 @@ public class PlayerSpawner : NetworkBehaviour
         }
     }
 
+    #region Network Commands
     [ServerRpc(RequireOwnership = false)]
     private void TeleportPlayerServerRpc(Vector3 position)
     {
@@ -144,4 +142,28 @@ public class PlayerSpawner : NetworkBehaviour
     {
         _rigidbody.position = position + Vector3.up;
     }
+    #endregion
+
+    #region QC Commands
+    [Command("Pause", MonoTargetType.All)]
+    private void PauseCommand()
+    {
+        if (this == localPlayerSpawner)
+            Pause();
+    }
+
+    [Command("Unpause", MonoTargetType.All)]
+    private void UnpauseCommand()
+    {
+        if (this == localPlayerSpawner)
+            Unpause();
+    }
+
+    [Command("Respawn", MonoTargetType.All)]
+    private void RespawnCommand()
+    {
+        if (this == localPlayerSpawner)
+            SpawnPlayer();
+    }
+    #endregion
 }

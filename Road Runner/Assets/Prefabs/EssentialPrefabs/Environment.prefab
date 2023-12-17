@@ -338,33 +338,13 @@ PrefabInstance:
       value: 3225911626
       objectReference: {fileID: 0}
     - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+      propertyPath: terrainRadius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: navMeshManager
       value: 
       objectReference: {fileID: 8860516609234180564}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 83a66b8ae8a0c6a4cb363a53d9b74360, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9946f19af8979a841b3561e82f9e0a8e, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 867f392ac08caa641827a71a01c245c3, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6469e3ac50d9e3848badd6a9550530a3, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: 292b3b25df35e104bb20e5dbb4af2c98, type: 2}
     - target: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -423,6 +403,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2935390251777952128}
     m_Modifications:
+    - target: {fileID: 983755526239623390, guid: 64905056659aa4b40859e1d47c7d68a4, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 69599
+      objectReference: {fileID: 0}
     - target: {fileID: 1040859381764523773, guid: 64905056659aa4b40859e1d47c7d68a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

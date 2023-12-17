@@ -30,6 +30,13 @@ public class NavMeshEnemyNPC : EnemyNPC
 
     private void Start()
     {
+        if (!IsServer)
+        {
+            Destroy(agent);
+            return;
+        }
+
+        agent.enabled = true;
         GoToRandomPoint();
     }
 
@@ -41,7 +48,10 @@ public class NavMeshEnemyNPC : EnemyNPC
         {
             SetTargetToLocalPlayer();
         }
-        
+
+        if (!IsServer)
+            return;
+
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             GoToRandomPoint();
@@ -81,8 +91,15 @@ public class NavMeshEnemyNPC : EnemyNPC
         return vectorToPlayer;
     }
 
+    #region Server Only
     private void GoToRandomPoint()
     {
+        if (!IsServer)
+        {
+            Debug.LogError("GoToRandomPoint called on client");
+            return;
+        }
+
         Vector3 newPatrolPoint = GetPatrolPoint();
 
         agent.SetDestination(newPatrolPoint);
@@ -101,6 +118,7 @@ public class NavMeshEnemyNPC : EnemyNPC
         NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, maxPatrolDistance, 1);
         return hit.position;
     }*/
+    #endregion
 
     [Command ("BotsTargetMe", MonoTargetType.All)]
     private void SetTargetToLocalPlayer()
