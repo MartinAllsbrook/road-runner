@@ -746,7 +746,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: sprinkleRanks.Array.data[0].numToPlace
-      value: 30
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 739216961325664784, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: sprinkleRanks.Array.data[1].numToPlace

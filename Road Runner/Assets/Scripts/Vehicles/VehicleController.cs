@@ -13,7 +13,7 @@ public class AxleInfo
     public bool steering;
 }
 
-public class VehicleController : NetworkBehaviour
+public class VehicleController : SpawnedObject
 {
     [SerializeField] private List<AxleInfo> axleInfos;
     [SerializeField] private float maxMotorTorque;
