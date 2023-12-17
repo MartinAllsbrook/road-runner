@@ -35,6 +35,26 @@ public class CameraController : NetworkBehaviour
     private Rigidbody playerRigidbody;
 
     private bool _inLimbo = false;
+    private bool _cameraLocked = false;
+    public bool CameraLocked
+    {
+        get { return _cameraLocked; }
+        set 
+        {
+            if (value)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+                
+            _cameraLocked = value; 
+        }
+    }
 
     void Start()
     {
@@ -50,7 +70,7 @@ public class CameraController : NetworkBehaviour
 
     void Update()
     {
-        if (!IsOwner) 
+        if (!IsOwner || _cameraLocked) 
             return;
         
         if (_inLimbo)
@@ -114,6 +134,8 @@ public class CameraController : NetworkBehaviour
         orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
     }
 
+    #region Camera FX Methods
+
     public void SetFov(float fovIncrease)
     {
         mainCamera.fieldOfView = (58 + fovIncrease * fovMultiplier) / zoom;
@@ -135,4 +157,6 @@ public class CameraController : NetworkBehaviour
     {
         zoom = multiplier;
     }
+
+    #endregion
 }
