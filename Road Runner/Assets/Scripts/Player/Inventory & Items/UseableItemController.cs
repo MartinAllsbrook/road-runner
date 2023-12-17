@@ -110,6 +110,8 @@ public class UseableItemController : NetworkBehaviour
         cameraController.CameraLocked = true;
 
         SetHandPosition(HandPosition.Inspecting);
+
+        hudController.StartInspectItem(currentUseableItem);
     }
 
     private void OnStopInspect()
@@ -117,6 +119,8 @@ public class UseableItemController : NetworkBehaviour
         cameraController.CameraLocked = false;
         
         SetHandPosition(HandPosition.Resting);
+
+        hudController.StopInspectItem();
     }
 
     /// <summary>

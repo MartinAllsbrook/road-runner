@@ -10,6 +10,9 @@ public class HUDController : MonoBehaviour
 {
     public static HUDController Instance;
 
+    [Header("HUDs")]
+    [SerializeField] private ItemInspectorHUD itemInspectorHUD;
+
     [Header("References")]
     [SerializeField] private TextMeshProUGUI ammoCountText;
     [SerializeField] private Animator reloadAnimator;
@@ -57,6 +60,20 @@ public class HUDController : MonoBehaviour
         if (Input.GetKeyDown(mapKey))
             ToggleMap();
     }
+
+    #region Item Inspector HUD
+    public void StartInspectItem(UseableItem item)
+    {
+        itemInspectorHUD.gameObject.SetActive(true);
+        itemInspectorHUD.StartInspectItem(item);
+    }
+
+    public void StopInspectItem()
+    {
+        itemInspectorHUD.StopInspectItem();
+        itemInspectorHUD.gameObject.SetActive(false);
+    }
+    #endregion
 
     // TODO: Move this to the UI Manager
     #region Stuff the should be in the UI Manager

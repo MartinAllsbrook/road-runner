@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public abstract class UseableItem : MonoBehaviour
 {
+    [SerializeField] InspectPoint[] inspectPoints;
+
     protected UseableItemController parentItemController;
     public UseableItemController ParentItemController
     {
         private get { return parentItemController; }
         set { parentItemController = value; }
     }
+
     protected bool isOwner; // Used to determine if the local player owns this item
     public bool IsOwner // Property used by UseableItemController to set isOwner
     { 
@@ -55,4 +59,9 @@ public abstract class UseableItem : MonoBehaviour
     }
 
     #endregion
+
+    public InspectPoint[] GetInspectPoints()
+    {
+        return inspectPoints;
+    }
 }
