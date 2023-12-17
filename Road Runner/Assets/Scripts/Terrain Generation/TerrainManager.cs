@@ -19,12 +19,16 @@ public class TerrainManager : NetworkBehaviour
     [SerializeField] private NavMeshManager navMeshManager;
     [SerializeField] private TreeManager treeManager;
     [SerializeField] private SprinkleGenerator sprinkleGenerator;
-    [Tooltip("The chunk that will be instantiated to form the terrain")] [SerializeField] private GameObject terrainChunk;
+    [Tooltip("The chunk that will be instantiated to form the terrain")] 
+    [SerializeField] private GameObject terrainChunk;
 
     [Header("Terrain Generation")]
-    [Tooltip("TrueTerrainSize = (terrainRadius x 2 + 1) * chunksize")] [SerializeField] private int terrainRadius;
-    [Tooltip("The size of an individual chunk")] [SerializeField] private int chunkSize;
-    [Tooltip("A list of biome to be generated on the terrain")] [SerializeField] private Biome[] biomes;
+    [Tooltip("TrueTerrainSize = (terrainRadius x 2 + 1) * chunksize")] 
+    [Range(0,2)] [SerializeField] private int terrainRadius;
+    [Tooltip("The size of an individual chunk")] 
+    [SerializeField] private int chunkSize;
+    [Tooltip("A list of biome to be generated on the terrain")] 
+    [SerializeField] private Biome[] biomes;
     public Biome[] Biomes // TODO: Should this just be a getter?
     {
         get { return biomes; }

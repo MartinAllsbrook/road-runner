@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &756711973801395846
+--- !u!1 &7785093427683465147
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1816714407692132666}
-  - component: {fileID: 4544635444056873827}
-  - component: {fileID: 3756558180959337035}
+  - component: {fileID: 2301438063988791027}
+  - component: {fileID: 8764019547117621311}
+  - component: {fileID: 8755860400281952480}
   m_Layer: 0
-  m_Name: Basic Enemy Spawner
+  m_Name: Basic Gun ttem Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1816714407692132666
+--- !u!4 &2301438063988791027
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756711973801395846}
+  m_GameObject: {fileID: 7785093427683465147}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: -58.379, y: 3.73, z: 21.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4544635444056873827
+--- !u!114 &8764019547117621311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756711973801395846}
+  m_GameObject: {fileID: 7785093427683465147}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57401be60184a9f46ba8c226cb6e346c, type: 3}
@@ -47,14 +47,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpawnedObjects: 1
   objectsToSpawn:
-  - {fileID: 4376748246903285242, guid: a3b86248d2d72d347acedeba9fe53f17, type: 3}
---- !u!65 &3756558180959337035
+  - {fileID: 1697536999392815325, guid: 519f1957998d9f84481c6069af96df81, type: 3}
+  - {fileID: 3806054385202988519, guid: 0223e2cd01c780843930c27d30eee71d, type: 3}
+  - {fileID: 4888580559867380500, guid: c36f6e8fe63500a46893887bf498c608, type: 3}
+  - {fileID: 2388375867981645971, guid: 85f2cbfe22d2ba34081bfa83c516b5e5, type: 3}
+  - {fileID: 7584715859108249567, guid: 3201f104de2c1b341b88de666eb35e3d, type: 3}
+  - {fileID: 1140027242333871659, guid: 3dfb6e7e5a2630a49afa8a8b4c74c49f, type: 3}
+--- !u!65 &8755860400281952480
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756711973801395846}
+  m_GameObject: {fileID: 7785093427683465147}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -67,5 +72,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 7, y: 1, z: 4}
+  m_Size: {x: 3, y: 1, z: 3}
   m_Center: {x: 0, y: 0, z: 0}

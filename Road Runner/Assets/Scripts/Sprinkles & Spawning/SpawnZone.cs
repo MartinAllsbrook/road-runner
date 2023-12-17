@@ -28,7 +28,7 @@ public class SpawnZone : MonoBehaviour
         numSpawnedObjects--;
     }
     
-    public virtual void SpawnRandomObject()
+    public virtual void SpawnRandomObject(Vector3 sprinkleCenter, float sprinkleRadius)
     {
         if (IsFull())
         {
@@ -41,7 +41,7 @@ public class SpawnZone : MonoBehaviour
         int randomIndex = Random.Range(0, objectsToSpawn.Length);
         Vector3 randomPoint = GetRandomPointInBounds();
 
-        ObjectSpawner.Instance.SpawnObject(objectsToSpawn[randomIndex], randomPoint, this);
+        ObjectSpawner.Instance.SpawnObject(objectsToSpawn[randomIndex], randomPoint, this, sprinkleCenter, sprinkleRadius);
     }
 
     protected Vector3 GetRandomPointInBounds()

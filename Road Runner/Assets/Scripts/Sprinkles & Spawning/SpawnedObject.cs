@@ -10,7 +10,7 @@ public class SpawnedObject : NetworkBehaviour
     protected bool _freshlySpawned = false;
     protected bool _removed = false;
 
-    public virtual void Spawn(SpawnZone parentSpawnZone)
+    public virtual void Spawn(SpawnZone parentSpawnZone, Vector3 sprinkleCenter, float sprinkleRadius)
     {
         _freshlySpawned = true;
         _removed = false;

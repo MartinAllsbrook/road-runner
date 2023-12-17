@@ -78,7 +78,7 @@ public class Sprinkle : MonoBehaviour
             return;
 
         int randomIndex = avialableIndexes[UnityEngine.Random.Range(0, avialableIndexes.Count)];
-        spawnZones[randomIndex].SpawnRandomObject();
+        spawnZones[randomIndex].SpawnRandomObject(transform.position, flatRadius);
     }
 
     #region Terrain Generation

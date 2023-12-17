@@ -28,10 +28,10 @@ public class ObjectSpawner : NetworkBehaviour
     }
 
     // if we are the server, we can skip the server rpc and just spawn the thing
-    public void SpawnObject(SpawnedObject objectToSpawn, Vector3 position, SpawnZone parentSpawnZone)
+    public void SpawnObject(SpawnedObject objectToSpawn, Vector3 position, SpawnZone parentSpawnZone, Vector3 sprinkleCenter, float sprinkleRadius)
     {
         SpawnedObject spawnedObject = Instantiate(objectToSpawn, position, Quaternion.identity);
-        spawnedObject.Spawn(parentSpawnZone);
+        spawnedObject.Spawn(parentSpawnZone, sprinkleCenter, sprinkleRadius);
 
         NetworkObject spawnedObjectNetworkObject = spawnedObject.GetComponent<NetworkObject>();
         spawnedObjectNetworkObject.Spawn(true);
