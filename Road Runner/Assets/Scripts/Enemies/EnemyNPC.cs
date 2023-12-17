@@ -4,7 +4,7 @@ using Unity.IO.LowLevel.Unsafe;
 using Unity.Netcode;
 using UnityEngine;
 
-public class EnemyNPC : NetworkBehaviour
+public class EnemyNPC : SpawnedObject
 {
     [Header("Enemy Stats")]
     [SerializeField] private float maxHealth = 100f;
@@ -64,6 +64,10 @@ public class EnemyNPC : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void RemoveFromWorldServerRpc()
     {
+        if (_freshlySpawned)
+        {
+            RemoveFromSpawnZone();
+        }
         NetworkObject.Despawn(false);
     }
 

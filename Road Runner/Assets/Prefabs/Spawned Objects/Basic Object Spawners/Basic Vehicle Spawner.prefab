@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7785093427683465147
+--- !u!1 &2409674440659586814
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,54 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2301438063988791027}
-  - component: {fileID: 8755860400281952480}
-  - component: {fileID: -9065713338986550912}
+  - component: {fileID: 3658831117181462850}
+  - component: {fileID: 1504565661798830875}
+  - component: {fileID: 2292748271770595891}
   m_Layer: 0
-  m_Name: Gun Spawner
+  m_Name: Basic Vehicle Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2301438063988791027
+--- !u!4 &3658831117181462850
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7785093427683465147}
+  m_GameObject: {fileID: 2409674440659586814}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -58.379, y: 3.73, z: 21.92}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8755860400281952480
+--- !u!114 &1504565661798830875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409674440659586814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57401be60184a9f46ba8c226cb6e346c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpawnedObjects: 1
+  objectsToSpawn:
+  - {fileID: 42250546219357343, guid: 74e1bd4d3050df9408be33bcfb36464f, type: 3}
+  - {fileID: 7551626093006802184, guid: 09a14aa55e2766b4a9093f42434f22e0, type: 3}
+--- !u!65 &2292748271770595891
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7785093427683465147}
+  m_GameObject: {fileID: 2409674440659586814}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -52,19 +68,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 7, y: 1, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-9065713338986550912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7785093427683465147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 716b8a3d31ec39544b537bb0d409991c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  possibleItems: 010000000f00000011000000140000001500000010000000
-  itemSpawnTimer: 120

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class ItemPickup : NetworkBehaviour
+public class ItemPickup : SpawnedObject
 {
     [SerializeField] protected ItemSO itemSo;
 
@@ -30,18 +30,22 @@ public class ItemPickup : NetworkBehaviour
     public void RemoveFromWorld()
     {
         // Do Stuff
-        RemoveFromWorldServerRpc();
+        RemoveFromWorldServerRpc(); // TODO: This does not need to be a server rpc because the item will exist on the server and the client
     }
     
     public override void OnNetworkDespawn()
     {
-        gameObject.SetActive(false);
+        Destroy(gameObject);
         base.OnNetworkDespawn();
     }
     
     [ServerRpc(RequireOwnership = false)]
     private void RemoveFromWorldServerRpc()
     {
+        if (_freshlySpawned)
+        {
+            RemoveFromSpawnZone();
+        }
         NetworkObject.Despawn(false);
     }
 }

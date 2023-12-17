@@ -333,9 +333,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrain
       objectReference: {fileID: 0}
+    - target: {fileID: 2079987541488377761, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+      propertyPath: sprinkleRanks.Array.data[1].numToPlace
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3629075484901468618, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3225911626
+      value: 2500703158
       objectReference: {fileID: 0}
     - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: terrainRadius

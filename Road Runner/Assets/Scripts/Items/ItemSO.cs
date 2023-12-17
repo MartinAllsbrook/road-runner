@@ -18,11 +18,6 @@ public class ItemSO : ScriptableObject
         return uiSprite;
     }
     
-    public bool GetIsGun()
-    {
-        return isGun;
-    }
-    
     public Inventory.InventoryItem GetInventoryItem()
     {
         return inventoryItem;
@@ -36,10 +31,5 @@ public class ItemSO : ScriptableObject
     public GameObject GetItemPickupPrefab()
     {
         return itemPickupPrefab;
-    }
-    
-    public NetworkObject GetItemPickupNetworkObject()
-    {
-        return itemPickupPrefab.GetComponent<NetworkObject>();
     }
 }

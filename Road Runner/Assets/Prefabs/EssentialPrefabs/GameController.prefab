@@ -90,10 +90,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2679334488881847894}
   - component: {fileID: 8584038052254596596}
+  - component: {fileID: 6838372037001996467}
   - component: {fileID: 2168411699179998783}
-  - component: {fileID: 924022347241514528}
-  - component: {fileID: 6084800020226452126}
-  - component: {fileID: 8113750993647121045}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -138,6 +136,22 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &6838372037001996467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3017228783983974828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d3b92dd4cf0c545a811a4a929625b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySpawnedObjectPrefabs:
+  - {fileID: 4052359956121919187, guid: 18ef45a510984824da0e7eff4da82c53, type: 3}
+  - {fileID: 6054560078628120099, guid: cb63f292e5d57bd4cab6010ee8fc822a, type: 3}
+  - {fileID: 4376748246903285242, guid: a3b86248d2d72d347acedeba9fe53f17, type: 3}
 --- !u!114 &2168411699179998783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,66 +166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletHolePool: {fileID: 6549145272156588226}
   bulletCrackPool: {fileID: 679101583716403174}
---- !u!114 &924022347241514528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3017228783983974828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74a632bf186557f449c3498b42f85ba7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemSos:
-  - {fileID: 11400000, guid: b3baf539b6f458c41b2a8f7a6a643daa, type: 2}
-  - {fileID: 11400000, guid: 36f7b16f025792f4b87f03934798625e, type: 2}
-  - {fileID: 11400000, guid: cd1fe809342da0a459f21f0c399c5c15, type: 2}
-  - {fileID: 11400000, guid: 3b5fb556a968a0a409bddab07d8f68aa, type: 2}
-  - {fileID: 11400000, guid: cc4a9ea93c1f2ca428f398fa5941633c, type: 2}
-  - {fileID: 11400000, guid: d13d19a202c8f0f4ea148284ffae6984, type: 2}
-  - {fileID: 11400000, guid: d6ec0fe4636309540af72c7b76b3132b, type: 2}
-  - {fileID: 11400000, guid: e40bb5f4986861a4c9c99ad5efe6aa17, type: 2}
-  - {fileID: 11400000, guid: f72fc388000a58d48b357107110449ac, type: 2}
-  - {fileID: 11400000, guid: f0aca54f563d3be479ef04186f3aa4d7, type: 2}
-  - {fileID: 11400000, guid: 861f8f4db417d7543bb6596a8f5459f7, type: 2}
-  - {fileID: 11400000, guid: 8b791ea92eba05b40af6d8f2bbc12b8d, type: 2}
---- !u!114 &6084800020226452126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3017228783983974828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a49cd78b6d185ab4b8f809ceb09aafd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vehicles:
-  - {fileID: 2764108772024419081, guid: 09a14aa55e2766b4a9093f42434f22e0, type: 3}
-  - {fileID: 374896843945188998, guid: 74e1bd4d3050df9408be33bcfb36464f, type: 3}
-  spawnTime: 100
-  worldSize: 2560
-  worldPadding: 120
---- !u!114 &8113750993647121045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3017228783983974828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39984621af504c045b441ad7f794de7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefabs:
-  - {fileID: 4052359956121919187, guid: 18ef45a510984824da0e7eff4da82c53, type: 3}
-  - {fileID: 6054560078628120099, guid: cb63f292e5d57bd4cab6010ee8fc822a, type: 3}
-  - {fileID: 4376748246903285242, guid: a3b86248d2d72d347acedeba9fe53f17, type: 3}
-  enenmySpawnTime: 22
 --- !u!1 &8166685882722132641
 GameObject:
   m_ObjectHideFlags: 0

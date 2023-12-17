@@ -5217,7 +5217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 229663110
+  GlobalObjectIdHash: 3601959125
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -5633,6 +5633,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   droppedItemBag: {fileID: 0}
+  itemSos:
+  - {fileID: 11400000, guid: b3baf539b6f458c41b2a8f7a6a643daa, type: 2}
+  - {fileID: 11400000, guid: 36f7b16f025792f4b87f03934798625e, type: 2}
+  - {fileID: 11400000, guid: e40bb5f4986861a4c9c99ad5efe6aa17, type: 2}
+  - {fileID: 11400000, guid: f72fc388000a58d48b357107110449ac, type: 2}
+  - {fileID: 11400000, guid: f0aca54f563d3be479ef04186f3aa4d7, type: 2}
+  - {fileID: 11400000, guid: 8b791ea92eba05b40af6d8f2bbc12b8d, type: 2}
+  - {fileID: 11400000, guid: 861f8f4db417d7543bb6596a8f5459f7, type: 2}
+  - {fileID: 11400000, guid: cd1fe809342da0a459f21f0c399c5c15, type: 2}
+  - {fileID: 11400000, guid: 3b5fb556a968a0a409bddab07d8f68aa, type: 2}
+  - {fileID: 11400000, guid: d13d19a202c8f0f4ea148284ffae6984, type: 2}
+  - {fileID: 11400000, guid: d6ec0fe4636309540af72c7b76b3132b, type: 2}
+  - {fileID: 11400000, guid: cc4a9ea93c1f2ca428f398fa5941633c, type: 2}
 --- !u!114 &3467850248826823159
 MonoBehaviour:
   m_ObjectHideFlags: 0

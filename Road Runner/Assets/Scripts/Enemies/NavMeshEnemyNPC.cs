@@ -9,9 +9,8 @@ public class NavMeshEnemyNPC : EnemyNPC
 {
     [SerializeField] private NavMeshAgent agent;
 
-    [Header("Patrol Area")]
-    [SerializeField] private Vector3 patrolCenter = new Vector3(0, 0, 0);
-    [SerializeField] private float maxPatrolDistance = 32f;
+    private Vector3 patrolCenter = new Vector3(0, 0, 0);
+    private float maxPatrolDistance = 32f;
 
     [Header("Vision")]
     [SerializeField] private float visionRange = 32f;
@@ -91,6 +90,14 @@ public class NavMeshEnemyNPC : EnemyNPC
         return vectorToPlayer;
     }
 
+    public override void Spawn(SpawnZone parentSpawnZone, Vector3 sprinkleCenter, float sprinkleRadius)
+    {
+        base.Spawn(parentSpawnZone, sprinkleCenter, sprinkleRadius);
+
+        patrolCenter = sprinkleCenter;
+        maxPatrolDistance = sprinkleRadius;
+    }
+
     #region Server Only
     private void GoToRandomPoint()
     {
@@ -107,17 +114,13 @@ public class NavMeshEnemyNPC : EnemyNPC
 
     private Vector3 GetPatrolPoint()
     {
-/*        Vector3 randomPoint = patrolCenter + Random.insideUnitSphere * maxPatrolDistance;
-        NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, maxPatrolDistance, 1);*/
-        return SprinkleGenerator.Instance.GetPointInSprinkleOnNavmesh();
-    }
+        if (!_freshlySpawned)
+            return SprinkleGenerator.Instance.GetPointInSprinkleOnNavmesh();
 
-    /*private Vector3 GetPatrolPoint()
-    {
         Vector3 randomPoint = patrolCenter + Random.insideUnitSphere * maxPatrolDistance;
         NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, maxPatrolDistance, 1);
         return hit.position;
-    }*/
+    }
     #endregion
 
     [Command ("BotsTargetMe", MonoTargetType.All)]
