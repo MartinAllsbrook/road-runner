@@ -11,6 +11,8 @@ public class EnemyNPCSpawner : NetworkBehaviour
 {
     [SerializeField] private EnemyNPC[] enemyPrefabs;
 
+    [SerializeField] private float enenmySpawnTime = 15f;
+
     public enum EnemyType
     {
         EnemyNPC,
@@ -23,7 +25,7 @@ public class EnemyNPCSpawner : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsServer)
         {
-            Debug.LogWarning("Disableing Enemy Spawner on Client");
+            //Debug.LogWarning("Disableing Enemy Spawner on Client");
             return;
         }
 
@@ -37,7 +39,7 @@ public class EnemyNPCSpawner : NetworkBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(enenmySpawnTime);
 
             SpawnEnemy(EnemyType.HostileEnemyNPC);
         }

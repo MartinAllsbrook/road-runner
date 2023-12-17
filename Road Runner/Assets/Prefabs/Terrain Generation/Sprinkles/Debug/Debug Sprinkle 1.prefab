@@ -119,8 +119,8 @@ Transform:
   m_GameObject: {fileID: 2899036293881253695}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.93, y: 2.47, z: -13.43}
-  m_LocalScale: {x: 10, y: 10, z: 5}
+  m_LocalPosition: {x: -2.93, y: 3.44, z: -13.43}
+  m_LocalScale: {x: 10, y: 7, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7376855918181911646}
@@ -455,7 +455,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9065713338986550912, guid: 0402e6ee0f6fa9948a5da33a700058c7, type: 3}
       propertyPath: itemSpawnTimer
-      value: 15
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2301438063988791027, guid: 0402e6ee0f6fa9948a5da33a700058c7, type: 3}
       propertyPath: m_LocalPosition.x

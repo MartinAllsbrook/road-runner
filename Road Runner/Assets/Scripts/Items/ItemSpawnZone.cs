@@ -25,7 +25,7 @@ public class ItemSpawnZone : MonoBehaviour
     {
         if (!ItemSpawner.Instance.IsServer)
         {
-            Debug.LogWarning("Disableing Item Spawn Zone on Client"); // could also destroy this object or something
+            //Debug.LogWarning("Disableing Item Spawn Zone on Client"); // could also destroy this object or something
             enabled = false;
             yield return null; 
             StopAllCoroutines();

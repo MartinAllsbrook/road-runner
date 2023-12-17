@@ -1446,9 +1446,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'v0.1.1 - Weapons Update 1
+  m_text: 'v0.1.3 - The Loading Screen Update
 
-    An Open World Survival Game by Martin Allsbrook
+    An Open World Survival Game by
+    Martin Allsbrook
 
     martinallsbrook.com/portfolio/road-runner/
 

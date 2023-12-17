@@ -338,13 +338,13 @@ PrefabInstance:
       value: 3225911626
       objectReference: {fileID: 0}
     - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+      propertyPath: terrainRadius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: navMeshManager
       value: 
       objectReference: {fileID: 8860516609234180564}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: sprinkleGenerator
-      value: 
-      objectReference: {fileID: 739216961325664784}
     - target: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -390,17 +390,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
---- !u!114 &739216961325664784 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2079987541488377761, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-  m_PrefabInstance: {fileID: 1630197851099600305}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be0786971ed2b694db9ec82564ead893, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &8000000704390887595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
@@ -414,6 +403,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2935390251777952128}
     m_Modifications:
+    - target: {fileID: 983755526239623390, guid: 64905056659aa4b40859e1d47c7d68a4, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 69599
+      objectReference: {fileID: 0}
     - target: {fileID: 1040859381764523773, guid: 64905056659aa4b40859e1d47c7d68a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

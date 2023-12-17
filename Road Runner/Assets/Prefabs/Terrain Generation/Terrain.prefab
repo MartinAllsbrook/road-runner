@@ -88,7 +88,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshManager: {fileID: 0}
   treeManager: {fileID: 8463256600902518824}
-  sprinkleGenerator: {fileID: 0}
+  sprinkleGenerator: {fileID: 2079987541488377761}
   terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
   terrainRadius: 1
   chunkSize: 513

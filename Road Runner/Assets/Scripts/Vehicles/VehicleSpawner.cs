@@ -19,7 +19,7 @@ public class VehicleSpawner : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsServer)
         {
-            Debug.LogWarning("Disableing Vehicle Spawner on Client");
+            //Debug.LogWarning("Disableing Vehicle Spawner on Client");
             enabled = false;
             return;
         }
