@@ -51,7 +51,7 @@ public class InventoryDisplay : MonoBehaviour
     public void CreateBaseInventoryDisplay(int width, int height, BaseInventory baseInventoryRef)
     {
         baseInventory = baseInventoryRef;
-        itemSoDictionary = ItemSpawner.ItemDictionary;
+        itemSoDictionary = Inventory.ItemSODictionary;
 
         handDisplay.sprite = itemSoDictionary[Inventory.InventoryItem.Empty].GetSprite();
 

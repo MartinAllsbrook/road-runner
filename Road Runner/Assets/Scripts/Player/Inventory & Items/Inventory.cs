@@ -16,6 +16,7 @@ public class Inventory : NetworkBehaviour
     private int localKey;
 
     protected static Dictionary<InventoryItem, ItemSO> itemSoDictionary;
+    public static Dictionary<InventoryItem, ItemSO> ItemSODictionary { get { return itemSoDictionary; } }
 
     protected InventoryItem[,] inventory;
     public enum InventoryItem

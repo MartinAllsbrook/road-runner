@@ -1,3 +1,4 @@
+using QFSW.QC;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -13,7 +14,10 @@ public class BaseInventory : Inventory
     [SerializeField] private LayerMask isItemPickup;
     [SerializeField] private LayerMask isVehicle;
     [SerializeField] private Inventory droppedItemBag;
-    
+
+    [Header("Item Refs")]
+    [SerializeField] private ItemSO[] itemSos;
+
     private InventoryItem usingItem; // The item being used by the player
     private UseableItemController useableItemController;
 
@@ -26,6 +30,17 @@ public class BaseInventory : Inventory
     private Dictionary<int, Inventory> connectedInventories;
 
 
+    private void Awake()
+    {
+        if (!IsOwner)
+            return;
+
+        if (Instance == null)
+            Instance = this;
+
+
+    }
+
     protected override void Start()
     {
         useableItemController = GetComponent<UseableItemController>();
@@ -35,16 +50,18 @@ public class BaseInventory : Inventory
         if (!IsOwner)
             return;
 
-        if (Instance == null)
-            Instance = this;
+        if (itemSoDictionary == null)
+        {
+            itemSoDictionary = new Dictionary<InventoryItem, ItemSO>();
+            for (int i = 0; i < itemSos.Length; i++)
+                itemSoDictionary.Add(itemSos[i].GetInventoryItem(), itemSos[i]);
+        }
 
         connectedInventories = new Dictionary<int, Inventory>();
 
         inventoryHand = InventoryItem.Empty;
 
         mainCamera = Camera.main.transform;
-
-        itemSoDictionary = ItemSpawner.ItemDictionary;
 
         connectedInventories.Add(0, this);
         InventoryDisplay.Instance.CreateBaseInventoryDisplay(width, height, this);
@@ -282,4 +299,45 @@ public class BaseInventory : Inventory
             }
         }
     }
+
+    #region Debug Commands
+    [Command]
+    public void SpawnItemDebug(int x, int y, int z, InventoryItem itemEnum)
+    {
+        Vector3 position = new Vector3(x, y, z);
+
+        if (!IsServer)
+        {
+            SpawnItemServerRpc(itemEnum, position);
+            return;
+        }
+
+        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].GetItemPickupPrefab().GetComponent<SpawnedObject>();
+        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
+    }
+
+    [Command]
+    public void SpawnItemDebug(InventoryItem itemEnum)
+    {
+        Transform playerTransform = PlayerSpawner.localPlayerSpawner.transform;
+        Vector3 position = playerTransform.position + playerTransform.forward * 2;
+
+        if (!IsServer)
+        {
+            SpawnItemServerRpc(itemEnum, position);
+            return;
+        }
+
+        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].GetItemPickupPrefab().GetComponent<SpawnedObject>();
+        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnItemServerRpc(InventoryItem itemEnum, Vector3 position)
+    {
+        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].GetItemPickupPrefab().GetComponent<SpawnedObject>();
+        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
+    }
+
+    #endregion
 }

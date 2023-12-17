@@ -587,10 +587,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5544963010723210606, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -5
-      objectReference: {fileID: 0}
     - target: {fileID: 5649508330529101091, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -991,14 +987,6 @@ PrefabInstance:
     - target: {fileID: 3017228783983974828, guid: b7cd658654a3a574d97f38ffb53dd097, type: 3}
       propertyPath: m_Name
       value: GameController
-      objectReference: {fileID: 0}
-    - target: {fileID: 6084800020226452126, guid: b7cd658654a3a574d97f38ffb53dd097, type: 3}
-      propertyPath: spawnTime
-      value: 9999
-      objectReference: {fileID: 0}
-    - target: {fileID: 8113750993647121045, guid: b7cd658654a3a574d97f38ffb53dd097, type: 3}
-      propertyPath: enenmySpawnTime
-      value: 9999
       objectReference: {fileID: 0}
     - target: {fileID: 8584038052254596596, guid: b7cd658654a3a574d97f38ffb53dd097, type: 3}
       propertyPath: GlobalObjectIdHash
