@@ -318,7 +318,6 @@ GameObject:
   - component: {fileID: 5163188678432452693}
   - component: {fileID: 462104966035372555}
   - component: {fileID: 2921935991448365291}
-  - component: {fileID: 5994925050730653377}
   m_Layer: 10
   m_Name: The Rig
   m_TagString: Untagged
@@ -522,21 +521,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.8, y: 3.2651732, z: 4.055952}
   m_Center: {x: 0, y: 1.3764735, z: 3.0484266}
---- !u!114 &5994925050730653377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1098127313856806283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03d648944905eac40894e508fdfc64e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 5
-  height: 5
-  publicInventory: 1
 --- !u!1 &3373559735629910658
 GameObject:
   m_ObjectHideFlags: 0

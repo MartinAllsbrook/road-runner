@@ -1,24 +1,48 @@
 using Mono.CSharp;
+using QFSW.QC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Inventory : NetworkBehaviour
 {
-    [SerializeField] protected int width;
-    [SerializeField] protected int height;
+    public static Inventory Instance;
 
-    [SerializeField] private bool publicInventory = false;
+    [Header("World Interaction")]
+    [SerializeField] private float maxItemPickupDistance;
+    [SerializeField] private LayerMask isItemPickup;
+    [SerializeField] private LayerMask isVehicle;
+    [SerializeField] private Inventory droppedItemBag;
 
-    private int localKey;
+    [Header("Item Refs")]
+    [SerializeField] private ItemSO[] itemSos;
+
+    [Header("Hotbar")]
+    [SerializeField] private int hotbarSize = 9;
+    [SerializeField] private int slotWidth = 2;
+    [SerializeField] private int slotHeight = 2;
+
+    private InventoryItem usingItem; // The item being used by the player
+    private UseableItemController useableItemController;
+
+    private InventoryItem inventoryHand; // The item being moved around the inventory
+
+    private VehicleInteractionController vehicle;
+
+    private Transform mainCamera;
+
+    private Hotbar hotbar;
+    private Dictionary<int, ConnectedInventory> connectedInventories;
+
+    private InventoryUI inventoryUI;
 
     protected static Dictionary<InventoryItem, ItemSO> itemSoDictionary;
     public static Dictionary<InventoryItem, ItemSO> ItemSODictionary { get { return itemSoDictionary; } }
 
-    protected InventoryItem[,] inventory;
     public enum InventoryItem
     {
         Empty,
@@ -62,95 +86,359 @@ public class Inventory : NetworkBehaviour
         Lighter
     }
 
-    protected virtual void Start()
+    private void Awake()
     {
-        inventory = new InventoryItem[width, height];
-        for (int x = 0; x < width; x++)
+        if (!IsOwner)
+            return;
+
+        if (Instance == null)
+            Instance = this;
+    }
+
+    protected void Start()
+    {
+        useableItemController = GetComponent<UseableItemController>();
+        inventoryUI = InventoryUI.Instance;
+
+        if (!IsOwner)
+            return;
+
+        // Create hotbar
+
+        if (itemSoDictionary == null)
         {
-            for (int y = 0; y < height; y++)
+            itemSoDictionary = new Dictionary<InventoryItem, ItemSO>();
+            for (int i = 0; i < itemSos.Length; i++)
+                itemSoDictionary.Add(itemSos[i].GetInventoryItem(), itemSos[i]);
+        }
+
+        connectedInventories = new Dictionary<int, ConnectedInventory>();
+
+        inventoryHand = InventoryItem.Empty;
+
+        mainCamera = Camera.main.transform;
+
+        CreateHotbar();
+    }
+
+    private void CreateHotbar()
+    {
+        hotbar = new Hotbar(hotbarSize, slotWidth, slotHeight);
+        connectedInventories.Add(0, hotbar);
+
+        inventoryUI.CreateHotbarSlotUIs(hotbarSize, slotWidth, slotHeight);
+    }
+
+    public void OnItemPickUpInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (vehicle != null)
             {
-                inventory[x, y] = InventoryItem.Empty; // Don't need to call set item because start is run on every inventory accross the server
+                RemoveConnectedInventory(vehicle.GetInvetory().GetLocalKey());
+                vehicle.ExitVehicle(GetNetworkObject(NetworkObjectId));
+                vehicle = null;
+            }
+            else
+            {
+                RaycastForPickups();
             }
         }
     }
 
-    public bool IsSlotFree(int x, int y)
-    {
-        if (x < 0 || x >= width || y < 0 || y >= height)
-            return false;
-        
-        return inventory[x, y] == InventoryItem.Empty;
-    }
+    #region Picking up items
 
-    public void AddItem(int x, int y, InventoryItem inventoryItem)
+    private void RaycastForPickups()
     {
-        SetItem(x, y, inventoryItem);
-    }
+        Ray ray = new Ray(mainCamera.position, mainCamera.forward);
+        RaycastHit raycastHit;
 
-    public InventoryItem RemoveItem(int x, int y)
-    {
-        InventoryItem tempItemHolder = inventory[x, y];
-        SetItem(x, y, InventoryItem.Empty);
-        return tempItemHolder;
-    }
-
-    public bool AddItem(int invetoryKey, InventoryItem inventoryItem)
-    {
-        for (int y = 0; y < height; y++)
+        if (Physics.Raycast(ray, out raycastHit, maxItemPickupDistance, isItemPickup))
         {
-            for (int x = 0; x < width; x++)
+            if (raycastHit.transform.CompareTag("Test Add Inventory"))
             {
-                if (inventory[x,y] == InventoryItem.Empty)
-                {
-                    SetItem(x, y, inventoryItem);
-                    InventoryDisplay.Instance.UpdateItemSlot(invetoryKey, x, y, inventoryItem);
+                ConnectedInventory invetoryToAdd = raycastHit.transform.GetComponent<ConnectedInventory>();
+                AddConnectedInventory(invetoryToAdd);
+                return;
+            }
 
-                    return true;
-                }
+            ItemPickup itemPickup = raycastHit.transform.GetComponent<ItemPickup>();
+            TryPickUpItem(itemPickup);
+        }
+
+        if (Physics.Raycast(ray, out raycastHit, maxItemPickupDistance, isVehicle))
+        {
+            VehicleInteractionController vehicleInteractionController = raycastHit.transform.GetComponent<VehicleInteractionController>();
+
+            EnterVehicle(vehicleInteractionController);
+        }
+    }
+
+    private void TryPickUpItem(ItemPickup itemPickup)
+    {
+        if (TryFitAnywehere(itemPickup.GetScriptableObject().GetInventoryItem()))
+        {
+            itemPickup.RemoveFromWorld();
+        }
+    }
+
+    private bool TryFitAnywehere(InventoryItem inventoryItem)
+    {
+        var keys = connectedInventories.Keys;
+
+        foreach (var key in keys)
+        {
+            if (connectedInventories[key].TryFitItem(inventoryItem, out ConnectedInventory.ContainedItem containedItem))
+            {
+                inventoryUI.AddItemDisplay(itemSoDictionary[inventoryItem], containedItem, key);
+                return true;
             }
         }
 
         return false;
     }
+    #endregion
 
-    public InventoryItem GetItemAt(int x, int y)
+    #region All-inventory Methods
+    private void RemoveConnectedInventory(int key)
     {
-        return inventory[x, y];
+        inventoryUI.RemoveInventoryDisplay(key);
+        connectedInventories.Remove(key);
     }
 
-    public Vector2Int GetDimensions()
+    private void AddConnectedInventory(ConnectedInventory inventoryToConnect)
     {
-        return new Vector2Int(width, height);
+        int inventoryKey = GetAvailableIndex();
+        connectedInventories.Add(inventoryKey, inventoryToConnect);
+        inventoryToConnect.SetLocalKey(inventoryKey);
+
+        Vector2Int invetoryDimensions = inventoryToConnect.GetDimensions();
+        //inventoryUI.CreateInventoryDisplay(inventoryKey, invetoryDimensions.x, invetoryDimensions.y);
+
+        for (int x = 0; x < invetoryDimensions.x; ++x)
+        {
+            for (int y = 0; y < invetoryDimensions.y; ++y)
+            {
+                //inventoryUI.UpdateItemSlot(inventoryKey, x, y, inventoryToConnect.GetItemAt(x, y));
+            }
+        }
+    }
+    /// <summary>
+    /// Method called to place an item in a slot
+    /// </summary>
+    /// <param name="inventoryIndex"></param>
+    /// <param name="slot"></param>
+    public bool TryPlaceInSlot(int inventoryIndex, Vector2Int slot)
+    {
+        if (inventoryHand == InventoryItem.Empty)
+        {
+            return false; // or true it doesn't matter
+        }
+
+        ConnectedInventory inventory = connectedInventories[inventoryIndex];
+
+        ItemSO itemSO = itemSoDictionary[inventoryHand];
+        Vector2Int dimensions = itemSO.GetInventoryDimensions();
+
+        if (inventory.IsAreaAvailable(slot, dimensions))
+        {
+            ConnectedInventory.ContainedItem containedItem = inventory.AddItem(inventoryHand, slot, dimensions);
+
+            inventoryUI.AddItemDisplay(itemSO, containedItem, inventoryIndex);
+
+            inventoryHand = InventoryItem.Empty;
+            return true;
+        }
+
+        return false;
     }
 
-    public void SetLocalKey(int key)
+    public bool RetrieveItem(int inventoryIndex, ConnectedInventory.ContainedItem containedItem)
     {
-        localKey = key;
+        if (inventoryHand != InventoryItem.Empty)
+        {
+            // Maybe swap items in the furture
+            return false;
+        }
+
+        ConnectedInventory inventory = connectedInventories[inventoryIndex];
+
+        InventoryItem retrievedItem = inventory.RemoveItem(containedItem);
+
+        inventoryHand = retrievedItem;
+        return true;
     }
 
-    public int GetLocalKey()
+    private int GetAvailableIndex()
     {
-        return localKey;
+        for (int i = 0; i < 100; i++)
+        {
+            if (!connectedInventories.ContainsKey(i))
+                return i;
+        }
+
+        Debug.LogError("Dude wtf there are more than 100 inventories stop it rn. Also you just broke my inventory system");
+        return -1;
     }
 
-    // Set of methods for setting items accross the server if required
-    private void SetItem(int x, int y, InventoryItem inventoryItem)
+    private void EnterVehicle(VehicleInteractionController vehicleInteractionController)
     {
-        if (!publicInventory)
-            inventory[x, y] = inventoryItem;
-        else
-            SetItemServerRpc(x, y, inventoryItem);
+        vehicle = vehicleInteractionController;
+        vehicleInteractionController.EnterVehicle(GetNetworkObject(NetworkObjectId));
+
+        AddConnectedInventory(vehicleInteractionController.GetInvetory());
+    }
+    #endregion
+
+    #region Using Item Methods
+    public InventoryItem SetUsing(out InventoryItem handItem)
+    {
+        InventoryItem tempItemHolder = usingItem;
+        usingItem = inventoryHand;
+        inventoryHand = tempItemHolder;
+
+        HoldItemServerRpc(usingItem);
+
+        handItem = inventoryHand;
+        return usingItem;
+    }
+
+    public void RemoveUsing()
+    {
+        usingItem = InventoryItem.Empty;
+
+        // TODO: Reset Hotbar I guess?
+        //inventoryUI.ResetUsingSlot();
+
+        Debug.LogWarning("RemoveUsing() is not fully implemented");
+
+        HoldItemServerRpc(usingItem);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SetItemServerRpc(int x, int y, InventoryItem inventoryItem) 
-    { 
-        SetItemClientRpc(x, y, inventoryItem);
+    private void HoldItemServerRpc(InventoryItem item)
+    {
+        HoldItemClientRpc(item);
     }
 
     [ClientRpc]
-    private void SetItemClientRpc(int x, int y, InventoryItem inventoryItem)
+    private void HoldItemClientRpc(InventoryItem item)
     {
-        inventory[x, y] = inventoryItem;
+        useableItemController.SetItem(itemSoDictionary[item]);
     }
+    #endregion
+
+    #region Drop Item Methods
+    public void DropItem()
+    {
+        DropItemServerRpc(inventoryHand);
+        inventoryHand = InventoryItem.Empty;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DropItemServerRpc(InventoryItem item)
+    {
+        GameObject itemGameObject = Instantiate(itemSoDictionary[item].GetItemPickupPrefab(), transform.position + Vector3.up * 2.5f, new Quaternion(0, 0, 0, 0));
+
+        NetworkObject itemNetworkObject = itemGameObject.GetComponent<NetworkObject>();
+        itemNetworkObject.Spawn(true);
+    }
+
+    public void DropAllItems()
+    {
+        if (inventoryHand != InventoryItem.Empty)
+        {
+            DropItemServerRpc(inventoryHand);
+            inventoryHand = InventoryItem.Empty;
+        }
+
+        if (usingItem != InventoryItem.Empty)
+        {
+            DropItemServerRpc(usingItem);
+            RemoveUsing();
+        }
+
+        foreach (var key in connectedInventories.Keys)
+        {
+            ConnectedInventory connectedInventory = connectedInventories[key];
+            Vector2Int dimensions = connectedInventory.GetDimensions();
+            int width = dimensions.x;
+            int height = dimensions.y;
+
+            // TODO: Drop all items in the inventory using the new system
+            Debug.LogWarning("DropAllItems() is not fully implemented");
+
+/*            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    if (connectedInventory.IsSlotFree(i, j))
+                        DropItemServerRpc(connectedInventory.RemoveItem(i,j));
+
+                    InventoryDisplay.Instance.UpdateItemSlot(0, i, j, InventoryItem.Empty);
+                }
+            }*/
+        }
+    }
+    #endregion
+
+    #region Hotbar Controlls
+
+    public void OnHotbarKeyPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            string keyName = context.control.name;
+            int hotbarSlotIndex = Int32.Parse(keyName) - 1;
+
+            InventoryItem item = hotbar.GetItemAtSlot(hotbarSlotIndex);
+
+            Debug.Log("Hotbar slot index: " + hotbarSlotIndex + " Item: " + item);
+
+            HoldItemServerRpc(item);
+        }
+    }
+
+    #endregion
+
+    #region Debug Commands
+    [Command]
+    public void SpawnItemDebug(int x, int y, int z, InventoryItem itemEnum)
+    {
+        Vector3 position = new Vector3(x, y, z);
+
+        if (!IsServer)
+        {
+            SpawnItemServerRpc(itemEnum, position);
+            return;
+        }
+
+        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].GetItemPickupPrefab().GetComponent<SpawnedObject>();
+        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
+    }
+
+    [Command]
+    public void SpawnItemDebug(InventoryItem itemEnum)
+    {
+        Transform playerTransform = PlayerSpawner.localPlayerSpawner.transform;
+        Vector3 position = playerTransform.position + playerTransform.forward * 2;
+
+        if (!IsServer)
+        {
+            SpawnItemServerRpc(itemEnum, position);
+            return;
+        }
+
+        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].GetItemPickupPrefab().GetComponent<SpawnedObject>();
+        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnItemServerRpc(InventoryItem itemEnum, Vector3 position)
+    {
+        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].GetItemPickupPrefab().GetComponent<SpawnedObject>();
+        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
+    }
+
+    #endregion
 }

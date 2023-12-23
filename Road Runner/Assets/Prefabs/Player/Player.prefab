@@ -5302,12 +5302,12 @@ GameObject:
   - component: {fileID: 4350166169284157831}
   - component: {fileID: 944574688111145374}
   - component: {fileID: -7003752143085786108}
+  - component: {fileID: 7079056508264005875}
   - component: {fileID: 8952754896107954189}
   - component: {fileID: 5564229185589349921}
   - component: {fileID: 7392500675425729931}
   - component: {fileID: 8639077940336665161}
   - component: {fileID: 4696619776254441180}
-  - component: {fileID: 5951288247684718128}
   - component: {fileID: 3467850248826823159}
   - component: {fileID: 8529273315728307873}
   - component: {fileID: 6448594241301979304}
@@ -5635,6 +5635,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 33cb4f15-6d9c-49d5-b2fb-6decab976037
     m_ActionName: Player/Inspect[/Keyboard/t]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7079056508264005875}
+        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+        m_MethodName: OnItemPickUpInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 792d3520-a721-4b70-95c6-314def525690
+    m_ActionName: Player/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7079056508264005875}
+        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+        m_MethodName: OnHotbarKeyPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b4bdd2e8-5386-4a20-bdf9-78621cedff4c
+    m_ActionName: Player/Hotbar Key Press[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -5652,6 +5684,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7079056508264005875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3167927590513813192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03d648944905eac40894e508fdfc64e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxItemPickupDistance: 5
+  isItemPickup:
+    serializedVersion: 2
+    m_Bits: 512
+  isVehicle:
+    serializedVersion: 2
+    m_Bits: 1024
+  droppedItemBag: {fileID: 0}
+  itemSos:
+  - {fileID: 11400000, guid: b3baf539b6f458c41b2a8f7a6a643daa, type: 2}
+  - {fileID: 11400000, guid: 36f7b16f025792f4b87f03934798625e, type: 2}
+  - {fileID: 11400000, guid: e40bb5f4986861a4c9c99ad5efe6aa17, type: 2}
+  - {fileID: 11400000, guid: f72fc388000a58d48b357107110449ac, type: 2}
+  - {fileID: 11400000, guid: f0aca54f563d3be479ef04186f3aa4d7, type: 2}
+  - {fileID: 11400000, guid: 8b791ea92eba05b40af6d8f2bbc12b8d, type: 2}
+  - {fileID: 11400000, guid: 861f8f4db417d7543bb6596a8f5459f7, type: 2}
+  - {fileID: 11400000, guid: cd1fe809342da0a459f21f0c399c5c15, type: 2}
+  - {fileID: 11400000, guid: 3b5fb556a968a0a409bddab07d8f68aa, type: 2}
+  - {fileID: 11400000, guid: d13d19a202c8f0f4ea148284ffae6984, type: 2}
+  - {fileID: 11400000, guid: d6ec0fe4636309540af72c7b76b3132b, type: 2}
+  - {fileID: 11400000, guid: cc4a9ea93c1f2ca428f398fa5941633c, type: 2}
+  hotbarSize: 9
+  slotWidth: 2
+  slotHeight: 2
 --- !u!54 &8952754896107954189
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5767,43 +5835,6 @@ MonoBehaviour:
   upperSpeedMultiplier: 1.1
   emissionMultiplier: 100
   climbRate: 0.5
---- !u!114 &5951288247684718128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3167927590513813192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d695473188df4db45a82561afd5ec246, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 5
-  height: 3
-  publicInventory: 0
-  pickupItemKey: 102
-  maxItemPickupDistance: 5
-  isItemPickup:
-    serializedVersion: 2
-    m_Bits: 512
-  isVehicle:
-    serializedVersion: 2
-    m_Bits: 1024
-  droppedItemBag: {fileID: 0}
-  itemSos:
-  - {fileID: 11400000, guid: b3baf539b6f458c41b2a8f7a6a643daa, type: 2}
-  - {fileID: 11400000, guid: 36f7b16f025792f4b87f03934798625e, type: 2}
-  - {fileID: 11400000, guid: e40bb5f4986861a4c9c99ad5efe6aa17, type: 2}
-  - {fileID: 11400000, guid: f72fc388000a58d48b357107110449ac, type: 2}
-  - {fileID: 11400000, guid: f0aca54f563d3be479ef04186f3aa4d7, type: 2}
-  - {fileID: 11400000, guid: 8b791ea92eba05b40af6d8f2bbc12b8d, type: 2}
-  - {fileID: 11400000, guid: 861f8f4db417d7543bb6596a8f5459f7, type: 2}
-  - {fileID: 11400000, guid: cd1fe809342da0a459f21f0c399c5c15, type: 2}
-  - {fileID: 11400000, guid: 3b5fb556a968a0a409bddab07d8f68aa, type: 2}
-  - {fileID: 11400000, guid: d13d19a202c8f0f4ea148284ffae6984, type: 2}
-  - {fileID: 11400000, guid: d6ec0fe4636309540af72c7b76b3132b, type: 2}
-  - {fileID: 11400000, guid: cc4a9ea93c1f2ca428f398fa5941633c, type: 2}
 --- !u!114 &3467850248826823159
 MonoBehaviour:
   m_ObjectHideFlags: 0

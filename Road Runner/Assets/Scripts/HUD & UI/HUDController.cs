@@ -18,7 +18,7 @@ public class HUDController : MonoBehaviour
     [SerializeField] private Animator reloadAnimator;
     [SerializeField] private GameObject hitMarker;
     [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private InventoryDisplay inventoryDisplay;
+    //[SerializeField] private InventoryDisplay inventoryDisplay;
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject mapCamera;
     [SerializeField] private CrosshaireController crosshaireController;
@@ -98,13 +98,13 @@ public class HUDController : MonoBehaviour
         if (!inventoryOpen)
         {
             inventoryOpen = true;
-            inventoryDisplay.gameObject.SetActive(true);
+            //inventoryDisplay.gameObject.SetActive(true);
             PlayerSpawner.localPlayerSpawner.Pause();
         }
         else
         {
             inventoryOpen = false;
-            inventoryDisplay.gameObject.SetActive(false);
+            //inventoryDisplay.gameObject.SetActive(false);
             PlayerSpawner.localPlayerSpawner.Unpause();
         }
     }
