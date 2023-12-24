@@ -29,6 +29,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI loadingScreenText; // This is the text that is displayed on the loading screen
     [SerializeField] private Slider loadingBar ; // This is the loading bar that is displayed on the loading screen
 
+    private bool _inventoryOpen = false;
+
     private string[] _loadingScreenTexts =
     {
         "Connecting to server",
@@ -80,7 +82,7 @@ public class UIManager : MonoBehaviour
         serverUI.SetActive(true);
     }
 
-    #region Loading screens
+    #region Loading screen
 
     public void StartLoadingScreen()
     {
@@ -95,35 +97,9 @@ public class UIManager : MonoBehaviour
         loadingBar.value = (int)text;
     }
 
-/*    public void StartJoiningServer()
-    {
-        serverUI.SetActive(false);
-        joiningServerScreen.SetActive(true);
-    }
-
-    public void StartCreatingServer()
-    {
-        serverUI.SetActive(false);
-        creatingServerScreen.SetActive(true);
-    }
-
-    /// <summary>
-    /// Shows the terrain loading screen and disables the server UI
-    /// </summary>
-    public void StartTerrainLoading()
-    {
-        joiningServerScreen.SetActive(false);
-        creatingServerScreen.SetActive(false);
-        terrainLoadingScreen.SetActive(true);
-    }
-
-    public void StartGeneratingNavMesh()
-    {
-        terrainLoadingScreen.SetActive(false);
-        generatingNavMeshScreen.SetActive(true);
-    }*/
-
     #endregion
+
+    #region Limbo
 
     public void EnterLimbo()
     {
@@ -135,6 +111,23 @@ public class UIManager : MonoBehaviour
     {
         DisableAll();
         basicHUD.SetActive(true);
+    }
+
+    #endregion
+
+    public void SetInventory(bool open)
+    {
+        inventoryUI.gameObject.SetActive(open);
+    }
+
+    public void SetPauseUI(bool open)
+    {
+        pauseUI.gameObject.SetActive(open);
+    }
+
+    public void SetMapUI(bool open)
+    {
+        mapUI.gameObject.SetActive(open);
     }
 
     /// <summary>
@@ -161,43 +154,43 @@ public class UIManager : MonoBehaviour
     // Basic UI Element Toggling for QC and Debugging
     #region UI Element Toggling
     [Command("ToggleDebugHUD")]
-    public void ToggleDebugHUD()
+    private void ToggleDebugHUD()
     {
         debugHUD.SetActive(!debugHUD.activeSelf);
     }
 
     [Command("ToggleBasicHUD")]
-    public void ToggleBasicHUDDebug()
+    private void ToggleBasicHUDDebug()
     {
         basicHUD.SetActive(!basicHUD.activeSelf);
     }
 
     [Command("ToggleServerUI")]
-    public void ToggleServerUIDebug()
+    private void ToggleServerUIDebug()
     {
         serverUI.SetActive(!serverUI.activeSelf);
     }
 
     [Command("ToggleLimboUI")]
-    public void ToggleLimboUIDebug()
+    private void ToggleLimboUIDebug()
     {
         limboUI.SetActive(!limboUI.activeSelf);
     }
 
     [Command("TogglePauseUI")]
-    public void TogglePauseUIDebug()
+    private void TogglePauseUIDebug()
     {
         pauseUI.SetActive(!pauseUI.activeSelf);
     }
 
     [Command("ToggleInventoryUI")]
-    public void ToggleInventoryUIDebug()
+    private void ToggleInventoryUIDebug()
     {
         inventoryUI.SetActive(!inventoryUI.activeSelf);
     }
 
     [Command("ToggleMapUI")]
-    public void ToggleMapUIDebug()
+    private void ToggleMapUIDebug()
     {
         mapUI.SetActive(!mapUI.activeSelf);
     }

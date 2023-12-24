@@ -73,16 +73,6 @@ public class ConnectedInventory
         return true;
     }
 
-
-
-/*    public bool IsSlotFree(int x, int y)
-    {
-        if (x < 0 || x >= width || y < 0 || y >= height)
-            return false;
-
-        return inventorySlots[x, y] == InventoryItem.Empty;
-    }*/
-
     public ContainedItem AddItem(InventoryItem inventoryItem, Vector2Int topLeft, Vector2Int dimensions)
     {
         ContainedItem newContainedItem;
@@ -109,11 +99,6 @@ public class ConnectedInventory
 
         return newContainedItem;
     }
-
-    /*public void AddItem(int x, int y, InventoryItem inventoryItem)
-    {
-        SetSlot(x, y, inventoryItem);
-    }*/
 
     public bool TryFitItem(InventoryItem inventoryItem, out ContainedItem containedItem)
     {
@@ -177,7 +162,19 @@ public class ConnectedInventory
         return localKey;
     }
 
-
+    public List<ContainedItem> GetAndClearItems()
+    {
+        List<ContainedItem> items = new List<ContainedItem>(inventoryItems);
+        inventoryItems.Clear();
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+                inventorySlots[x, y] = false; 
+            }
+        }
+        return items;
+    }   
 
     // Set of methods for setting items accross the server if required
     // Going to save these for later, probably will only be needed in a extension of this class for external inventories

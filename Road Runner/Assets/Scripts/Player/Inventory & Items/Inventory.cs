@@ -85,16 +85,6 @@ public class Inventory : NetworkBehaviour
         Rope,
         Lighter
     }
-
-    private void Awake()
-    {
-        if (!IsOwner)
-            return;
-
-        if (Instance == null)
-            Instance = this;
-    }
-
     protected void Start()
     {
         useableItemController = GetComponent<UseableItemController>();
@@ -102,6 +92,11 @@ public class Inventory : NetworkBehaviour
 
         if (!IsOwner)
             return;
+
+        if (Instance == null)
+            Instance = this;
+
+        Debug.Log(Instance);
 
         // Create hotbar
 
@@ -118,6 +113,8 @@ public class Inventory : NetworkBehaviour
 
         mainCamera = Camera.main.transform;
 
+        // Create Inventory Stuff
+        inventoryUI.InitializeInventoryDisplay(this);
         CreateHotbar();
     }
 
@@ -202,7 +199,7 @@ public class Inventory : NetworkBehaviour
     #region All-inventory Methods
     private void RemoveConnectedInventory(int key)
     {
-        inventoryUI.RemoveInventoryDisplay(key);
+        inventoryUI.ResetInventoryDisplay(key);
         connectedInventories.Remove(key);
     }
 
@@ -235,6 +232,8 @@ public class Inventory : NetworkBehaviour
             return false; // or true it doesn't matter
         }
 
+        Debug.Log("Trying to place item in slot: " + slot);
+
         ConnectedInventory inventory = connectedInventories[inventoryIndex];
 
         ItemSO itemSO = itemSoDictionary[inventoryHand];
@@ -242,9 +241,12 @@ public class Inventory : NetworkBehaviour
 
         if (inventory.IsAreaAvailable(slot, dimensions))
         {
+            Debug.Log("Placing item in slot: " + slot);
+
             ConnectedInventory.ContainedItem containedItem = inventory.AddItem(inventoryHand, slot, dimensions);
 
             inventoryUI.AddItemDisplay(itemSO, containedItem, inventoryIndex);
+            inventoryUI.SetInventoryHand(InventoryItem.Empty);
 
             inventoryHand = InventoryItem.Empty;
             return true;
@@ -266,6 +268,9 @@ public class Inventory : NetworkBehaviour
         InventoryItem retrievedItem = inventory.RemoveItem(containedItem);
 
         inventoryHand = retrievedItem;
+
+        inventoryUI.SetInventoryHand(retrievedItem);
+        inventoryUI.ShowButtonArea(inventoryIndex, containedItem.topLeft, itemSoDictionary[retrievedItem].GetInventoryDimensions());
         return true;
     }
 
@@ -331,6 +336,9 @@ public class Inventory : NetworkBehaviour
     #region Drop Item Methods
     public void DropItem()
     {
+        if (inventoryHand == InventoryItem.Empty)
+            return;
+
         DropItemServerRpc(inventoryHand);
         inventoryHand = InventoryItem.Empty;
     }
@@ -352,33 +360,21 @@ public class Inventory : NetworkBehaviour
             inventoryHand = InventoryItem.Empty;
         }
 
-        if (usingItem != InventoryItem.Empty)
-        {
-            DropItemServerRpc(usingItem);
-            RemoveUsing();
-        }
+        inventoryUI.ResetInventoryDisplay();
+
 
         foreach (var key in connectedInventories.Keys)
         {
+            // TODO: Might need to do a check in the future to make sure were not dropping from chests or vehicles
             ConnectedInventory connectedInventory = connectedInventories[key];
-            Vector2Int dimensions = connectedInventory.GetDimensions();
-            int width = dimensions.x;
-            int height = dimensions.y;
 
-            // TODO: Drop all items in the inventory using the new system
-            Debug.LogWarning("DropAllItems() is not fully implemented");
-
-/*            for (int i = 0; i < width; i++)
+            ConnectedInventory.ContainedItem[] containedItems = connectedInventory.GetAndClearItems().ToArray();
+            for (int i = 0; i < containedItems.Length; i++)
             {
-                for (int j = 0; j < height; j++)
-                {
-                    if (connectedInventory.IsSlotFree(i, j))
-                        DropItemServerRpc(connectedInventory.RemoveItem(i,j));
-
-                    InventoryDisplay.Instance.UpdateItemSlot(0, i, j, InventoryItem.Empty);
-                }
-            }*/
+                DropItemServerRpc(containedItems[i].inventoryItem);
+            }
         }
+
     }
     #endregion
 

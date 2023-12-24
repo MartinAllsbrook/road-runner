@@ -28,7 +28,7 @@ public class Hotbar : ConnectedInventory
             {
                 for (int y = 0; y < _slotHeight; y++)
                 {
-                    if (inventoryItems[i].topLeft.x == slotIndex * _slotWidth && inventoryItems[i].topLeft.y == y)
+                    if (inventoryItems[i].topLeft.x == slotIndex * _slotWidth + x && inventoryItems[i].topLeft.y == y)
                         return inventoryItems[i].inventoryItem;
                 }
             }

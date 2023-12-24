@@ -13,24 +13,28 @@ public class InventoryUI : MonoBehaviour
         public Button[,] buttons;
     }
 
-/*    public class HotbarSlotUI
-    {
-        public RectTransform hotbarDisplay;
-        public Button[,] buttons;
-    }*/
-
     [Header("Settings")]
     [SerializeField] private int inventorySlotWidth;
+    [SerializeField] private Sprite emptySlotSprite;
 
-    [Header("Display Components")]
+    [Header("Referenced Display Components")]
+    [SerializeField] private RectTransform inventoryHand;
+    [SerializeField] private Button dropItemButton;
+
+    [Header("Generated Display Components")]
     [SerializeField] private Button inventorySlotPrefab;
     [SerializeField] private ItemButton itemButtonPrefab;
 
     [Header("Hotbar")]
     [SerializeField] private RectTransform hotbarDisplay;
     [SerializeField] private RectTransform hotbarSlotBackdrop;
+
+
     private Dictionary<int, ConnectedInventoryUI> conectedInventoryUIs;
-    //private HotbarSlotUI[] hotbarSlotUIs;
+    private List<Button> _itemButtons = new List<Button>();
+    private Inventory _inventory;
+
+    // TODO: Create an initialisation function that takes in the inventory and runs the basic setup for the inventory UI
 
     private void Awake()
     {
@@ -38,7 +42,17 @@ public class InventoryUI : MonoBehaviour
             Instance = this;
     }
 
-    // interaction stuff
+    public void InitializeInventoryDisplay(Inventory inventory)
+    {
+        _inventory = inventory;
+
+        dropItemButton.onClick.AddListener(() =>
+        {
+            inventoryHand.GetComponent<Image>().sprite = emptySlotSprite;
+            _inventory.DropItem();
+        });
+    }
+
     public void CreateHotbarSlotUIs(int hotbarSlotCount, int hotbarSlotWidth, int hotbarSlotHeight)
     {
         if (conectedInventoryUIs == null)
@@ -49,28 +63,21 @@ public class InventoryUI : MonoBehaviour
         hotbarUI.inventoryDisplay = hotbarDisplay;
         hotbarUI.buttons = new Button[hotbarSlotCount * hotbarSlotWidth, hotbarSlotHeight];
 
-        //hotbarSlotUIs = new HotbarSlotUI[hotbarSlotCount];
-
         for (int slotIndex = 0; slotIndex < hotbarSlotCount; slotIndex++)
         {
-            //hotbarSlotUIs[slotIndex] = new HotbarSlotUI();
-            //hotbarSlotUIs[slotIndex].hotbarDisplay = Instantiate(hotbarSlotBackdrop, hotbarDisplay);
-            //hotbarSlotUIs[slotIndex].buttons = new Button[hotbarSlotWidth, hotbarSlotHeight];
-
-            for (int slotX = 0; slotX < hotbarSlotWidth; slotX++)
+            for (int y = 0; y < hotbarSlotHeight; y++)
             {
-                for (int y = 0; y < hotbarSlotHeight; y++)
-                {
+                for (int slotX = 0; slotX < hotbarSlotWidth; slotX++)
+                    {
+
                     Button newSlot = Instantiate(inventorySlotPrefab, hotbarUI.inventoryDisplay);
 
                     int x = slotIndex * hotbarSlotWidth + slotX;
-
+                    int yCopy = y;
                     newSlot.onClick.AddListener(() =>
                     {
-                        Inventory.Instance.TryPlaceInSlot(0, new Vector2Int(x, y));
+                        Inventory.Instance.TryPlaceInSlot(0, new Vector2Int(x, yCopy));
                     });
-
-                    //hotbarSlotUIs[slotIndex].buttons[slotX, y] = newSlot;
 
                     StyleSlot(newSlot.GetComponent<RectTransform>(), new Vector2Int(x, y));
 
@@ -80,6 +87,20 @@ public class InventoryUI : MonoBehaviour
         }
 
         conectedInventoryUIs.Add(0, hotbarUI);
+    }
+
+    private void Update()
+    {
+        inventoryHand.transform.position = Input.mousePosition + new Vector3(inventorySlotWidth / 2, inventorySlotWidth / 2, 0);
+    }
+
+    public void SetInventoryHand(Inventory.InventoryItem inventoryItem)
+    {
+        ItemSO itemSO = Inventory.ItemSODictionary[inventoryItem];
+        Vector2Int dimensions = itemSO.GetInventoryDimensions();
+
+        inventoryHand.sizeDelta = dimensions * inventorySlotWidth;
+        inventoryHand.GetComponent<Image>().sprite = itemSO.GetSprite();
     }
 
     private void StyleSlot(RectTransform slot, Vector2Int intPosition)
@@ -122,11 +143,6 @@ public class InventoryUI : MonoBehaviour
         conectedInventoryUIs.Add(inventoryID, connectedInventoryUI);
     }
 
-    public void RemoveInventoryDisplay(int key)
-    {
-        // Do stuff
-    }
-
     public void AddItemDisplay(ItemSO itemSO, ConnectedInventory.ContainedItem containedItem, int inventoryID)
     {
         Vector2Int dimensions = itemSO.GetInventoryDimensions();
@@ -138,13 +154,23 @@ public class InventoryUI : MonoBehaviour
 
         Vector2 position = topLeft * inventorySlotWidth;
 
+        Inventory inventory = Inventory.Instance;
+        Debug.Log(inventory);
         newItemButton.Set(dimensions, position, inventorySlotWidth, itemSO.GetSprite());
 
         newItemButton.GetButton().onClick.AddListener(() =>
         {
-            Inventory.Instance.RetrieveItem(inventoryID, containedItem);
+            Debug.Log(containedItem);
+            Debug.Log(inventoryID);
+            Debug.Log(inventory);
+            if (inventory.RetrieveItem(inventoryID, containedItem))
+            {
+                Destroy(newItemButton.gameObject);
+            }
         });
 
+        _itemButtons.Add(newItemButton.GetButton());
+        
         // TODO: Position the item display correctly
 
         HideButtonArea(inventoryID, topLeft, dimensions);
@@ -169,7 +195,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    private void ShowButtonArea(int inventoryID, Vector2Int topLeft, Vector2Int area)
+    public void ShowButtonArea(int inventoryID, Vector2Int topLeft, Vector2Int area)
     {
         ConnectedInventoryUI connectedInventoryUI = conectedInventoryUIs[inventoryID];
 
@@ -191,5 +217,39 @@ public class InventoryUI : MonoBehaviour
                 connectedInventoryUI.buttons[x, y].gameObject.SetActive(true);
             }
         }
+    }
+
+    public void ResetInventoryDisplay()
+    {
+        inventoryHand.GetComponent<Image>().sprite = emptySlotSprite;
+
+
+        foreach (ConnectedInventoryUI connectedInventoryUI in conectedInventoryUIs.Values)
+        {
+            foreach (Button button in connectedInventoryUI.buttons)
+            {
+                button.gameObject.SetActive(true);
+            }
+            foreach (Button itemButton in _itemButtons)
+            {
+                Destroy(itemButton.gameObject);
+            }
+            _itemButtons.Clear();
+        }
+    }
+
+    public void ResetInventoryDisplay(int key)
+    {
+        ConnectedInventoryUI connectedInventoryUI = conectedInventoryUIs[key];
+
+        foreach (Button button in connectedInventoryUI.buttons)
+        {
+            button.gameObject.SetActive(true);
+        }
+        foreach (Button itemButton in _itemButtons)
+        {
+            Destroy(itemButton.gameObject);
+        }
+        _itemButtons.Clear();
     }
 }

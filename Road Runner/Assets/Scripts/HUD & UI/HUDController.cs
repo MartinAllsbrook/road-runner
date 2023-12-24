@@ -50,15 +50,7 @@ public class HUDController : MonoBehaviour
 
     private void Update()
     {
-        // TODO: Use the new input system and move this to the UI Manager
-        if (Input.GetKeyDown(pauseKey))
-            ToggleEscMenu();
-        
-        if (Input.GetKeyDown(inventoryKey))
-            ToggleInvetory();
 
-        if (Input.GetKeyDown(mapKey))
-            ToggleMap();
     }
 
     #region Item Inspector HUD
@@ -76,7 +68,7 @@ public class HUDController : MonoBehaviour
     #endregion
 
     // TODO: Move this to the UI Manager
-    #region Stuff the should be in the UI Manager
+/*    #region Stuff the should be in the UI Manager
     public void ToggleEscMenu()
     {
         if (!escMenuOpen)
@@ -126,7 +118,7 @@ public class HUDController : MonoBehaviour
             PlayerSpawner.localPlayerSpawner.Unpause();
         }
     }
-    #endregion
+    #endregion*/
 
     #region Gun HUD Stuff
     public void SetAmmoCountDisplay(int ammoCount, int maxAmmoCount)
