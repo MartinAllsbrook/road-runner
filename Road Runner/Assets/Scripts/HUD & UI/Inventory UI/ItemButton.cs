@@ -14,7 +14,10 @@ public class ItemButton : MonoBehaviour
         RectTransform rectTransform = GetComponent<RectTransform>();
 
         rectTransform.sizeDelta = new Vector2(inventorySlotWidth * dimensions.x, inventorySlotWidth * dimensions.y);
+
+        position.y = -position.y;
         rectTransform.anchoredPosition = position;
+
         itemImage.sprite = itemSprite;
     }
 

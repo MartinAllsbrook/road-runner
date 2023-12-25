@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static InventoryUI;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class InventoryUI : MonoBehaviour
     public class ConnectedInventoryUI
     {
         public RectTransform inventoryDisplay;
+        public ConnectedInventoryHeader connectedInventoryHeader;
         public Button[,] buttons;
     }
 
@@ -22,12 +24,14 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private RectTransform inventoryHand;
     [SerializeField] private Button dropItemButton;
     [SerializeField] private RectTransform hotbarDisplay;
+    [SerializeField] private RectTransform inventoriesContainer;
 
     [Header("Generated Display Components")]
     [SerializeField] private Button inventorySlotPrefab;
     [SerializeField] private ItemButton itemButtonPrefab;
     [SerializeField] private RectTransform hotbarSlotBackdrop;
     [SerializeField] private RectTransform connectedInventoryBackdrop;
+    [SerializeField] private ConnectedInventoryHeader connectedInventoryHeaderPrefab;
 
     private Dictionary<int, ConnectedInventoryUI> conectedInventoryUIs;
     private Dictionary<int, ItemButton> _itemButtons = new Dictionary<int, ItemButton>();
@@ -78,7 +82,7 @@ public class InventoryUI : MonoBehaviour
                         Inventory.Instance.TryPlaceInSlot(0, new Vector2Int(x, yCopy));
                     });
 
-                    StyleSlot(newSlot.GetComponent<RectTransform>(), new Vector2Int(x, y));
+                    StyleSlot(newSlot.GetComponent<RectTransform>(), new Vector2Int(x, y), false);
 
                     hotbarUI.buttons[x, y] = newSlot;
                 }
@@ -102,39 +106,28 @@ public class InventoryUI : MonoBehaviour
         inventoryHand.GetComponent<Image>().sprite = itemSO.UISprite;
     }
 
-    private void StyleSlot(RectTransform slot, Vector2Int intPosition)
-    {
-        slot.GetComponent<RectTransform>().sizeDelta = new Vector2(inventorySlotWidth, inventorySlotWidth);
-
-        intPosition.y = -intPosition.y;
-
-        Vector2 positon = intPosition * inventorySlotWidth;
-        slot.GetComponent<RectTransform>().anchoredPosition = positon;
-    }
-
-    private void StyleConnectedInventory(int inventoryIndex, RectTransform connectedInventory, Vector2Int dimensions)
-    {
-        float yOffest = 0;
-        for (int x = 0; x < inventoryIndex; x++)
-        {
-            if (conectedInventoryUIs.ContainsKey(x))
-            {
-                yOffest += conectedInventoryUIs[x].inventoryDisplay.sizeDelta.y;
-            }
-        }
-        connectedInventory.sizeDelta = dimensions * inventorySlotWidth;
-        connectedInventory.anchoredPosition = new Vector2(0, -yOffest);
-    }
-
     public void CreateInventoryDisplay(int inventoryID, Vector2Int dimensions)
     {
         int width = dimensions.x;
         int height = dimensions.y;
 
         ConnectedInventoryUI connectedInventoryUI = new ConnectedInventoryUI();
-        connectedInventoryUI.inventoryDisplay = Instantiate(connectedInventoryBackdrop, transform);
+        connectedInventoryUI.inventoryDisplay = Instantiate(connectedInventoryBackdrop, inventoriesContainer);
         // Deal with height of inventories        
         connectedInventoryUI.buttons = new Button[width, height];
+
+/*        ConnectedInventoryHeader newConnectedInventoryHeader = Instantiate(connectedInventoryHeaderPrefab, inventoriesContainer);
+        newConnectedInventoryHeader.Set(inventoryID, "Put name here lmao", new Vector2Int(width * inventorySlotWidth, inventorySlotWidth));
+        Button headerButton = newConnectedInventoryHeader.GetButton();
+        headerButton.onClick.AddListener(() =>
+        {
+            // TODO: All this \/
+            // Remove the inventory
+            // Drop the items
+            // Drop the inventory
+            // Remove the inventory display
+            // Move all this to a better place
+        });*/
 
         for (int x = 0; x < width; x++)
         {
@@ -144,18 +137,60 @@ public class InventoryUI : MonoBehaviour
                 // TODO: Make all instantiations of inventorySlotPrefab set the size of the button
                 Button newInventoryButton = Instantiate(inventorySlotPrefab, connectedInventoryUI.inventoryDisplay).GetComponent<Button>();
 
+                var slot = new Vector2Int(x, y);
+
                 newInventoryButton.onClick.AddListener(() => 
                 { 
-                    Inventory.Instance.TryPlaceInSlot(inventoryID, new Vector2Int(x, y)); 
+                    Inventory.Instance.TryPlaceInSlot(inventoryID, slot); 
                 });
 
-                StyleSlot(newInventoryButton.GetComponent<RectTransform>(), new Vector2Int(x, y));
+                StyleSlot(newInventoryButton.GetComponent<RectTransform>(), slot, false);
 
                 connectedInventoryUI.buttons[x, y] = newInventoryButton;
             }
         }
-
         conectedInventoryUIs.Add(inventoryID, connectedInventoryUI);
+
+        StyleConnectedInventories();
+    }
+
+    private void StyleSlot(RectTransform slot, Vector2Int intPosition, bool addHeaderSpace)
+    {
+        slot.GetComponent<RectTransform>().sizeDelta = new Vector2(inventorySlotWidth, inventorySlotWidth);
+
+        if (addHeaderSpace)
+            intPosition.y = -intPosition.y - 1;
+        else
+            intPosition.y = -intPosition.y;
+
+        Vector2 positon = intPosition * inventorySlotWidth;
+        slot.GetComponent<RectTransform>().anchoredPosition = positon;
+    }
+
+    private void StyleConnectedInventories()
+    {
+        float heightSum = 0;
+        float widestWidth = 0;
+
+        foreach (ConnectedInventoryUI connectedInventoryUI in conectedInventoryUIs.Values)
+        {
+            if(connectedInventoryUI.inventoryDisplay == hotbarDisplay)
+                continue;
+
+            int width = connectedInventoryUI.buttons.GetLength(0);
+            int height = connectedInventoryUI.buttons.GetLength(1);
+
+            connectedInventoryUI.inventoryDisplay.anchoredPosition = new Vector2(0, -heightSum);
+
+            int totalDisplayHeight = (height) * inventorySlotWidth; // +1 for the header (before)
+            connectedInventoryUI.inventoryDisplay.sizeDelta = new Vector2(width * inventorySlotWidth, height * inventorySlotWidth);
+
+            heightSum += connectedInventoryUI.inventoryDisplay.sizeDelta.y;
+            if (connectedInventoryUI.inventoryDisplay.sizeDelta.x > widestWidth)
+                widestWidth = connectedInventoryUI.inventoryDisplay.sizeDelta.x;
+        }
+
+        inventoriesContainer.sizeDelta = new Vector2(widestWidth, heightSum);
     }
 
     public void RemoveIventoryDisplay(int inventoryID)

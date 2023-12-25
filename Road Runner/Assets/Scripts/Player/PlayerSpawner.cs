@@ -114,7 +114,7 @@ public class PlayerSpawner : NetworkBehaviour
         if (SprinkleGenerator.Instance == null)
         {
             Debug.LogWarning("Sprinkle generator is null");
-            position = new Vector3(32, 100, 32);
+            position = new Vector3(16, 16, 16);
             TeleportPlayerServerRpc(position);
             return;
         }

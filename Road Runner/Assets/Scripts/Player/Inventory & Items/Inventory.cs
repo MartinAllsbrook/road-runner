@@ -247,7 +247,7 @@ public class Inventory : NetworkBehaviour
             return false; // or true it doesn't matter
         }
 
-        Debug.Log("Trying to place item in slot: " + slot);
+        Debug.Log("Trying to place item in slot: " + slot + " of Inventory: " + inventoryIndex);
 
         ConnectedInventory inventory = connectedInventories[inventoryIndex];
 
