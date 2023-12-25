@@ -267,6 +267,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1569539367773705621, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 15.499832
+      objectReference: {fileID: 0}
     - target: {fileID: 1673189902076297223, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1095,6 +1099,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5951288703816530664, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 15.499832
+      objectReference: {fileID: 0}
     - target: {fileID: 7104168559118953633, guid: e6a9d48afea8fdf47a4d20602510e800, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1344,6 +1352,26 @@ PrefabInstance:
       propertyPath: sprinkleRanks.Array.data[1].sprinkles.Array.data[0]
       value: 
       objectReference: {fileID: -2499524654122171120, guid: 326aeaa3294ee42459771883533dd2c2, type: 3}
+    - target: {fileID: 2364755901263207010, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2364755901263207010, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2364755901263207010, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2364755901263207010, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2364755901263207010, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2648873749012872315, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2500703158

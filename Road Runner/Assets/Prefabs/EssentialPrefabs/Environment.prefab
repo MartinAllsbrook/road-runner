@@ -243,7 +243,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -339,7 +339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3629075484901468618, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2500703158
+      value: 3225911626
       objectReference: {fileID: 0}
     - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: terrainRadius

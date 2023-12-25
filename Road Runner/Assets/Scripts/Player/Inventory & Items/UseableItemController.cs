@@ -65,7 +65,7 @@ public class UseableItemController : NetworkBehaviour
 
     private void Start()
     {
-        SetItem(fists);
+        SetItem(fists, -1);
 
         if (!IsOwner)
             return;
@@ -126,14 +126,14 @@ public class UseableItemController : NetworkBehaviour
     /// Sets the current item, within the scope of this class
     /// </summary>
     /// <param name="itemSO">The scriptable object of the item you want to equip</param>
-    [Command("SetHandItemDebug")]
-    public void SetItem(ItemSO itemSO)
+    public void SetItem(ItemSO itemSO, int containedItemKey)
     {
         Destroy(currentItemPrefab);
-        currentItemPrefab =  Instantiate(itemSO.GetItemPrefab(), handTransform.position, handTransform.rotation, handTransform);
+        currentItemPrefab =  Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
 
         currentUseableItem = currentItemPrefab.GetComponent<UseableItem>();
         currentUseableItem.ParentItemController = this;
+        currentUseableItem.ContainedItemKey = containedItemKey;
         currentUseableItem.IsOwner = IsOwner;
     }
 

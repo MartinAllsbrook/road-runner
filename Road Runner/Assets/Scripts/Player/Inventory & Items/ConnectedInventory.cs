@@ -2,6 +2,7 @@ using Mono.CSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -22,12 +23,12 @@ public class ConnectedInventory
     protected int localKey;
 
     protected bool[,] inventorySlots;
-    protected List<ContainedItem> inventoryItems;
+    protected Dictionary<int, ContainedItem> containedItems;
 
-    public ConnectedInventory(int width, int height)
+    public ConnectedInventory(Vector2Int dimensions)
     {
-        _width = width;
-        _height = height;
+        _width = dimensions.x;
+        _height = dimensions.y;
 
         InitializeInventory();
     }
@@ -35,7 +36,7 @@ public class ConnectedInventory
     protected void InitializeInventory()
     {
         inventorySlots = new bool[_width, _height];
-        inventoryItems = new List<ContainedItem>();
+        containedItems = new Dictionary<int, ContainedItem>();
 
         for (int x = 0; x < _width; x++)
         {
@@ -73,14 +74,35 @@ public class ConnectedInventory
         return true;
     }
 
-    public ContainedItem AddItem(InventoryItem inventoryItem, Vector2Int topLeft, Vector2Int dimensions)
+    public bool TryFitItem(InventoryItem inventoryItem, out int containedItemKey, out Vector2Int topLeft)
     {
-        ContainedItem newContainedItem;
+        ItemSO itemSO = Inventory.ItemSODictionary[inventoryItem];
+        Vector2Int dimensions = itemSO.InInventoryDimensions;
 
+        for (int y = 0; y < _height; y++)
+        {
+            for (int x = 0; x < _width; x++)
+            {
+                if (IsAreaAvailable(new Vector2Int(x, y), dimensions))
+                {
+                    topLeft = new Vector2Int(x, y);
+                    containedItemKey = AddItem(inventoryItem, new Vector2Int(x, y), dimensions);         
+                    return true;
+                }
+            }
+        }
+
+        topLeft = new Vector2Int(-1, -1);
+        containedItemKey = -1;
+        return false;
+    }
+
+    public int AddItem(InventoryItem inventoryItem, Vector2Int topLeft, Vector2Int dimensions)
+    {
         if (!IsAreaAvailable(topLeft, dimensions))
         {
             Debug.LogError("Cannot add item to inventory, area is not available");
-            return null;
+            return -1;
         }
 
         for (int xi = 0; xi < dimensions.x; xi++)
@@ -95,36 +117,16 @@ public class ConnectedInventory
             }
         }
 
-        newContainedItem = AddItemToList(inventoryItem, topLeft, dimensions);
+        int newItemKey = AddItemToList(inventoryItem, topLeft, dimensions);
 
-        return newContainedItem;
+        return newItemKey;
     }
 
-    public bool TryFitItem(InventoryItem inventoryItem, out ContainedItem containedItem)
+    public InventoryItem RemoveItem(int containedItemKey)
     {
-        ItemSO itemSO = Inventory.ItemSODictionary[inventoryItem];
-        Vector2Int dimensions = itemSO.GetInventoryDimensions();
-
-        for (int y = 0; y < _height; y++)
+        if (containedItems.ContainsKey(containedItemKey))
         {
-            for (int x = 0; x < _width; x++)
-            {
-                if (IsAreaAvailable(new Vector2Int(x, y), dimensions))
-                {
-                    containedItem = AddItem(inventoryItem, new Vector2Int(x, y), dimensions);         
-                    return true;
-                }
-            }
-        }
-
-        containedItem = null;
-        return false;
-    }
-
-    public InventoryItem RemoveItem(ContainedItem item)
-    {
-        if (inventoryItems.Contains(item))
-        {
+            ContainedItem item = containedItems[containedItemKey];
             for (int x = 0; x < item.inventoryDimensions.x; x++)
             {
                 for (int y = 0; y < item.inventoryDimensions.y; y++)
@@ -133,18 +135,19 @@ public class ConnectedInventory
                 }
             }
 
-            inventoryItems.Remove(item);
+            containedItems.Remove(containedItemKey);
             return item.inventoryItem;
         }
 
         return InventoryItem.Empty;
     }
-    protected ContainedItem AddItemToList(InventoryItem inventoryItem, Vector2Int topLeft, Vector2Int dimensions)
+    protected int AddItemToList(InventoryItem inventoryItem, Vector2Int topLeft, Vector2Int dimensions)
     {
         ContainedItem newContainedItem = new ContainedItem { inventoryItem = inventoryItem, topLeft = topLeft, inventoryDimensions = dimensions };
-        inventoryItems.Add(newContainedItem);
+        int uniqueKey = GetAvailableItemKey();
+        containedItems.Add(uniqueKey, newContainedItem);
 
-        return newContainedItem;
+        return uniqueKey;
     }
 
     public Vector2Int GetDimensions()
@@ -162,10 +165,25 @@ public class ConnectedInventory
         return localKey;
     }
 
+    public ContainedItem GetContainedItem(int containedItemKey)
+    {
+        if (containedItems.ContainsKey(containedItemKey))
+        {
+            return containedItems[containedItemKey];
+        }
+
+        return null;
+    }
+
     public List<ContainedItem> GetAndClearItems()
     {
-        List<ContainedItem> items = new List<ContainedItem>(inventoryItems);
-        inventoryItems.Clear();
+        List<ContainedItem> items = new List<ContainedItem>();
+        foreach (KeyValuePair<int, ContainedItem> containedItem in containedItems)
+        {
+            items.Add(containedItem.Value);
+        }
+
+        containedItems.Clear();
         for (int x = 0; x < _width; x++)
         {
             for (int y = 0; y < _height; y++)
@@ -173,14 +191,27 @@ public class ConnectedInventory
                 inventorySlots[x, y] = false; 
             }
         }
+        
         return items;
-    }   
+    }
+
+    private int GetAvailableItemKey()
+    {
+        for (int i = 0; i < 200; i++)
+        {
+            if (!containedItems.ContainsKey(i))
+                return i;
+        }
+
+        Debug.LogError("Dude wtf there are more than 200 contained items stop it rn. Also you just broke my inventory system");
+        return -1;
+    }
 
     // Set of methods for setting items accross the server if required
     // Going to save these for later, probably will only be needed in a extension of this class for external inventories
     // Yeah I can literally just make a public inventory class that extends this one and then just add the rpcs to that
     // These used to be a bool in this class to make it public FYI     
-   
+
     /*    [ServerRpc(RequireOwnership = false)]
         private void SetItemServerRpc(int x, int y, InventoryItem inventoryItem)
         {

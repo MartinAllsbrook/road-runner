@@ -1,3 +1,4 @@
+using Mono.CSharp;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,18 +21,16 @@ public class InventoryUI : MonoBehaviour
     [Header("Referenced Display Components")]
     [SerializeField] private RectTransform inventoryHand;
     [SerializeField] private Button dropItemButton;
+    [SerializeField] private RectTransform hotbarDisplay;
 
     [Header("Generated Display Components")]
     [SerializeField] private Button inventorySlotPrefab;
     [SerializeField] private ItemButton itemButtonPrefab;
-
-    [Header("Hotbar")]
-    [SerializeField] private RectTransform hotbarDisplay;
     [SerializeField] private RectTransform hotbarSlotBackdrop;
-
+    [SerializeField] private RectTransform connectedInventoryBackdrop;
 
     private Dictionary<int, ConnectedInventoryUI> conectedInventoryUIs;
-    private List<Button> _itemButtons = new List<Button>();
+    private Dictionary<int, ItemButton> _itemButtons = new Dictionary<int, ItemButton>();
     private Inventory _inventory;
 
     // TODO: Create an initialisation function that takes in the inventory and runs the basic setup for the inventory UI
@@ -68,7 +67,7 @@ public class InventoryUI : MonoBehaviour
             for (int y = 0; y < hotbarSlotHeight; y++)
             {
                 for (int slotX = 0; slotX < hotbarSlotWidth; slotX++)
-                    {
+                {
 
                     Button newSlot = Instantiate(inventorySlotPrefab, hotbarUI.inventoryDisplay);
 
@@ -97,10 +96,10 @@ public class InventoryUI : MonoBehaviour
     public void SetInventoryHand(Inventory.InventoryItem inventoryItem)
     {
         ItemSO itemSO = Inventory.ItemSODictionary[inventoryItem];
-        Vector2Int dimensions = itemSO.GetInventoryDimensions();
+        Vector2Int dimensions = itemSO.InInventoryDimensions;
 
         inventoryHand.sizeDelta = dimensions * inventorySlotWidth;
-        inventoryHand.GetComponent<Image>().sprite = itemSO.GetSprite();
+        inventoryHand.GetComponent<Image>().sprite = itemSO.UISprite;
     }
 
     private void StyleSlot(RectTransform slot, Vector2Int intPosition)
@@ -113,13 +112,27 @@ public class InventoryUI : MonoBehaviour
         slot.GetComponent<RectTransform>().anchoredPosition = positon;
     }
 
-    public void CreateInventoryDisplay(int inventoryID, Vector2Int dimensions, int slotHeight)
+    private void StyleConnectedInventory(int inventoryIndex, RectTransform connectedInventory, Vector2Int dimensions)
+    {
+        float yOffest = 0;
+        for (int x = 0; x < inventoryIndex; x++)
+        {
+            if (conectedInventoryUIs.ContainsKey(x))
+            {
+                yOffest += conectedInventoryUIs[x].inventoryDisplay.sizeDelta.y;
+            }
+        }
+        connectedInventory.sizeDelta = dimensions * inventorySlotWidth;
+        connectedInventory.anchoredPosition = new Vector2(0, -yOffest);
+    }
+
+    public void CreateInventoryDisplay(int inventoryID, Vector2Int dimensions)
     {
         int width = dimensions.x;
         int height = dimensions.y;
 
         ConnectedInventoryUI connectedInventoryUI = new ConnectedInventoryUI();
-        connectedInventoryUI.inventoryDisplay = Instantiate(hotbarSlotBackdrop, transform);
+        connectedInventoryUI.inventoryDisplay = Instantiate(connectedInventoryBackdrop, transform);
         // Deal with height of inventories        
         connectedInventoryUI.buttons = new Button[width, height];
 
@@ -136,6 +149,8 @@ public class InventoryUI : MonoBehaviour
                     Inventory.Instance.TryPlaceInSlot(inventoryID, new Vector2Int(x, y)); 
                 });
 
+                StyleSlot(newInventoryButton.GetComponent<RectTransform>(), new Vector2Int(x, y));
+
                 connectedInventoryUI.buttons[x, y] = newInventoryButton;
             }
         }
@@ -143,42 +158,56 @@ public class InventoryUI : MonoBehaviour
         conectedInventoryUIs.Add(inventoryID, connectedInventoryUI);
     }
 
-    public void AddItemDisplay(ItemSO itemSO, ConnectedInventory.ContainedItem containedItem, int inventoryID)
+    public void RemoveIventoryDisplay(int inventoryID)
     {
-        Vector2Int dimensions = itemSO.GetInventoryDimensions();
-        Vector2Int topLeft = containedItem.topLeft;
+        Destroy(conectedInventoryUIs[inventoryID].inventoryDisplay.gameObject);
+        conectedInventoryUIs.Remove(inventoryID);
+    }
 
-        Debug.Log("Adding item to inventory ID: " + inventoryID);
+    public void AddItemDisplay(int inventoryKey, int containedItemKey, ItemSO itemSO, Vector2Int topLeft)
+    {
+        Vector2Int dimensions = itemSO.InInventoryDimensions;
 
-        ItemButton newItemButton = Instantiate(itemButtonPrefab, conectedInventoryUIs[inventoryID].inventoryDisplay);
+        Debug.Log("Adding item to inventory: " + inventoryKey);
+
+        ItemButton newItemButton = Instantiate(itemButtonPrefab, conectedInventoryUIs[inventoryKey].inventoryDisplay);
 
         Vector2 position = topLeft * inventorySlotWidth;
 
-        Inventory inventory = Inventory.Instance;
-        Debug.Log(inventory);
-        newItemButton.Set(dimensions, position, inventorySlotWidth, itemSO.GetSprite());
+        var cInventory = Inventory.Instance;
+        var cInvetotyUI = this;
+        newItemButton.Set(dimensions, position, inventorySlotWidth, itemSO.UISprite);
 
         newItemButton.GetButton().onClick.AddListener(() =>
         {
-            Debug.Log(containedItem);
-            Debug.Log(inventoryID);
-            Debug.Log(inventory);
-            if (inventory.RetrieveItem(inventoryID, containedItem))
-            {
-                Destroy(newItemButton.gameObject);
-            }
+            // TODO: Maybe use the dictionary here
+            cInventory.RetrieveItem(inventoryKey, containedItemKey);
         });
 
-        _itemButtons.Add(newItemButton.GetButton());
-        
-        // TODO: Position the item display correctly
+        int uniqueItemKey = CalculateUniqueItemKey(inventoryKey, containedItemKey);
+        _itemButtons.Add(uniqueItemKey, newItemButton);        
 
-        HideButtonArea(inventoryID, topLeft, dimensions);
+        HideButtonArea(inventoryKey, topLeft, dimensions);
     }
-    
-    private void HideButtonArea(int inventoryID, Vector2Int topLeft, Vector2Int area)
+
+    private int CalculateUniqueItemKey(int inventoryKey, int containedItemKey)
     {
-        ConnectedInventoryUI connectedInventoryUI = conectedInventoryUIs[inventoryID];
+        return containedItemKey * 20 + inventoryKey;
+    }
+
+    public void DestroyItemDisplay(int inventoryKey, int itemKey)
+    {
+        int uniqueItemKey = CalculateUniqueItemKey(inventoryKey, itemKey);
+        ItemButton itemButton = _itemButtons[uniqueItemKey];
+        _itemButtons.Remove(uniqueItemKey);
+        Destroy(itemButton.gameObject);
+    }
+
+    #region Button Area Methods
+
+    private void HideButtonArea(int inventoryKey, Vector2Int topLeft, Vector2Int area)
+    {
+        ConnectedInventoryUI connectedInventoryUI = conectedInventoryUIs[inventoryKey];
 
         int width = area.x;
         int height = area.y;
@@ -219,6 +248,10 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Reset Methods
+
     public void ResetInventoryDisplay()
     {
         inventoryHand.GetComponent<Image>().sprite = emptySlotSprite;
@@ -230,10 +263,14 @@ public class InventoryUI : MonoBehaviour
             {
                 button.gameObject.SetActive(true);
             }
-            foreach (Button itemButton in _itemButtons)
+
+            foreach (ItemButton itemButton in _itemButtons.Values)
             {
                 Destroy(itemButton.gameObject);
             }
+
+
+
             _itemButtons.Clear();
         }
     }
@@ -246,10 +283,12 @@ public class InventoryUI : MonoBehaviour
         {
             button.gameObject.SetActive(true);
         }
-        foreach (Button itemButton in _itemButtons)
+        foreach (ItemButton itemButton in _itemButtons.Values)
         {
             Destroy(itemButton.gameObject);
         }
         _itemButtons.Clear();
     }
+
+    #endregion
 }

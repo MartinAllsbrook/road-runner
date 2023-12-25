@@ -23,6 +23,13 @@ public abstract class UseableItem : MonoBehaviour
         set { isOwner = value; }
     }
 
+    protected int containedItemKey;
+    public int ContainedItemKey
+    {
+        get { return containedItemKey; }
+        set { containedItemKey = value; }
+    }
+
     #region Virtual On Input Methods
     public virtual void OnUseItemInput()
     {
