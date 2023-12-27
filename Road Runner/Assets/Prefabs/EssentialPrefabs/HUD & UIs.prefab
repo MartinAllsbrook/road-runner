@@ -2018,7 +2018,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18.05
+  m_fontSize: 27.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4450,7 +4450,8 @@ MonoBehaviour:
   inventorySlotPrefab: {fileID: 5817579359054182642, guid: fcb16eccd44ff3c4588beed7b7587389, type: 3}
   itemButtonPrefab: {fileID: 3980709681251038720, guid: ea5ad6b846fe7cc4eaa6c5ea27a92b7e, type: 3}
   hotbarSlotBackdrop: {fileID: 5646944500903790267, guid: 1a8edebcf2e1fed4fad1261da7426599, type: 3}
-  connectedInventoryBackdrop: {fileID: 5646944500903790267, guid: 35f3d2a5b107d924a8a11225f0026edb, type: 3}
+  connectedInventoryUIPrefab: {fileID: 980629349017690949, guid: 35f3d2a5b107d924a8a11225f0026edb, type: 3}
+  hotbarUIPrefab: {fileID: 1648759517851148735, guid: 3ec6fadf932e9b0458ddfffafcb8575c, type: 3}
   connectedInventoryHeaderPrefab: {fileID: 810270631942054690, guid: 3a808c18f6d37ad45bca41df7e0ea5fc, type: 3}
 --- !u!1 &3395378852573126902
 GameObject:
@@ -6996,7 +6997,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.25
+  m_fontSize: 57.4
   m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 1
