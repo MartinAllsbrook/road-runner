@@ -175,13 +175,9 @@ public class ConnectedInventory
         return null;
     }
 
-    public List<ContainedItem> GetAndClearItems()
+    public Dictionary<int, ContainedItem> GetAndClearItems()
     {
-        List<ContainedItem> items = new List<ContainedItem>();
-        foreach (KeyValuePair<int, ContainedItem> containedItem in containedItems)
-        {
-            items.Add(containedItem.Value);
-        }
+        Dictionary<int, ContainedItem> items = new Dictionary<int, ContainedItem>(containedItems);
 
         containedItems.Clear();
         for (int x = 0; x < _width; x++)

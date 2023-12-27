@@ -16,12 +16,9 @@ public class ConnectedInventoryHeader : MonoBehaviour
         return rootButton;
     }
 
-    public void Set(int inventoryKey, string header, Vector2Int dimensions)
+    public void Set(int inventoryKey, string header)
     {
         headerText.text = header;
         _inventoryKey = inventoryKey;
-
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        rectTransform.sizeDelta = dimensions;
     }
 }

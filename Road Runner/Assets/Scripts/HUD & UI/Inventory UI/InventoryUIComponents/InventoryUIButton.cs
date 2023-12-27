@@ -13,6 +13,11 @@ public class InventoryUIButton : MonoBehaviour
         button.onClick.AddListener(OnClick);
     }
 
+    protected void RemoveListener()
+    {
+        button.onClick.RemoveAllListeners();
+    }
+
     protected void StyleRect(Vector2Int position, Vector2Int dimensions)
     {
         rectTransform.anchoredPosition = position;

@@ -18,6 +18,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Button dropItemButton;
     [SerializeField] private RectTransform hotbarDisplay;
     [SerializeField] private RectTransform inventoriesContainer;
+    [SerializeField] private ClothingSlotUI[] clothingSlotUIs;
 
     [Header("Generated Display Components")]
     [SerializeField] private SlotButton inventorySlotPrefab;
@@ -68,8 +69,6 @@ public class InventoryUI : MonoBehaviour
         conectedInventoryUIs.Add(0, hotbarUI);
     }
 
-
-
     public void SetInventoryHand(Inventory.InventoryItem inventoryItem)
     {
         ItemSO itemSO = Inventory.ItemSODictionary[inventoryItem];
@@ -96,7 +95,6 @@ public class InventoryUI : MonoBehaviour
     private void StyleConnectedInventories()
     {
         int heightSum = 0;
-        int widestWidth = 500;
 
         foreach (KeyValuePair<int, ConnectedInventoryUI> keyValuePair in conectedInventoryUIs)
         {
@@ -111,7 +109,7 @@ public class InventoryUI : MonoBehaviour
             heightSum += connectedInventoryUI.GetHeight();
         }
 
-        inventoriesContainer.sizeDelta = new Vector2(widestWidth, heightSum);
+        inventoriesContainer.sizeDelta = new Vector2(inventoriesContainer.sizeDelta.x, heightSum);
     }
 
     public void RemoveIventoryDisplay(int inventoryID)
@@ -147,6 +145,20 @@ public class InventoryUI : MonoBehaviour
     private int CalculateUniqueItemKey(int inventoryKey, int containedItemKey)
     {
         return containedItemKey * 20 + inventoryKey;
+    }
+
+    public void SetClothingSlot(ClothingItemSO clothingItemSO)
+    {
+        ClothingSlotUI clothingSlotUI = clothingSlotUIs[(int)clothingItemSO.ClothingSlot];
+
+        clothingSlotUI.Set(clothingItemSO);
+    }
+
+    public void RemoveClothingSlot(int slot)
+    {
+        ClothingSlotUI clothingSlotUI = clothingSlotUIs[slot];
+
+        clothingSlotUI.Reset();
     }
 
     #region Button Area Methods

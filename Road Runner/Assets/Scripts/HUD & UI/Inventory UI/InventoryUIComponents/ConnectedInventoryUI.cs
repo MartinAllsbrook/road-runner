@@ -34,7 +34,7 @@ public class ConnectedInventoryUI : MonoBehaviour
     {
         // TODO: We really only need to define a height if eaven that
         if (hasHeader)
-            connectedInventoryHeader.Set(_inventoryKey, name, new Vector2Int(slotWidth, slotWidth)); 
+            connectedInventoryHeader.Set(_inventoryKey, name); 
         else
             connectedInventoryHeader.gameObject.SetActive(false);
     }

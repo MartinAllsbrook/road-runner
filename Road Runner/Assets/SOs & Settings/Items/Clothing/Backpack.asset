@@ -15,7 +15,7 @@ MonoBehaviour:
   inventoryItem: 15
   itemPickupPrefab: {fileID: 7966503058900778980, guid: 15a9d48115f00ac4d8647c04da0c49d4, type: 3}
   itemPrefab: {fileID: 7449846098560375984, guid: ae2617b5809313945be81b4916b7963b, type: 3}
-  uiSprite: {fileID: 0}
+  uiSprite: {fileID: 21300000, guid: 34213e7bb8ce10549973eb7952dc416c, type: 3}
   inventoryDimensions: {x: 2, y: 2}
   clothingSlot: 5
   clothingPrefab: {fileID: 0}

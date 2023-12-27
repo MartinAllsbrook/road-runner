@@ -35,7 +35,7 @@ public class Inventory : NetworkBehaviour
     [SerializeField] private int numClothingSlots;
 
     private InventoryItem inventoryHand; // The item being moved around the inventory
-
+    
     private InventoryItem usingItem; // The item being used by the player
     private UseableItemController useableItemController;
 
@@ -104,7 +104,7 @@ public class Inventory : NetworkBehaviour
 
         connectedInventories = new Dictionary<int, ConnectedInventory>();
 
-        inventoryHand = InventoryItem.Empty;
+        SetInventoryHand(InventoryItem.Empty);
 
         mainCamera = Camera.main.transform;
 
@@ -208,7 +208,7 @@ public class Inventory : NetworkBehaviour
     /// <param name="key">The key of the inventory to remove.</param>
     private void RemoveConnectedInventory(int key)
     {
-        inventoryUI.ResetInventoryDisplay(key);
+        inventoryUI.RemoveIventoryDisplay(key);
         connectedInventories.Remove(key);
     }
 
@@ -261,9 +261,9 @@ public class Inventory : NetworkBehaviour
             int containedItemKey = inventory.AddItem(inventoryHand, slot, dimensions);
 
             inventoryUI.AddItemDisplay(inventoryIndex, containedItemKey, itemSO, slot);
-            inventoryUI.SetInventoryHand(InventoryItem.Empty);
+            
+            SetInventoryHand(InventoryItem.Empty);
 
-            inventoryHand = InventoryItem.Empty;
             return true;
         }
 
@@ -286,9 +286,8 @@ public class Inventory : NetworkBehaviour
 
         InventoryItem retrievedItem = RemoveItem(inventoryKey, itemKey);
 
-        inventoryHand = retrievedItem;
-
-        inventoryUI.SetInventoryHand(retrievedItem);
+        SetInventoryHand(retrievedItem);
+       
         return true;
     }
 
@@ -357,7 +356,34 @@ public class Inventory : NetworkBehaviour
 
         ConnectedInventory connectedInventory = new ConnectedInventory(clothingSO.ClothingInventoryDimensions);
         connectedInventories.Add(inventoryKey, connectedInventory);
+
         inventoryUI.CreateInventoryDisplay(inventoryKey, clothingSO.ClothingInventoryDimensions);
+        inventoryUI.SetClothingSlot(clothingSO);
+    }
+
+    public void RemoveClothingInventory(ClothingItemSO clothingItemSO)
+    {
+        if(inventoryHand == InventoryItem.Empty)
+        {
+            int inventoryKey = (int)clothingItemSO.ClothingSlot;
+
+            SetInventoryHand(clothingItemSO.InventoryItem);
+
+            DropAllItems(inventoryKey);
+            RemoveConnectedInventory(inventoryKey);
+
+            inventoryUI.RemoveClothingSlot(inventoryKey);
+        }
+    }
+
+    #endregion
+
+    #region Little helper methods
+
+    private void SetInventoryHand(InventoryItem item)
+    {
+        inventoryHand = item;
+        inventoryUI.SetInventoryHand(item);
     }
 
     #endregion
@@ -372,7 +398,7 @@ public class Inventory : NetworkBehaviour
             return;
 
         DropItemServerRpc(inventoryHand);
-        inventoryHand = InventoryItem.Empty;
+        SetInventoryHand(InventoryItem.Empty);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -392,7 +418,7 @@ public class Inventory : NetworkBehaviour
         if (inventoryHand != InventoryItem.Empty)
         {
             DropItemServerRpc(inventoryHand);
-            inventoryHand = InventoryItem.Empty;
+            SetInventoryHand(InventoryItem.Empty);
         }
 
         inventoryUI.ResetInventoryDisplay();
@@ -409,10 +435,11 @@ public class Inventory : NetworkBehaviour
     public void DropAllItems(int inventoryKey)
     {
         ConnectedInventory connectedInventory = connectedInventories[inventoryKey];
-        ConnectedInventory.ContainedItem[] containedItems = connectedInventory.GetAndClearItems().ToArray();
-        for (int i = 0; i < containedItems.Length; i++)
+        Dictionary<int, ContainedItem> containedItems = connectedInventory.GetAndClearItems();
+        foreach (KeyValuePair<int, ContainedItem> keyValuePair in containedItems)
         {
-            DropItemServerRpc(containedItems[i].inventoryItem);
+            inventoryUI.DestroyItemDisplay(inventoryKey, keyValuePair.Key);
+            DropItemServerRpc(keyValuePair.Value.inventoryItem);
         }
     }
     #endregion
