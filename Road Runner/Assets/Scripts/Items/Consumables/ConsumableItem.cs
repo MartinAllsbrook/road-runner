@@ -8,10 +8,12 @@ public abstract class ConsumableItem : UseableItem
 
     public override void OnUseItemInput()
     {
+        base.OnUseItemInput();
         if (!used)
         {
             used = true;
-            BaseInventory.Instance.RemoveUsing();
+            Inventory.Instance.RemoveUsing();
+            Inventory.Instance.ConsumeItem(containedItemKey);
         }
     }
 }

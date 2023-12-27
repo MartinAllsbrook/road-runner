@@ -14,14 +14,14 @@ public class VehicleInteractionController : NetworkBehaviour
 
     [SerializeField] private LayerMask vehicleLayerMask;
 
-    private Inventory vehicleInventory;
+    private ConnectedInventory vehicleInventory;
 
 
     private void Awake()
     {
         vehicleController = GetComponent<VehicleController>();
         riderTransforms = new Transform[riderPositions.Length];
-        vehicleInventory = GetComponent<Inventory>();
+        //vehicleInventory = GetComponent<ConnectedInventory>();
     }
     public override void OnNetworkSpawn()
     {
@@ -143,8 +143,9 @@ public class VehicleInteractionController : NetworkBehaviour
         }  
     }
 
-    public Inventory GetInvetory()
+    public ConnectedInventory GetInvetory()
     {
+        Debug.LogWarning("Vehicle inventory not implemented, and will likley cause an error");
         return vehicleInventory;
     }
 }

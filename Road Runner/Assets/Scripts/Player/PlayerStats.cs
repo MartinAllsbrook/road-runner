@@ -111,7 +111,7 @@ public class PlayerStats : NetworkBehaviour
     private void Die()
     {
         Debug.Log(health);
-        GetComponent<BaseInventory>().DropAllItems();
+        GetComponent<Inventory>().DropAllItems();
 
         _inLimbo = true;
         GetComponent<PlayerSpawner>().EnterLimbo();

@@ -3,33 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
+using static Inventory;
 
 [Serializable] [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/Item")]
 public class ItemSO : ScriptableObject
 {
-    [SerializeField] protected Inventory.InventoryItem inventoryItem;
+    [Header("Item Stuff")]
+    [SerializeField] protected InventoryItem inventoryItem; // TODO: Rename this to inventoryItemEnum?
+    public InventoryItem InventoryItem { get { return inventoryItem; } }
+
     [SerializeField] protected GameObject itemPickupPrefab;
-    [SerializeField] protected GameObject itemPrefab;
-    [SerializeField] protected Sprite uiSprite;
-    [SerializeField] protected bool isGun;
-
-    public Sprite GetSprite()
-    {
-        return uiSprite;
-    }
+    public GameObject ItemPickupPrefab { get { return itemPickupPrefab; } }
     
-    public Inventory.InventoryItem GetInventoryItem()
-    {
-        return inventoryItem;
-    }
+    [SerializeField] protected GameObject itemPrefab; // TODO: Rename this to usableItemPrefab
+    public GameObject UsableItemPrefab { get { return itemPrefab; } }
+    
+    [Header("Inventory Display Stuff")]
+    [SerializeField] protected Sprite uiSprite;
+    public Sprite UISprite { get { return uiSprite; } }
 
-    public GameObject GetItemPrefab() 
-    {
-        return itemPrefab;
-    }
-
-    public GameObject GetItemPickupPrefab()
-    {
-        return itemPickupPrefab;
-    }
+    [SerializeField] protected Vector2Int inventoryDimensions;
+    public Vector2Int InInventoryDimensions { get { return inventoryDimensions; } }
 }

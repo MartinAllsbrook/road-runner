@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : NetworkBehaviour
 {
@@ -12,8 +13,9 @@ public class CameraController : NetworkBehaviour
     [Header("Camera")]
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private Transform orientation;
-    [SerializeField] private float sensX;
-    [SerializeField] private float sensY;
+    [SerializeField] private float baseSensitivityAdjustment = 0.1f;
+    [SerializeField] private float sensX = 5;
+    [SerializeField] private float sensY = 5;
     [SerializeField] private float fovMultiplier;
     [SerializeField] private Vector3 cameraLimboPosition;
 
@@ -35,6 +37,26 @@ public class CameraController : NetworkBehaviour
     private Rigidbody playerRigidbody;
 
     private bool _inLimbo = false;
+    private bool _cameraLocked = false;
+    public bool CameraLocked
+    {
+        get { return _cameraLocked; }
+        set 
+        {
+            if (value)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+                
+            _cameraLocked = value; 
+        }
+    }
 
     void Start()
     {
@@ -50,7 +72,7 @@ public class CameraController : NetworkBehaviour
 
     void Update()
     {
-        if (!IsOwner) 
+        if (!IsOwner || _cameraLocked) 
             return;
         
         if (_inLimbo)
@@ -59,7 +81,7 @@ public class CameraController : NetworkBehaviour
             return;
         }
 
-        GetCameraInputs();
+        //GetCameraInputs();
         RotateCamera();
     }
 
@@ -91,7 +113,7 @@ public class CameraController : NetworkBehaviour
         mainCamera.transform.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward);
     }
 
-    private void GetCameraInputs()
+/*    private void GetCameraInputs()
     {
         if (PlayerSpawner.localPlayerSpawner.Paused)
             return;
@@ -103,6 +125,18 @@ public class CameraController : NetworkBehaviour
         _xRotation -= mouseY;
 
         _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+    }*/
+
+    public void OnLookInput(InputAction.CallbackContext context)
+    {
+        //if (context.performed)
+        //{
+            Vector2 mouseDelta = context.ReadValue<Vector2>();
+            _yRotation += mouseDelta.x * ((baseSensitivityAdjustment * sensX) / zoom);
+            _xRotation -= mouseDelta.y * ((baseSensitivityAdjustment * sensY) / zoom);
+
+            _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+        //}
     }
 
     private void RotateCamera()
@@ -113,6 +147,8 @@ public class CameraController : NetworkBehaviour
 
         orientation.rotation = Quaternion.Euler(0, _yRotation, 0);
     }
+
+    #region Camera FX Methods
 
     public void SetFov(float fovIncrease)
     {
@@ -135,4 +171,6 @@ public class CameraController : NetworkBehaviour
     {
         zoom = multiplier;
     }
+
+    #endregion
 }

@@ -15,13 +15,37 @@ public class UseableItemController : NetworkBehaviour
 {
     public static UseableItemController Instance;
 
+    [Header("References")]
+    [SerializeField] private CameraController cameraController;
+
+    [Header("Basics")]
     [SerializeField] private Transform cameraPosition;
-    [SerializeField] private Transform handPosition;
+    [SerializeField] private Transform handTransform;
     [SerializeField] private ItemSO fists;
 
-    private bool _useInput;
-    private bool _seccondaryInput;
-    private bool _reloadInput;
+    #region Hand Positions
+
+    [Header("HandTransforms")]
+    [Tooltip("Make sure this matches the order of the enums")] 
+    [SerializeField] private Transform[] handPositionTransforms;
+
+    private HandPosition _handPosition = HandPosition.Resting;
+
+    public enum HandPosition
+    {
+        Resting,
+        Inspecting,
+        Aim,
+        Reloading,
+    }
+
+    #endregion
+
+    private bool _useInput = false;
+    private bool _seccondaryInput = false;
+    private bool _reloadInput = false;
+
+    private bool _inspecting = false;
 
     private GameObject currentItemPrefab;
     private UseableItem currentUseableItem;
@@ -41,7 +65,7 @@ public class UseableItemController : NetworkBehaviour
 
     private void Start()
     {
-        SetItem(fists);
+        SetItem(fists, -1);
 
         if (!IsOwner)
             return;
@@ -60,6 +84,9 @@ public class UseableItemController : NetworkBehaviour
         if (!IsOwner)
             return;
 
+        if (_inspecting) // replace with a state machine sorta thing
+            return;
+
         if (_useInput)
             currentUseableItem.OnUseItemInput();
 
@@ -67,16 +94,46 @@ public class UseableItemController : NetworkBehaviour
             currentUseableItem.OnReloadItemInput();
     }
 
+    public void SetHandPosition(HandPosition handPosition)
+    {
+        Transform handPositionTransform = handPositionTransforms[(int)handPosition];
+
+        _handPosition = handPosition; 
+
+        handTransform.position = handPositionTransform.position;
+        handTransform.rotation = handPositionTransform.rotation;
+    }
+
+    private void OnStartInspect()
+    {
+        cameraController.CameraLocked = true;
+
+        SetHandPosition(HandPosition.Inspecting);
+
+        hudController.StartInspectItem(currentUseableItem);
+    }
+
+    private void OnStopInspect()
+    {
+        cameraController.CameraLocked = false;
+        
+        SetHandPosition(HandPosition.Resting);
+
+        hudController.StopInspectItem();
+    }
+
     /// <summary>
     /// Sets the current item, within the scope of this class
     /// </summary>
     /// <param name="itemSO">The scriptable object of the item you want to equip</param>
-    [Command("SetHandItemDebug")]
-    public void SetItem(ItemSO itemSO)
+    public void SetItem(ItemSO itemSO, int containedItemKey)
     {
         Destroy(currentItemPrefab);
-        currentItemPrefab =  Instantiate(itemSO.GetItemPrefab(), handPosition.position, handPosition.rotation, handPosition);
+        currentItemPrefab =  Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
+
         currentUseableItem = currentItemPrefab.GetComponent<UseableItem>();
+        currentUseableItem.ParentItemController = this;
+        currentUseableItem.ContainedItemKey = containedItemKey;
         currentUseableItem.IsOwner = IsOwner;
     }
 
@@ -149,6 +206,7 @@ public class UseableItemController : NetworkBehaviour
     {
         _useInput = context.action.IsPressed();
     }
+
     public void SetSeccondaryUseInput(InputAction.CallbackContext context)
     {
         currentUseableItem.OnSeccondaryUseItemInput(context);
@@ -159,5 +217,15 @@ public class UseableItemController : NetworkBehaviour
         _reloadInput = context.action.IsPressed();
     }
 
+    public void SetInspectInput(InputAction.CallbackContext context)
+    {
+        _inspecting = context.action.IsPressed();
+
+        if (context.action.WasPerformedThisFrame())
+            OnStartInspect();
+
+        if (context.action.WasReleasedThisFrame())
+            OnStopInspect();
+    }
     #endregion
 }

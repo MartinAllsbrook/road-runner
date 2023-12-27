@@ -10,12 +10,15 @@ public class HUDController : MonoBehaviour
 {
     public static HUDController Instance;
 
+    [Header("HUDs")]
+    [SerializeField] private ItemInspectorHUD itemInspectorHUD;
+
     [Header("References")]
     [SerializeField] private TextMeshProUGUI ammoCountText;
     [SerializeField] private Animator reloadAnimator;
     [SerializeField] private GameObject hitMarker;
     [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private InventoryDisplay inventoryDisplay;
+    //[SerializeField] private InventoryDisplay inventoryDisplay;
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject mapCamera;
     [SerializeField] private CrosshaireController crosshaireController;
@@ -47,19 +50,25 @@ public class HUDController : MonoBehaviour
 
     private void Update()
     {
-        // TODO: Use the new input system and move this to the UI Manager
-        if (Input.GetKeyDown(pauseKey))
-            ToggleEscMenu();
-        
-        if (Input.GetKeyDown(inventoryKey))
-            ToggleInvetory();
 
-        if (Input.GetKeyDown(mapKey))
-            ToggleMap();
     }
 
+    #region Item Inspector HUD
+    public void StartInspectItem(UseableItem item)
+    {
+        itemInspectorHUD.gameObject.SetActive(true);
+        itemInspectorHUD.StartInspectItem(item);
+    }
+
+    public void StopInspectItem()
+    {
+        itemInspectorHUD.StopInspectItem();
+        itemInspectorHUD.gameObject.SetActive(false);
+    }
+    #endregion
+
     // TODO: Move this to the UI Manager
-    #region Stuff the should be in the UI Manager
+/*    #region Stuff the should be in the UI Manager
     public void ToggleEscMenu()
     {
         if (!escMenuOpen)
@@ -81,13 +90,13 @@ public class HUDController : MonoBehaviour
         if (!inventoryOpen)
         {
             inventoryOpen = true;
-            inventoryDisplay.gameObject.SetActive(true);
+            //inventoryDisplay.gameObject.SetActive(true);
             PlayerSpawner.localPlayerSpawner.Pause();
         }
         else
         {
             inventoryOpen = false;
-            inventoryDisplay.gameObject.SetActive(false);
+            //inventoryDisplay.gameObject.SetActive(false);
             PlayerSpawner.localPlayerSpawner.Unpause();
         }
     }
@@ -109,7 +118,7 @@ public class HUDController : MonoBehaviour
             PlayerSpawner.localPlayerSpawner.Unpause();
         }
     }
-    #endregion
+    #endregion*/
 
     #region Gun HUD Stuff
     public void SetAmmoCountDisplay(int ammoCount, int maxAmmoCount)

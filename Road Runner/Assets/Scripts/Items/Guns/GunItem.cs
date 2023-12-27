@@ -32,7 +32,7 @@ public class GunItem : UseableItem
     [Header("Gun Settings")]
     [SerializeField] private Transform bulletExitPoint;
     [SerializeField] private Vector3 aimOffset;
-
+    
     [Header("Gunshots & Audio")]
     [SerializeField] private EffectPool gunshotSoundPool;
     [SerializeField] private GameObject muzzleFlash;
@@ -82,14 +82,15 @@ public class GunItem : UseableItem
     private void StartAim()
     {
         //Debug.Log(zoom);
-        transform.position += (aimOffset.x * transform.right + aimOffset.y * transform.up + aimOffset.z * transform.forward);
-        UseableItemController.Instance.GetComponent<CameraController>().SetZoom(zoom);
+        //transform.position += (aimOffset.x * transform.right + aimOffset.y * transform.up + aimOffset.z * transform.forward);
+        parentItemController.SetHandPosition(UseableItemController.HandPosition.Aim);
+        parentItemController.GetComponent<CameraController>().SetZoom(zoom);
     }
 
     private void StopAim()
     {
-        transform.position -= (aimOffset.x * transform.right + aimOffset.y * transform.up + aimOffset.z * transform.forward);
-        UseableItemController.Instance.GetComponent<CameraController>().SetZoom(1);
+        parentItemController.SetHandPosition(UseableItemController.HandPosition.Resting);
+        parentItemController.GetComponent<CameraController>().SetZoom(1);
     }
 
     public override void OnUseItemInput()
@@ -122,18 +123,20 @@ public class GunItem : UseableItem
         if (ammoCount <= 0)
             return;
 
-        UseableItemController.Instance.HudController.SetAmmoCountDisplay(ammoCount - 1, magSize);
+        parentItemController.HudController.SetAmmoCountDisplay(ammoCount - 1, magSize);
         timeSinceLastShot = 0;
         Fire(_inaccuracy);
 
-        UseableItemController.Instance.UseServerRpc();
     }
 
     protected virtual void Fire(float accuracy) 
-    { 
+    {
         CreateBullet(accuracy);
         IncreaseInaccuracy();
+        parentItemController.UseServerRpc();
     }
+
+    #region Inaccuracy
 
     private void IncreaseInaccuracy()
     {
@@ -153,9 +156,11 @@ public class GunItem : UseableItem
         return Mathf.Lerp(minInaccuracy, maxInaccuracy, inaccuracyPercent);
     }
 
+    #endregion
+
     protected void CreateBullet(float accuracy)
     {
-        Vector3 velocity = UseableItemController.Instance.CameraPosition.forward * bulletSpeed;
+        Vector3 velocity = parentItemController.CameraPosition.forward * bulletSpeed;
 
         Vector3 randomVector3 = UnityEngine.Random.insideUnitSphere;
         Vector3 axis = Vector3.ProjectOnPlane(randomVector3, velocity);
@@ -164,7 +169,7 @@ public class GunItem : UseableItem
 
         velocity = Quaternion.AngleAxis(inaccuracy, axis) * velocity;
         
-        Vector3 position = UseableItemController.Instance.CameraPosition.position;
+        Vector3 position = parentItemController.CameraPosition.position;
 
         BulletPool.Instance.FireBullet(velocity, position, damage);
         //SpawnBulletServerRpc();
@@ -172,15 +177,17 @@ public class GunItem : UseableItem
 
     private IEnumerator Reload()
     {
+        parentItemController.SetHandPosition(UseableItemController.HandPosition.Reloading);
         reloading = true;
-        UseableItemController.Instance.HudController.PlayReloadUIAnimation(reloadTime);
+        parentItemController.HudController.PlayReloadUIAnimation(reloadTime);
 
         yield return new WaitForSeconds(reloadTime);
 
         reloadAudio.Play();
-        UseableItemController.Instance.HudController.StopReloadUIAnimation();
+        parentItemController.SetHandPosition(UseableItemController.HandPosition.Resting);
+        parentItemController.HudController.StopReloadUIAnimation();
         magazine.Reload();
-        UseableItemController.Instance.HudController.SetAmmoCountDisplay(magSize, magSize);
+        parentItemController.HudController.SetAmmoCountDisplay(magSize, magSize);
         reloading = false;
     }
 
