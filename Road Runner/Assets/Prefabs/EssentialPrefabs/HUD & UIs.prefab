@@ -2018,7 +2018,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11.35
+  m_fontSize: 18.05
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2652,7 +2652,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 135.15
+  m_fontSize: 182.75
   m_fontSizeBase: 52
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4447,7 +4447,7 @@ MonoBehaviour:
   dropItemButton: {fileID: 6203917362448827481}
   hotbarDisplay: {fileID: 7552890900661506771}
   inventoriesContainer: {fileID: 2008249113302664811}
-  inventorySlotPrefab: {fileID: 1691254442431047614, guid: fcb16eccd44ff3c4588beed7b7587389, type: 3}
+  inventorySlotPrefab: {fileID: 5817579359054182642, guid: fcb16eccd44ff3c4588beed7b7587389, type: 3}
   itemButtonPrefab: {fileID: 3980709681251038720, guid: ea5ad6b846fe7cc4eaa6c5ea27a92b7e, type: 3}
   hotbarSlotBackdrop: {fileID: 5646944500903790267, guid: 1a8edebcf2e1fed4fad1261da7426599, type: 3}
   connectedInventoryBackdrop: {fileID: 5646944500903790267, guid: 35f3d2a5b107d924a8a11225f0026edb, type: 3}
@@ -6996,7 +6996,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 45.25
   m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7130,7 +7130,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 135.15
+  m_fontSize: 182.75
   m_fontSizeBase: 52
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -12518,7 +12518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4735202183287030787, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_Size
-      value: 0.96943974
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4746035142520893616, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchorMax.y

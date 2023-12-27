@@ -13,7 +13,7 @@ public class InventoryUI : MonoBehaviour
     {
         public RectTransform inventoryDisplay;
         public ConnectedInventoryHeader connectedInventoryHeader;
-        public Button[,] buttons;
+        public SlotButton[,] slotButtons; // 
     }
 
     [Header("Settings")]
@@ -27,7 +27,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private RectTransform inventoriesContainer;
 
     [Header("Generated Display Components")]
-    [SerializeField] private Button inventorySlotPrefab;
+    [SerializeField] private SlotButton inventorySlotPrefab;
     [SerializeField] private ItemButton itemButtonPrefab;
     [SerializeField] private RectTransform hotbarSlotBackdrop;
     [SerializeField] private RectTransform connectedInventoryBackdrop;
@@ -43,6 +43,11 @@ public class InventoryUI : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
+    }
+
+    private void Update()
+    {
+        inventoryHand.transform.position = Input.mousePosition + new Vector3(inventorySlotWidth / 2, inventorySlotWidth / 2, 0);
     }
 
     public void InitializeInventoryDisplay(Inventory inventory)
@@ -64,7 +69,7 @@ public class InventoryUI : MonoBehaviour
         ConnectedInventoryUI hotbarUI = new ConnectedInventoryUI();
 
         hotbarUI.inventoryDisplay = hotbarDisplay;
-        hotbarUI.buttons = new Button[hotbarSlotCount * hotbarSlotWidth, hotbarSlotHeight];
+        hotbarUI.slotButtons = new SlotButton[hotbarSlotCount * hotbarSlotWidth, hotbarSlotHeight];
 
         for (int slotIndex = 0; slotIndex < hotbarSlotCount; slotIndex++)
         {
@@ -72,19 +77,12 @@ public class InventoryUI : MonoBehaviour
             {
                 for (int slotX = 0; slotX < hotbarSlotWidth; slotX++)
                 {
-
-                    Button newSlot = Instantiate(inventorySlotPrefab, hotbarUI.inventoryDisplay);
-
                     int x = slotIndex * hotbarSlotWidth + slotX;
-                    int yCopy = y;
-                    newSlot.onClick.AddListener(() =>
-                    {
-                        Inventory.Instance.TryPlaceInSlot(0, new Vector2Int(x, yCopy));
-                    });
 
-                    StyleSlot(newSlot.GetComponent<RectTransform>(), new Vector2Int(x, y), false);
+                    SlotButton newSlot = Instantiate(inventorySlotPrefab, hotbarUI.inventoryDisplay);
+                    newSlot.Set(0, new Vector2Int(x, y), inventorySlotWidth);
 
-                    hotbarUI.buttons[x, y] = newSlot;
+                    hotbarUI.slotButtons[x, y] = newSlot;
                 }
             }
         }
@@ -92,10 +90,7 @@ public class InventoryUI : MonoBehaviour
         conectedInventoryUIs.Add(0, hotbarUI);
     }
 
-    private void Update()
-    {
-        inventoryHand.transform.position = Input.mousePosition + new Vector3(inventorySlotWidth / 2, inventorySlotWidth / 2, 0);
-    }
+
 
     public void SetInventoryHand(Inventory.InventoryItem inventoryItem)
     {
@@ -106,7 +101,7 @@ public class InventoryUI : MonoBehaviour
         inventoryHand.GetComponent<Image>().sprite = itemSO.UISprite;
     }
 
-    public void CreateInventoryDisplay(int inventoryID, Vector2Int dimensions)
+    public void CreateInventoryDisplay(int inventoryKey, Vector2Int dimensions)
     {
         int width = dimensions.x;
         int height = dimensions.y;
@@ -114,7 +109,7 @@ public class InventoryUI : MonoBehaviour
         ConnectedInventoryUI connectedInventoryUI = new ConnectedInventoryUI();
         connectedInventoryUI.inventoryDisplay = Instantiate(connectedInventoryBackdrop, inventoriesContainer);
         // Deal with height of inventories        
-        connectedInventoryUI.buttons = new Button[width, height];
+        connectedInventoryUI.slotButtons = new SlotButton[width, height];
 
 /*        ConnectedInventoryHeader newConnectedInventoryHeader = Instantiate(connectedInventoryHeaderPrefab, inventoriesContainer);
         newConnectedInventoryHeader.Set(inventoryID, "Put name here lmao", new Vector2Int(width * inventorySlotWidth, inventorySlotWidth));
@@ -133,28 +128,21 @@ public class InventoryUI : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                // TODO: Make the next line not use GetComponent
-                // TODO: Make all instantiations of inventorySlotPrefab set the size of the button
-                Button newInventoryButton = Instantiate(inventorySlotPrefab, connectedInventoryUI.inventoryDisplay).GetComponent<Button>();
+                SlotButton newSlotButton = Instantiate(inventorySlotPrefab, connectedInventoryUI.inventoryDisplay);
 
                 var slot = new Vector2Int(x, y);
 
-                newInventoryButton.onClick.AddListener(() => 
-                { 
-                    Inventory.Instance.TryPlaceInSlot(inventoryID, slot); 
-                });
+                newSlotButton.Set(inventoryKey, slot, inventorySlotWidth);
 
-                StyleSlot(newInventoryButton.GetComponent<RectTransform>(), slot, false);
-
-                connectedInventoryUI.buttons[x, y] = newInventoryButton;
+                connectedInventoryUI.slotButtons[x, y] = newSlotButton;
             }
         }
-        conectedInventoryUIs.Add(inventoryID, connectedInventoryUI);
+        conectedInventoryUIs.Add(inventoryKey, connectedInventoryUI);
 
         StyleConnectedInventories();
     }
 
-    private void StyleSlot(RectTransform slot, Vector2Int intPosition, bool addHeaderSpace)
+/*    private void StyleSlot(RectTransform slot, Vector2Int intPosition, bool addHeaderSpace)
     {
         slot.GetComponent<RectTransform>().sizeDelta = new Vector2(inventorySlotWidth, inventorySlotWidth);
 
@@ -165,7 +153,7 @@ public class InventoryUI : MonoBehaviour
 
         Vector2 positon = intPosition * inventorySlotWidth;
         slot.GetComponent<RectTransform>().anchoredPosition = positon;
-    }
+    }*/
 
     private void StyleConnectedInventories()
     {
@@ -177,8 +165,8 @@ public class InventoryUI : MonoBehaviour
             if(connectedInventoryUI.inventoryDisplay == hotbarDisplay)
                 continue;
 
-            int width = connectedInventoryUI.buttons.GetLength(0);
-            int height = connectedInventoryUI.buttons.GetLength(1);
+            int width = connectedInventoryUI.slotButtons.GetLength(0);
+            int height = connectedInventoryUI.slotButtons.GetLength(1);
 
             connectedInventoryUI.inventoryDisplay.anchoredPosition = new Vector2(0, -heightSum);
 
@@ -202,22 +190,10 @@ public class InventoryUI : MonoBehaviour
     public void AddItemDisplay(int inventoryKey, int containedItemKey, ItemSO itemSO, Vector2Int topLeft)
     {
         Vector2Int dimensions = itemSO.InInventoryDimensions;
-
-        Debug.Log("Adding item to inventory: " + inventoryKey);
+        Vector2Int position = topLeft * inventorySlotWidth;
 
         ItemButton newItemButton = Instantiate(itemButtonPrefab, conectedInventoryUIs[inventoryKey].inventoryDisplay);
-
-        Vector2 position = topLeft * inventorySlotWidth;
-
-        var cInventory = Inventory.Instance;
-        var cInvetotyUI = this;
-        newItemButton.Set(dimensions, position, inventorySlotWidth, itemSO.UISprite);
-
-        newItemButton.GetButton().onClick.AddListener(() =>
-        {
-            // TODO: Maybe use the dictionary here
-            cInventory.RetrieveItem(inventoryKey, containedItemKey);
-        });
+        newItemButton.Set(inventoryKey, containedItemKey, dimensions, position, inventorySlotWidth, itemSO.UISprite);
 
         int uniqueItemKey = CalculateUniqueItemKey(inventoryKey, containedItemKey);
         _itemButtons.Add(uniqueItemKey, newItemButton);        
@@ -225,17 +201,19 @@ public class InventoryUI : MonoBehaviour
         HideButtonArea(inventoryKey, topLeft, dimensions);
     }
 
-    private int CalculateUniqueItemKey(int inventoryKey, int containedItemKey)
-    {
-        return containedItemKey * 20 + inventoryKey;
-    }
-
     public void DestroyItemDisplay(int inventoryKey, int itemKey)
     {
         int uniqueItemKey = CalculateUniqueItemKey(inventoryKey, itemKey);
+
         ItemButton itemButton = _itemButtons[uniqueItemKey];
         _itemButtons.Remove(uniqueItemKey);
         Destroy(itemButton.gameObject);
+    }
+
+    // Calculates a unique key for each item display only used in the UI system
+    private int CalculateUniqueItemKey(int inventoryKey, int containedItemKey)
+    {
+        return containedItemKey * 20 + inventoryKey;
     }
 
     #region Button Area Methods
@@ -254,7 +232,7 @@ public class InventoryUI : MonoBehaviour
                 int x = topLeft.x + xi;
                 int y = topLeft.y + yi;
 
-                connectedInventoryUI.buttons[x, y].gameObject.SetActive(false);
+                connectedInventoryUI.slotButtons[x, y].gameObject.SetActive(false);
             }
         }
     }
@@ -273,12 +251,12 @@ public class InventoryUI : MonoBehaviour
                 int x = topLeft.x + xi;
                 int y = topLeft.y + yi;
 
-                if (connectedInventoryUI.buttons[x, y].gameObject.active)
+                if (connectedInventoryUI.slotButtons[x, y].gameObject.activeSelf)
                 {
                     Debug.LogError("Tried to activate an active button in inventory " + inventoryID + " at slot " + x + ", " + y + ". This suggests there are issues in the inventory code...");
                 }
 
-                connectedInventoryUI.buttons[x, y].gameObject.SetActive(true);
+                connectedInventoryUI.slotButtons[x, y].gameObject.SetActive(true);
             }
         }
     }
@@ -294,9 +272,9 @@ public class InventoryUI : MonoBehaviour
 
         foreach (ConnectedInventoryUI connectedInventoryUI in conectedInventoryUIs.Values)
         {
-            foreach (Button button in connectedInventoryUI.buttons)
+            foreach (SlotButton slotButton in connectedInventoryUI.slotButtons)
             {
-                button.gameObject.SetActive(true);
+                slotButton.gameObject.SetActive(true);
             }
 
             foreach (ItemButton itemButton in _itemButtons.Values)
@@ -314,9 +292,9 @@ public class InventoryUI : MonoBehaviour
     {
         ConnectedInventoryUI connectedInventoryUI = conectedInventoryUIs[key];
 
-        foreach (Button button in connectedInventoryUI.buttons)
+        foreach (SlotButton slotButton in connectedInventoryUI.slotButtons)
         {
-            button.gameObject.SetActive(true);
+            slotButton.gameObject.SetActive(true);
         }
         foreach (ItemButton itemButton in _itemButtons.Values)
         {

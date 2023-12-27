@@ -127,8 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351dbc1a5e8d7264c8f9850f28f3c5a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 37618919425693764}
+  rectTransform: {fileID: 1733525398129579512}
   itemImage: {fileID: 7239640333393866036}
-  rootButton: {fileID: 37618919425693764}
 --- !u!222 &3138652495389607388
 CanvasRenderer:
   m_ObjectHideFlags: 0
