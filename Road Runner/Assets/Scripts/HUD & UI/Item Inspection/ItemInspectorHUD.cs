@@ -9,7 +9,7 @@ using static InspectPoint;
 public class ItemInspectorHUD : MonoBehaviour
 {
     private InspectPoint[] itemInspectPoints;
-    private InspectPointUIElement[] inspectOverlays;
+    private InspectPointUIElement[] pointUIs;
 
     [SerializeField] private InspectPointUIElement inspectOverlayTester;
 
@@ -17,40 +17,17 @@ public class ItemInspectorHUD : MonoBehaviour
     {
         itemInspectPoints = item.InspectPoints;
 
-        inspectOverlays = new InspectPointUIElement[itemInspectPoints.Length];
+        pointUIs = new InspectPointUIElement[itemInspectPoints.Length];
 
-        for (int i = 0; i < itemInspectPoints.Length; i++)
+        for(int i = 0; i < itemInspectPoints.Length; i++)
         {
-            CreateInspectHUDElement(i);
+            pointUIs[i] = itemInspectPoints[i].CreateInspectHUDElement(transform);
         }
-    }
-
-    private void CreateInspectHUDElement(int index)
-    {
-        InspectPoint inspectPoint = itemInspectPoints[index];
-
-        Vector3 worldPosition = inspectPoint.transform.position;
-        Vector2 screenPosition = WorldToScreenPosition(worldPosition);
-
-        PointType pointType = inspectPoint.InspectPointType;
-        // TODO: Create a switch statement to determine which inspect overlay to create based on the point type
-
-        InspectPointUIElement newInspectOverlay = Instantiate(inspectOverlayTester, screenPosition, Quaternion.identity, transform);
-        newInspectOverlay.SetPoint(inspectPoint.InspectPointName, inspectPoint.InspectPointDescription);
-
-        inspectOverlays[index] = newInspectOverlay;
     }
 
     public void StopInspectItem()
     {
-        foreach (InspectPointUIElement inspectOverlay in inspectOverlays)
+        foreach (InspectPointUIElement inspectOverlay in pointUIs)
             Destroy(inspectOverlay.gameObject);
-    }
-
-    private Vector2 WorldToScreenPosition(Vector3 worldPosition)
-    {
-        Vector2 position = Camera.main.WorldToScreenPoint(worldPosition);
-
-        return position;
     }
 }

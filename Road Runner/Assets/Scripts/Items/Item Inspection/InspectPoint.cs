@@ -5,12 +5,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
-// TODO: Move portions of the ItemInspectorHUD class into this class to make it more modular.
-// Also make this class spawn and set it's own UI elements. This will make it easier to create new inspect points.
-
 public class InspectPoint : MonoBehaviour
 {
+    #region Variables
     [Header("References")]
     [SerializeField] private InspectPointUIElement inspectPointUIElement;
 
@@ -20,18 +17,19 @@ public class InspectPoint : MonoBehaviour
     {
         get { return inspectPointName; }
     }
-
-    [SerializeField] private string inpectPointDescription;
+    [SerializeField] private string inspectPointDescription;
     public string InspectPointDescription
     {
-        get { return inpectPointDescription; }
+        get { return inspectPointDescription; }
     }
-
     [SerializeField] private PointType inspectPointType;
     public PointType InspectPointType
     {
         get { return inspectPointType; }
     }
+
+    private InspectPointUIElement uiElement;
+    #endregion
 
     public enum PointType
     {
@@ -42,10 +40,24 @@ public class InspectPoint : MonoBehaviour
         Modifier,
         Adder
     }
+
+    public InspectPointUIElement CreateInspectHUDElement(Transform hudTransform)
+    {
+
+        Vector3 worldPosition = transform.position;
+        Vector2 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+         
+        uiElement = Instantiate(inspectPointUIElement, screenPosition, Quaternion.identity, hudTransform);
+        uiElement.GenericSet(this);
+
+        return uiElement;
+    }
+
 }
 
 public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    #region References
     [Header("Basics")]
     [SerializeField] private Button inspectButton;
 
@@ -57,11 +69,19 @@ public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPoint
     [SerializeField] private GameObject inspectPanel;
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI description;
+    #endregion
 
     private bool previewOpen = false;
     private bool inspectOpen = false;
 
-    public void SetPoint(string pointTitle, string pointDescription)
+
+    public virtual void GenericSet<T>(T point)
+    {
+        InspectPoint inspectPoint = point as InspectPoint;
+        SetInspectPoint(inspectPoint.InspectPointName, inspectPoint.InspectPointDescription);
+    }
+
+    private void SetInspectPoint(string pointTitle, string pointDescription)
     {
         inspectButton.onClick.AddListener(OnPointClicked);
 

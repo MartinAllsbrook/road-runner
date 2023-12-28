@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9007783706054643963}
-  - component: {fileID: 2465839731648131849}
+  - component: {fileID: -465312888266616461}
   m_Layer: 0
-  m_Name: InspectPoint
+  m_Name: UsePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2465839731648131849
+--- !u!114 &-465312888266616461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8214556037378710215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a063c6eb415bad4785100642f26c24d, type: 3}
+  m_Script: {fileID: 11500000, guid: e6695559c6ec4f64ea09ff11689b0b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inspectPointUIElement: {fileID: 8558299696245745114, guid: 2da862d7adb3ad74098d86ea147454f7, type: 3}
+  inspectPointUIElement: {fileID: 4101762089506516348, guid: 02b53b1a6df812d4aaec8b7020af01c1, type: 3}
   inspectPointName: 
-  inpectPointDescription: 
-  inspectPointType: 0
+  inspectPointDescription: 
+  inspectPointType: 1
+  callToAction: 
