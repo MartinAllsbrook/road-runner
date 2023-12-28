@@ -105,6 +105,7 @@ Transform:
   - {fileID: 5593337523191692482}
   - {fileID: 179582549072548040}
   - {fileID: 8092180786610430156}
+  - {fileID: 1240424477328870591}
   - {fileID: 5918059967596009301}
   m_Father: {fileID: 3622256423528627549}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -666,6 +667,76 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1400357961049713812, guid: b3fcda30eed94004fab33d55760a9521, type: 3}
   m_PrefabInstance: {fileID: 4374395544844762115}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7797082200428731460
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4082727351621295499}
+    m_Modifications:
+    - target: {fileID: 2465839731648131849, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: inspectPointName
+      value: Front Sight
+      objectReference: {fileID: 0}
+    - target: {fileID: 2465839731648131849, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: inpectPointDescription
+      value: Make it line up to know where you're aiming
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214556037378710215, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_Name
+      value: InspectPoint FrontSight
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0160532
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.4349
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.376
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+--- !u!4 &1240424477328870591 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
+  m_PrefabInstance: {fileID: 7797082200428731460}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7982597912512389586
 PrefabInstance:

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+/*public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Basics")]
     [SerializeField] private Button inspectButton;
@@ -103,4 +103,4 @@ public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPoint
     }
 
     #endregion
-}
+}*/
