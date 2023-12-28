@@ -8,6 +8,11 @@ using UnityEngine.InputSystem;
 public abstract class UseableItem : MonoBehaviour
 {
     [SerializeField] InspectPoint[] inspectPoints;
+    public InspectPoint[] InspectPoints
+    {
+        get { return inspectPoints; }
+        private set { inspectPoints = value; }
+    }
 
     protected UseableItemController parentItemController;
     public UseableItemController ParentItemController
@@ -66,9 +71,4 @@ public abstract class UseableItem : MonoBehaviour
     }
 
     #endregion
-
-    public InspectPoint[] GetInspectPoints()
-    {
-        return inspectPoints;
-    }
 }

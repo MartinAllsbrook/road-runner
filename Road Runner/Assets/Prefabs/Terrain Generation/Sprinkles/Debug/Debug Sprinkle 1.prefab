@@ -927,16 +927,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4544635444056873827, guid: 4d4f6f9441f943c469d4f05dcc604262, type: 3}
       propertyPath: objectsToSpawn.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4544635444056873827, guid: 4d4f6f9441f943c469d4f05dcc604262, type: 3}
       propertyPath: objectsToSpawn.Array.data[0]
       value: 
-      objectReference: {fileID: 4376748246903285242, guid: a3b86248d2d72d347acedeba9fe53f17, type: 3}
+      objectReference: {fileID: 6054560078628120099, guid: cb63f292e5d57bd4cab6010ee8fc822a, type: 3}
     - target: {fileID: 4544635444056873827, guid: 4d4f6f9441f943c469d4f05dcc604262, type: 3}
       propertyPath: objectsToSpawn.Array.data[1]
       value: 
-      objectReference: {fileID: 6054560078628120099, guid: cb63f292e5d57bd4cab6010ee8fc822a, type: 3}
+      objectReference: {fileID: 4052359956121919187, guid: 18ef45a510984824da0e7eff4da82c53, type: 3}
     - target: {fileID: 4544635444056873827, guid: 4d4f6f9441f943c469d4f05dcc604262, type: 3}
       propertyPath: objectsToSpawn.Array.data[2]
       value: 

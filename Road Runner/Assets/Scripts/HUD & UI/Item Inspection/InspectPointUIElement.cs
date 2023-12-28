@@ -11,25 +11,36 @@ public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPoint
 {
     [Header("Basics")]
     [SerializeField] private Button inspectButton;
-    [SerializeField] private string inspectPointName = "Unnamed";
 
     [Header("Preview")]
     [SerializeField] private GameObject previewPanel;
-    [SerializeField] private TextMeshProUGUI previewText;
+    [SerializeField] private TextMeshProUGUI previewTitle;
 
     [Header("Full Inspect")]
     [SerializeField] private GameObject inspectPanel;
-    [SerializeField] private TextMeshProUGUI inspectNameText;
+    [SerializeField] private TextMeshProUGUI title;
+    [SerializeField] private TextMeshProUGUI description;
 
     private bool previewOpen = false;
     private bool inspectOpen = false;
 
-    private void Start()
+    public void SetPoint(string pointTitle, string pointDescription)
     {
         inspectButton.onClick.AddListener(OnPointClicked);
+        
+        SetTitle(pointTitle);
+        SetDescription(pointDescription);
+    }
 
-        previewText.text = inspectPointName;
-        inspectNameText.text = inspectPointName;
+    private void SetTitle(string pointTitle)
+    {
+        previewTitle.text = pointTitle;
+        title.text = pointTitle;
+    }
+
+    private void SetDescription(string pointDescription)
+    {
+        description.text = pointDescription;
     }
 
     #region Preview
@@ -92,6 +103,4 @@ public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPoint
     }
 
     #endregion
-
-
 }
