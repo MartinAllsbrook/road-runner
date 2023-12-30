@@ -5871,6 +5871,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d6ec0fe4636309540af72c7b76b3132b, type: 2}
   - {fileID: 11400000, guid: cc4a9ea93c1f2ca428f398fa5941633c, type: 2}
   - {fileID: 11400000, guid: 3c0b075850a9e4046ac41ae4cff96aee, type: 2}
+  - {fileID: 11400000, guid: 56467f1825e4b564aab5d6496dbce97e, type: 2}
   hotbarSize: 9
   slotWidth: 2
   slotHeight: 2

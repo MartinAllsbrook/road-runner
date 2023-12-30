@@ -565,7 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1902344249092550255}
   - component: {fileID: 6573050569657674097}
-  - component: {fileID: 8558299696245745114}
+  - component: {fileID: 8610477431051907310}
   m_Layer: 5
   m_Name: InspectPointUIElement
   m_TagString: Untagged
@@ -603,7 +603,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7903654961160837809}
   m_CullTransparentMesh: 1
---- !u!114 &8558299696245745114
+--- !u!114 &8610477431051907310
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

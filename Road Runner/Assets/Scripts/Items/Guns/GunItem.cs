@@ -9,6 +9,8 @@ using UnityEngine.InputSystem;
 
 public class GunItem : UseableItem
 {
+    #region Properties & Fields (Variables)
+
     [Header("References")]
     [SerializeField] private GameObject bullet;
 
@@ -44,6 +46,8 @@ public class GunItem : UseableItem
     private float timeSinceLastShot;
     private bool triggerLifted = true;
     private int ammoCount;
+
+    #endregion
 
     private void Start()
     {
@@ -100,8 +104,8 @@ public class GunItem : UseableItem
 
     public override void OnReloadItemInput()
     {
-        if (!reloading)
-            StartCoroutine(Reload());
+/*        if (!reloading)
+            StartCoroutine(Reload());*/
     }
 
     private void TryShootLoop()
@@ -173,6 +177,11 @@ public class GunItem : UseableItem
 
         BulletPool.Instance.FireBullet(velocity, position, damage);
         //SpawnBulletServerRpc();
+    }
+
+    public void SetMag(Magazine magazine)
+    {
+        this.magazine = magazine;
     }
 
     private IEnumerator Reload()

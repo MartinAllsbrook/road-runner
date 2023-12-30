@@ -53,28 +53,33 @@ public class Inventory : NetworkBehaviour
     protected static Dictionary<InventoryItem, ItemSO> itemSoDictionary;
     public static Dictionary<InventoryItem, ItemSO> ItemSODictionary { get { return itemSoDictionary; } }
 
-    public enum InventoryItem
+    public enum InventoryItem // Item IDs essentially
     {
-        Empty,
+        Empty = 0,
 
-        Gun_Ak74,
-        Gun_BenneliM4,
-        Gun_M4_8,
-        Gun_M107,
-        Gun_M1911,
-        Gun_Rpg7,
-        Gun_Uzi,
-        Gun_M249,
+        // Guns 1 - 100
+        Gun_M4_8 = 1,
+        Gun_Ak74 = 2,
+        Gun_BenneliM4 = 3,
+        Gun_M107 = 4,
+        Gun_M1911 = 5,
+        Gun_Rpg7 = 6,
+        Gun_Uzi = 7,
+        Gun_M249 = 8,
 
-        Ammo_9mm,
+        // Consumables 101 - 200
+        Consumable_Apple = 101,
+        Consumable_WaterBottle = 102,
+        Consumable_Beans = 103,
+        Consumable_Medkit = 104,
+        Consumable_Pills = 105,
 
-        Consumable_Apple,
-        Consumable_WaterBottle,
-        Consumable_Beans,
-        Consumable_Medkit,
-        Consumable_Pills,
+        // Clothing 201 - 300
+        Clothing_Backpack = 201,
 
-        Clothing_Backpack
+        // Ammo & Attachments 301 - 400
+        Attachment_Mag = 301,
+
     }
 
     /// <summary>

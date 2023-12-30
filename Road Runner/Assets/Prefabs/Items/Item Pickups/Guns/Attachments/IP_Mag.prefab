@@ -72,7 +72,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 468634300026227880, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: m_Name
-      value: Mag
+      value: IP_Mag
       objectReference: {fileID: 0}
     - target: {fileID: 3513500745005336924, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: m_LocalPosition.x
@@ -114,6 +114,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4017874558489888929, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: itemSo
+      value: 
+      objectReference: {fileID: 11400000, guid: 56467f1825e4b564aab5d6496dbce97e, type: 2}
     - target: {fileID: 7873834179909757354, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 254065756

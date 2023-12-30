@@ -15,4 +15,9 @@ public class UsePoint : InspectPoint
     }
 
     [SerializeField] public UnityEvent OnUse = new UnityEvent();
+
+    public virtual void Use()
+    {
+        OnUse.Invoke();
+    }
 }

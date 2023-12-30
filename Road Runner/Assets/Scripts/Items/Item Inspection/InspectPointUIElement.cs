@@ -7,8 +7,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/*public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    #region References
     [Header("Basics")]
     [SerializeField] private Button inspectButton;
 
@@ -20,14 +21,22 @@ using UnityEngine.UI;
     [SerializeField] private GameObject inspectPanel;
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI description;
+    #endregion
 
     private bool previewOpen = false;
     private bool inspectOpen = false;
 
-    public void SetPoint(string pointTitle, string pointDescription)
+
+    public virtual void GenericSet<T>(T point)
+    {
+        InspectPoint inspectPoint = point as InspectPoint;
+        SetInspectPoint(inspectPoint.InspectPointName, inspectPoint.InspectPointDescription);
+    }
+
+    private void SetInspectPoint(string pointTitle, string pointDescription)
     {
         inspectButton.onClick.AddListener(OnPointClicked);
-        
+
         SetTitle(pointTitle);
         SetDescription(pointDescription);
     }
@@ -103,4 +112,4 @@ using UnityEngine.UI;
     }
 
     #endregion
-}*/
+}
