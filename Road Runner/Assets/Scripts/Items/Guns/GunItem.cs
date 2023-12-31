@@ -6,6 +6,7 @@ using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static ConnectedInventory;
 
 public class GunItem : UseableItem
 {
@@ -179,9 +180,10 @@ public class GunItem : UseableItem
         //SpawnBulletServerRpc();
     }
 
-    public void SetMag(Magazine magazine)
+    public void SetMag(ContainedItem magazineCI)
     {
-        this.magazine = magazine;
+        Debug.Log("Equiping a mag of size " + magazineCI.count);
+        magazine = new Magazine(magazineCI.count);
     }
 
     private IEnumerator Reload()

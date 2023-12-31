@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inspectPoints:
-  - {fileID: 1343754332996771632}
+  - {fileID: 7850882773053178972}
   - {fileID: 6720635930870952762}
   - {fileID: 3420286180673569598}
   - {fileID: 944440401200886951}
@@ -624,7 +624,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5593337523191692482}
+  - {fileID: 3989518167656337619}
   - {fileID: 179582549072548040}
   - {fileID: 8092180786610430156}
   - {fileID: 5918059967596009301}
@@ -1014,87 +1014,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
   m_PrefabInstance: {fileID: 3396628506249349038}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &3503120297304026169
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4082727351621295499}
-    m_Modifications:
-    - target: {fileID: 2465839731648131849, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: inspectPointName
-      value: Magazine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2465839731648131849, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: inpectPointDescription
-      value: It holds ur bullets dumbass
-      objectReference: {fileID: 0}
-    - target: {fileID: 8214556037378710215, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_Name
-      value: InspectPoint
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.0160532
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.258
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.473
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
---- !u!114 &1343754332996771632 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2465839731648131849, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-  m_PrefabInstance: {fileID: 3503120297304026169}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a063c6eb415bad4785100642f26c24d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &5593337523191692482 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9007783706054643963, guid: 4ad3d05ce0990ec479dfb7371c6330fd, type: 3}
-  m_PrefabInstance: {fileID: 3503120297304026169}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3888243907153994166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1275,6 +1194,119 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1400357961049713812, guid: b3fcda30eed94004fab33d55760a9521, type: 3}
   m_PrefabInstance: {fileID: 4374395544844762115}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5359158405333237800
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4082727351621295499}
+    m_Modifications:
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: inspectPointName
+      value: Magazine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: inspectPointType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemTypeThatFits
+      value: 301
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: inspectPointDescription
+      value: Swap your magazine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 285483904432889134}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetMag
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GunItem, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214556037378710215, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_Name
+      value: MagazineModifierPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.198
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.475
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+--- !u!4 &3989518167656337619 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+  m_PrefabInstance: {fileID: 5359158405333237800}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7850882773053178972 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+  m_PrefabInstance: {fileID: 5359158405333237800}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639dd26979f84294db500434168b4fb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7982597912512389586
 PrefabInstance:
   m_ObjectHideFlags: 0

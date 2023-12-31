@@ -141,6 +141,23 @@ public class Inventory : NetworkBehaviour
         }
     }
 
+    #region Inventory Interaction Methods
+
+    public ContainedItem[] FindInvetoryObjectsOfTypes(InventoryItem itemTypes)
+    {
+        List<ContainedItem> containedItems = new List<ContainedItem>();
+
+        foreach (var key in connectedInventories.Keys)
+        {
+            ContainedItem[] containedItemsOfType = connectedInventories[key].GetItemsOfType(itemTypes);
+            containedItems.AddRange(containedItemsOfType);
+        }
+
+        return containedItems.ToArray();
+    }
+
+    #endregion
+
     #region Picking up items
 
     /// <summary>

@@ -41,7 +41,7 @@ public class InspectPoint : MonoBehaviour
         Adder
     }
 
-    public InspectPointUIElement CreateInspectHUDElement(Transform hudTransform)
+    public virtual InspectPointUIElement CreateInspectHUDElement(Transform hudTransform)
     {
 
         Vector3 worldPosition = transform.position;

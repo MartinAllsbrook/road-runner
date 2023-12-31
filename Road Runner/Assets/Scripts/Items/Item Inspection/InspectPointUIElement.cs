@@ -26,11 +26,14 @@ public class InspectPointUIElement : MonoBehaviour, IPointerEnterHandler, IPoint
     private bool previewOpen = false;
     private bool inspectOpen = false;
 
+    protected bool _set = false;
 
     public virtual void GenericSet<T>(T point)
     {
         InspectPoint inspectPoint = point as InspectPoint;
         SetInspectPoint(inspectPoint.InspectPointName, inspectPoint.InspectPointDescription);
+
+        _set = true;
     }
 
     private void SetInspectPoint(string pointTitle, string pointDescription)

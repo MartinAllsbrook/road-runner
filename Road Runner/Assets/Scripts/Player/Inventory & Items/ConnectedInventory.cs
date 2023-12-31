@@ -15,6 +15,7 @@ public class ConnectedInventory
         public InventoryItem inventoryItem;
         public Vector2Int topLeft;
         public Vector2Int inventoryDimensions;
+        public int count;
     }
 
     protected int _width;
@@ -141,6 +142,7 @@ public class ConnectedInventory
 
         return InventoryItem.Empty;
     }
+
     protected int AddItemToList(InventoryItem inventoryItem, Vector2Int topLeft, Vector2Int dimensions)
     {
         ContainedItem newContainedItem = new ContainedItem { inventoryItem = inventoryItem, topLeft = topLeft, inventoryDimensions = dimensions };
@@ -189,6 +191,11 @@ public class ConnectedInventory
         }
         
         return items;
+    }
+
+    public ContainedItem[] GetItemsOfType(InventoryItem inventoryItem)
+    {
+        return containedItems.Values.Where(x => x.inventoryItem == inventoryItem).ToArray();
     }
 
     private int GetAvailableItemKey()
