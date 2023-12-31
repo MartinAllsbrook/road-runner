@@ -20,15 +20,15 @@ public class ModifierPointUIElement : InspectPointUIElement
 
         Debug.Log("Modifier point: " + modifierPoint);
 
-        ContainedItem[] itemOptions = modifierPoint.ItemsThatFit;
-        foreach (ContainedItem item in itemOptions)
+        StoredItemID[] itemOptions = modifierPoint.ItemsThatFit;
+        foreach (StoredItemID item in itemOptions)
         {
-            Sprite sprite = ItemSODictionary[item.inventoryItem].UISprite;
-            SpawnItemOptionUI(sprite, item.count, item, modifierPoint);
+            Sprite sprite = ItemSODictionary[item.UniqueItemID.BaseItemID].UISprite;
+            SpawnItemOptionUI(sprite, item.UniqueItemID.CounterCount, item, modifierPoint);
         }
     }
 
-    private void SpawnItemOptionUI(Sprite itemSprite, int count, ContainedItem item, ModifierPoint point)
+    private void SpawnItemOptionUI(Sprite itemSprite, int count, StoredItemID item, ModifierPoint point)
     {
         ModifierPointOption itemOption = Instantiate(itemOptionPrefab, itemOptionParent);
         itemOption.SetItemOption(itemSprite, count, item, point);

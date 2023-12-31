@@ -21,7 +21,6 @@ public class UseableItemController : NetworkBehaviour
     [Header("Basics")]
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private Transform handTransform;
-    [SerializeField] private ItemSO fists;
 
     #region Hand Positions
 
@@ -65,8 +64,8 @@ public class UseableItemController : NetworkBehaviour
 
     private void Start()
     {
-        SetItem(fists, -1);
 
+        SetItem(new UniqueItemID(), -1);
         if (!IsOwner)
             return;
 
@@ -126,8 +125,13 @@ public class UseableItemController : NetworkBehaviour
     /// Sets the current item, within the scope of this class
     /// </summary>
     /// <param name="itemSO">The scriptable object of the item you want to equip</param>
-    public void SetItem(ItemSO itemSO, int containedItemKey)
+    public void SetItem(UniqueItemID uniqueItemID, int containedItemKey)
     {
+        // TODO: make this work with the new UniqueItemID inventory system
+        Debug.Log("Setting item: " + uniqueItemID.BaseItemID);
+        Debug.Log(Inventory.ItemSODictionary);
+        ItemSO itemSO = Inventory.ItemSODictionary[uniqueItemID.BaseItemID];
+
         Destroy(currentItemPrefab);
         currentItemPrefab =  Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
 

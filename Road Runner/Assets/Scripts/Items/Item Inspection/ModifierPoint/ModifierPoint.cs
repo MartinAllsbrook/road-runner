@@ -6,17 +6,17 @@ using static ConnectedInventory;
 using System.Runtime.CompilerServices;
 
 [System.Serializable]
-public class ItemSelectEvent : UnityEngine.Events.UnityEvent<ContainedItem> 
+public class ItemSelectEvent : UnityEngine.Events.UnityEvent<StoredItemID> 
 { 
 }
 
 public class ModifierPoint : InspectPoint
 {
-    [SerializeField] private InventoryItem itemTypeThatFits;
+    [SerializeField] private ItemID itemTypeThatFits;
     [SerializeField] private ItemSelectEvent itemSelectEvent = new ItemSelectEvent();
 
-    private ContainedItem[] _itemsThatFit;
-    public ContainedItem[] ItemsThatFit
+    private StoredItemID[] _itemsThatFit;
+    public StoredItemID[] ItemsThatFit
     {
         get { return _itemsThatFit; }
     }
@@ -28,7 +28,7 @@ public class ModifierPoint : InspectPoint
         return base.CreateInspectHUDElement(hudTransform);
     }
 
-    public void SelectOption(ContainedItem item)
+    public void SelectOption(StoredItemID item)
     {
         itemSelectEvent.Invoke(item);
     }

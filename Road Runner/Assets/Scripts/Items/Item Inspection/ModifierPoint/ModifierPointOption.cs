@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static ConnectedInventory;
+using static Inventory;
 
 public class ModifierPointOption : MonoBehaviour
 {
@@ -11,10 +11,10 @@ public class ModifierPointOption : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countText;
     [SerializeField] private Button button;
 
-    private ContainedItem _associatedItem;
+    private StoredItemID _associatedItem;
     private ModifierPoint _associatedPoint;
 
-    public void SetItemOption(Sprite itemSprite, int count, ContainedItem item, ModifierPoint point)
+    public void SetItemOption(Sprite itemSprite, int count, StoredItemID item, ModifierPoint point)
     {
         itemImage.sprite = itemSprite;
         countText.text = count.ToString();

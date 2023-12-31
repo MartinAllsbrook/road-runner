@@ -15,45 +15,13 @@ using static ConnectedInventory;
 /// </summary>
 public class Inventory : NetworkBehaviour
 {
+    #region Static Properties, Enums, and Helper Classes
     public static Inventory Instance;
 
-    [Header("World Interaction")]
-    [SerializeField] private float maxItemPickupDistance;
-    [SerializeField] private LayerMask isItemPickup;
-    [SerializeField] private LayerMask isVehicle;
-    [SerializeField] private Inventory droppedItemBag;
+    protected static Dictionary<ItemID, ItemSO> itemSoDictionary;
+    public static Dictionary<ItemID, ItemSO> ItemSODictionary { get { return itemSoDictionary; } }
 
-    [Header("Item Refs")]
-    [SerializeField] private ItemSO[] itemSos;
-
-    [Header("Hotbar")]
-    [SerializeField] private int hotbarSize = 9;
-    [SerializeField] private int slotWidth = 2;
-    [SerializeField] private int slotHeight = 2;
-
-    [Header("Clothing")]
-    [SerializeField] private int numClothingSlots;
-
-    private InventoryItem inventoryHand; // The item being moved around the inventory
-    
-    private InventoryItem usingItem; // The item being used by the player
-    private UseableItemController useableItemController;
-
-
-    private VehicleInteractionController vehicle;
-
-    private Transform mainCamera;
-
-    // Inventories
-    private Hotbar hotbar;
-    private Dictionary<int, ConnectedInventory> connectedInventories;
-
-    private InventoryUI inventoryUI;
-
-    protected static Dictionary<InventoryItem, ItemSO> itemSoDictionary;
-    public static Dictionary<InventoryItem, ItemSO> ItemSODictionary { get { return itemSoDictionary; } }
-
-    public enum InventoryItem // Item IDs essentially
+    public enum ItemID // Item IDs used with the itemSODictionary. I don't think these could represent a modified item.
     {
         Empty = 0,
 
@@ -79,12 +47,73 @@ public class Inventory : NetworkBehaviour
 
         // Ammo & Attachments 301 - 400
         Attachment_Mag = 301,
-
     }
 
-    /// <summary>
-    /// This method is called at the start of the game. It initializes the inventory system.
-    /// </summary>
+/*    // Public class representing the information needed to store an item in a connected inventory
+    public class ContainedItem
+    {
+        public ItemID inventoryItem;
+
+        // TODO: Think about how to store info more efficiently. Does everything need to know the position of the item or just the connectedInventory it's in?
+        public Vector2Int topLeft; // The top left corner of the item in the inventory
+        public Vector2Int inventoryDimensions; // The dimensions of the item in the inventory, although & TODO: this may not be needed because the dimensions are stored in the itemSO
+        public int count;
+    }*/
+
+    #endregion
+
+    #region Properties
+
+    [Header("World Interaction")]
+    [SerializeField] private float maxItemPickupDistance;
+    [SerializeField] private LayerMask isItemPickup;
+    [SerializeField] private LayerMask isVehicle;
+    [SerializeField] private Inventory droppedItemBag;
+
+    [Header("Item Refs")]
+    [SerializeField] private ItemSO[] itemSos;
+
+    [Header("Hotbar")]
+    [SerializeField] private int hotbarSize = 9;
+    [SerializeField] private int slotWidth = 2;
+    [SerializeField] private int slotHeight = 2;
+
+    [Header("Clothing")]
+    [SerializeField] private int numClothingSlots;
+
+    private UniqueItemID inventoryHand; // The item being moved around the inventory
+    
+    private StoredItemID usingItem; // The item being used by the player
+    private UseableItemController useableItemController;
+
+
+    private VehicleInteractionController vehicle;
+
+    private Transform mainCamera;
+
+    // Inventories
+    private Hotbar hotbar;
+    private Dictionary<int, ConnectedInventory> connectedInventories;
+
+    private InventoryUI inventoryUI;
+
+    #endregion
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (IsOwner)
+        {
+            if (itemSoDictionary == null)
+            {
+                itemSoDictionary = new Dictionary<ItemID, ItemSO>();
+                for (int i = 0; i < itemSos.Length; i++)
+                    itemSoDictionary.Add(itemSos[i].ItemID, itemSos[i]);
+            }
+        }
+    }
+
     protected void Start()
     {
         useableItemController = GetComponent<UseableItemController>();
@@ -100,25 +129,18 @@ public class Inventory : NetworkBehaviour
 
         // Create hotbar
 
-        if (itemSoDictionary == null)
-        {
-            itemSoDictionary = new Dictionary<InventoryItem, ItemSO>();
-            for (int i = 0; i < itemSos.Length; i++)
-                itemSoDictionary.Add(itemSos[i].InventoryItem, itemSos[i]);
-        }
+
 
         connectedInventories = new Dictionary<int, ConnectedInventory>();
 
-        SetInventoryHand(InventoryItem.Empty);
-
+        SetInventoryHand(new UniqueItemID());
+        
         mainCamera = Camera.main.transform;
 
         // Create Inventory Stuff
         inventoryUI.InitializeInventoryDisplay(this);
         CreateHotbar();
     }
-
-
 
     /// <summary>
     /// This method is called when an item is picked up.
@@ -141,15 +163,15 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    #region Inventory Interaction Methods
+    #region Inventory Interaction Methods for other classes
 
-    public ContainedItem[] FindInvetoryObjectsOfTypes(InventoryItem itemTypes)
+    public StoredItemID[] FindInvetoryObjectsOfTypes(ItemID itemTypes)
     {
-        List<ContainedItem> containedItems = new List<ContainedItem>();
+        List<StoredItemID> containedItems = new List<StoredItemID>();
 
         foreach (var key in connectedInventories.Keys)
         {
-            ContainedItem[] containedItemsOfType = connectedInventories[key].GetItemsOfType(itemTypes);
+            StoredItemID[] containedItemsOfType = connectedInventories[key].GetItemsOfType(itemTypes);
             containedItems.AddRange(containedItemsOfType);
         }
 
@@ -195,7 +217,7 @@ public class Inventory : NetworkBehaviour
     /// <param name="itemPickup">The item to pick up.</param>
     private void TryPickUpItem(ItemPickup itemPickup)
     {
-        if (TryFitAnywehere(itemPickup.GetScriptableObject().InventoryItem))
+        if (TryFitAnywehere(itemPickup.GetUniqueItemID()))
         {
             itemPickup.RemoveFromWorld();
         }
@@ -206,15 +228,15 @@ public class Inventory : NetworkBehaviour
     /// </summary>
     /// <param name="inventoryItem">The item to fit.</param>
     /// <returns>True if the item can fit, false otherwise.</returns>
-    private bool TryFitAnywehere(InventoryItem inventoryItem)
+    private bool TryFitAnywehere(UniqueItemID uniqueItemID)
     {
         var keys = connectedInventories.Keys;
 
         foreach (var key in keys)
         {
-            if (connectedInventories[key].TryFitItem(inventoryItem, out int containedItemKey, out Vector2Int topLeft))
+            if (connectedInventories[key].TryFitItem(uniqueItemID, out int containedItemKey, out Vector2Int topLeft))
             {
-                inventoryUI.AddItemDisplay(key, containedItemKey, itemSoDictionary[inventoryItem], topLeft);
+                inventoryUI.AddItemDisplay(key, containedItemKey, itemSoDictionary[uniqueItemID.BaseItemID], topLeft);
                 return true;
             }
         }
@@ -264,7 +286,7 @@ public class Inventory : NetworkBehaviour
     /// <returns>True if the item can be placed, false otherwise.</returns>
     public bool TryPlaceInSlot(int inventoryIndex, Vector2Int slot)
     {
-        if (inventoryHand == InventoryItem.Empty)
+        if (inventoryHand.BaseItemID == ItemID.Empty)
         {
             return false; // or true it doesn't matter
         }
@@ -273,19 +295,18 @@ public class Inventory : NetworkBehaviour
 
         ConnectedInventory inventory = connectedInventories[inventoryIndex];
 
-        ItemSO itemSO = itemSoDictionary[inventoryHand];
-        Vector2Int dimensions = itemSO.InInventoryDimensions;
+        Vector2Int dimensions = inventoryHand.Dimensions;
 
         if (inventory.IsAreaAvailable(slot, dimensions))
         {
             Debug.Log("Placing item in slot: " + slot);
 
-            int containedItemKey = inventory.AddItem(inventoryHand, slot, dimensions);
+            int containedItemKey = inventory.AddItem(inventoryHand, slot);
 
-            inventoryUI.AddItemDisplay(inventoryIndex, containedItemKey, itemSO, slot);
+            inventoryUI.AddItemDisplay(inventoryIndex, containedItemKey, itemSoDictionary[inventoryHand.BaseItemID], slot);
             
-            SetInventoryHand(InventoryItem.Empty);
-
+            SetInventoryHand(new UniqueItemID());
+            
             return true;
         }
 
@@ -300,15 +321,24 @@ public class Inventory : NetworkBehaviour
     /// <returns>True if the item can be retrieved, false otherwise.</returns>
     public bool RetrieveItem(int inventoryKey, int itemKey)
     {
-        if (inventoryHand != InventoryItem.Empty)
+
+        if (inventoryHand == null)
+        {
+            Debug.LogWarning("Inventory hand is null lol");
+            inventoryHand = new UniqueItemID();
+        }
+
+        Debug.Log(inventoryHand);
+        Debug.Log(inventoryHand.BaseItemID);
+        if (inventoryHand.BaseItemID != ItemID.Empty)
         {
             // Maybe swap items in the furture
             return false;
         }
 
-        InventoryItem retrievedItem = RemoveItem(inventoryKey, itemKey);
+        StoredItemID retrievedItem = RemoveItem(inventoryKey, itemKey);
 
-        SetInventoryHand(retrievedItem);
+        SetInventoryHand(retrievedItem.UniqueItemID);
        
         return true;
     }
@@ -320,15 +350,15 @@ public class Inventory : NetworkBehaviour
         return true;
     }
 
-    private InventoryItem RemoveItem(int inventoryKey, int itemKey)
+    private StoredItemID RemoveItem(int inventoryKey, int itemKey)
     {
         Debug.Log("Removing item from inventory: " + inventoryKey + ", item: " + itemKey);
-        ContainedItem containedItem = connectedInventories[inventoryKey].GetContainedItem(itemKey);
+        StoredItemID containedItem = connectedInventories[inventoryKey].GetStoredItemID(itemKey);
 
-        inventoryUI.ShowButtonArea(inventoryKey, containedItem.topLeft, containedItem.inventoryDimensions);
+        inventoryUI.ShowButtonArea(inventoryKey, containedItem.TopLeft, containedItem.UniqueItemID.Dimensions);
         inventoryUI.DestroyItemDisplay(inventoryKey, itemKey);
 
-        InventoryItem retrievedItem = connectedInventories[inventoryKey].RemoveItem(itemKey);
+        StoredItemID retrievedItem = connectedInventories[inventoryKey].RemoveItem(itemKey);
 
         return retrievedItem;
     }
@@ -385,11 +415,11 @@ public class Inventory : NetworkBehaviour
 
     public void RemoveClothingInventory(ClothingItemSO clothingItemSO)
     {
-        if(inventoryHand == InventoryItem.Empty)
+        if(inventoryHand.BaseItemID == ItemID.Empty)
         {
             int inventoryKey = (int)clothingItemSO.ClothingSlot;
 
-            SetInventoryHand(clothingItemSO.InventoryItem);
+            SetInventoryHand(new UniqueItemID(clothingItemSO.ItemID));
 
             DropAllItems(inventoryKey);
             RemoveConnectedInventory(inventoryKey);
@@ -402,10 +432,10 @@ public class Inventory : NetworkBehaviour
 
     #region Little helper methods
 
-    private void SetInventoryHand(InventoryItem item)
+    private void SetInventoryHand(UniqueItemID item)
     {
         inventoryHand = item;
-        inventoryUI.SetInventoryHand(item);
+        inventoryUI.SetInventoryHand(item.BaseItemID);
     }
 
     #endregion
@@ -416,17 +446,17 @@ public class Inventory : NetworkBehaviour
     /// </summary>
     public void DropItem()
     {
-        if (inventoryHand == InventoryItem.Empty)
+        if (inventoryHand.BaseItemID == ItemID.Empty)
             return;
 
         DropItemServerRpc(inventoryHand);
-        SetInventoryHand(InventoryItem.Empty);
+        SetInventoryHand(new UniqueItemID());
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void DropItemServerRpc(InventoryItem item)
+    private void DropItemServerRpc(UniqueItemID uniqueItemID)
     {
-        GameObject itemGameObject = Instantiate(itemSoDictionary[item].ItemPickupPrefab, transform.position + Vector3.up * 2.5f, new Quaternion(0, 0, 0, 0));
+        GameObject itemGameObject = Instantiate(itemSoDictionary[uniqueItemID.BaseItemID].ItemPickupPrefab, transform.position + Vector3.up * 2.5f, new Quaternion(0, 0, 0, 0));
 
         NetworkObject itemNetworkObject = itemGameObject.GetComponent<NetworkObject>();
         itemNetworkObject.Spawn(true);
@@ -437,10 +467,10 @@ public class Inventory : NetworkBehaviour
     /// </summary>
     public void DropAllItems()
     {
-        if (inventoryHand != InventoryItem.Empty)
+        if (inventoryHand.BaseItemID != ItemID.Empty)
         {
             DropItemServerRpc(inventoryHand);
-            SetInventoryHand(InventoryItem.Empty);
+            SetInventoryHand(new UniqueItemID());
         }
 
         inventoryUI.ResetInventoryDisplay();
@@ -457,11 +487,11 @@ public class Inventory : NetworkBehaviour
     public void DropAllItems(int inventoryKey)
     {
         ConnectedInventory connectedInventory = connectedInventories[inventoryKey];
-        Dictionary<int, ContainedItem> containedItems = connectedInventory.GetAndClearItems();
-        foreach (KeyValuePair<int, ContainedItem> keyValuePair in containedItems)
+        Dictionary<int, StoredItemID> containedItems = connectedInventory.GetAndClearItems();
+        foreach (KeyValuePair<int, StoredItemID> keyValuePair in containedItems)
         {
             inventoryUI.DestroyItemDisplay(inventoryKey, keyValuePair.Key);
-            DropItemServerRpc(keyValuePair.Value.inventoryItem);
+            DropItemServerRpc(keyValuePair.Value.UniqueItemID);
         }
     }
     #endregion
@@ -489,7 +519,7 @@ public class Inventory : NetworkBehaviour
             string keyName = context.control.name;
             int hotbarSlotIndex = Int32.Parse(keyName) - 1;
 
-            InventoryItem item = hotbar.GetItemAtSlot(hotbarSlotIndex, out int itemKey);
+            UniqueItemID item = hotbar.GetItemAtSlot(hotbarSlotIndex, out int itemKey);
 
             Debug.Log("Slot index: " + hotbarSlotIndex + ", Item: " + item + ", Key: " + itemKey);
 
@@ -502,25 +532,25 @@ public class Inventory : NetworkBehaviour
     /// </summary>
     public void RemoveUsing()
     {
-        HoldItemServerRpc(InventoryItem.Empty, -1);
+        HoldItemServerRpc(new UniqueItemID(), -1);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void HoldItemServerRpc(InventoryItem item, int itemKey)
+    private void HoldItemServerRpc(UniqueItemID item, int itemKey)
     {
         HoldItemClientRpc(item, itemKey);
     }
 
     [ClientRpc]
-    private void HoldItemClientRpc(InventoryItem item, int itemKey)
+    private void HoldItemClientRpc(UniqueItemID item, int itemKey)
     {
-        useableItemController.SetItem(itemSoDictionary[item], itemKey);
+        useableItemController.SetItem(item, itemKey);
     }
     #endregion
 
     #region Debug Commands
     [Command]
-    public void SpawnItemDebug(int x, int y, int z, InventoryItem itemEnum)
+    public void SpawnItemDebug(int x, int y, int z, ItemID itemEnum)
     {
         Vector3 position = new Vector3(x, y, z);
 
@@ -535,7 +565,7 @@ public class Inventory : NetworkBehaviour
     }
 
     [Command]
-    public void SpawnItemDebug(InventoryItem itemEnum)
+    public void SpawnItemDebug(ItemID itemEnum)
     {
         Transform playerTransform = PlayerSpawner.localPlayerSpawner.transform;
         Vector3 position = playerTransform.position + playerTransform.forward * 2;
@@ -551,7 +581,7 @@ public class Inventory : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnItemServerRpc(InventoryItem itemEnum, Vector3 position)
+    private void SpawnItemServerRpc(ItemID itemEnum, Vector3 position)
     {
         SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
         ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);

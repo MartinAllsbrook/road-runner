@@ -1,12 +1,8 @@
-using Newtonsoft.Json.Bson;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static ConnectedInventory;
+
+using static Inventory;
 
 public class GunItem : UseableItem
 {
@@ -180,10 +176,15 @@ public class GunItem : UseableItem
         //SpawnBulletServerRpc();
     }
 
-    public void SetMag(ContainedItem magazineCI)
+    public void SetMag(StoredItemID magazineSIID)
     {
-        Debug.Log("Equiping a mag of size " + magazineCI.count);
-        magazine = new Magazine(magazineCI.count);
+        // TODO: Make this use just the UniqueItemID instead of the whole StoredItemID
+
+        // TODO: Check if the magazine is compatible with this gun
+        // TODO: Possibly check if the bullets are compatible with this gun
+
+        Debug.Log("Equiping a mag of size " + magazineSIID.UniqueItemID.CounterCount + " Containing " + magazineSIID);
+        magazine = new Magazine(magazineSIID.UniqueItemID.CounterCount);
     }
 
     private IEnumerator Reload()

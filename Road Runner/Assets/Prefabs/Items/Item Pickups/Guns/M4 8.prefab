@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
+  GlobalObjectIdHash: 3200742889
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -160,7 +160,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9358281b69f9f674d8d4fcb2a5af5440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSo: {fileID: 11400000, guid: f72fc388000a58d48b357107110449ac, type: 2}
+  uniqueItemID:
+    baseItemID: 1
+    modifications: 
+    counterItem: 0
+    counterCount: 0
 --- !u!1001 &44472172221032031
 PrefabInstance:
   m_ObjectHideFlags: 0

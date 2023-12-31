@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class ItemPickup : SpawnedObject
 {
-    [SerializeField] protected ItemSO itemSo;
+    [SerializeField] protected UniqueItemID uniqueItemID;
 
     private const float despawnTime = 300;
 
-    public ItemSO GetScriptableObject()
+    public UniqueItemID GetUniqueItemID()
     {
-        return itemSo;
+        return uniqueItemID;
     }
 
     public override void OnNetworkSpawn()

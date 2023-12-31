@@ -10,8 +10,8 @@ using static Inventory;
 public class ItemSO : ScriptableObject
 {
     [Header("Item Stuff")]
-    [SerializeField] protected InventoryItem inventoryItem; // TODO: Rename this to inventoryItemEnum?
-    public InventoryItem InventoryItem { get { return inventoryItem; } }
+    [SerializeField] protected ItemID inventoryItem; // TODO: Rename this to inventoryItemEnum?
+    public ItemID ItemID { get { return inventoryItem; } }
 
     [SerializeField] protected GameObject itemPickupPrefab;
     public GameObject ItemPickupPrefab { get { return itemPickupPrefab; } }

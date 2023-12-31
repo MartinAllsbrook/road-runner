@@ -69,7 +69,7 @@ public class InventoryUI : MonoBehaviour
         conectedInventoryUIs.Add(0, hotbarUI);
     }
 
-    public void SetInventoryHand(Inventory.InventoryItem inventoryItem)
+    public void SetInventoryHand(Inventory.ItemID inventoryItem)
     {
         ItemSO itemSO = Inventory.ItemSODictionary[inventoryItem];
         Vector2Int dimensions = itemSO.InInventoryDimensions;
