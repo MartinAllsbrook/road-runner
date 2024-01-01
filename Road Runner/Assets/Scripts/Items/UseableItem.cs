@@ -7,33 +7,48 @@ using UnityEngine.InputSystem;
 
 public abstract class UseableItem : MonoBehaviour
 {
-    [SerializeField] InspectPoint[] inspectPoints;
+    #region Variables
+
+    [SerializeField] protected UniqueItemID uniqueItemID;
+
+    [SerializeField] protected InspectPoint[] inspectPoints;
+ 
+    protected UseableItemController parentItemController;
+ 
+    protected bool isOwner; // Used to determine if the local player owns this item
+    protected int containedItemKey; // Key != ID (this refers to the key of the item in the inventory)
+
+    #endregion
+
+    #region Properties
+
+    public UniqueItemID UniqueItemID
+    {
+        get { return uniqueItemID; }
+    }
+
     public InspectPoint[] InspectPoints
     {
         get { return inspectPoints; }
-        private set { inspectPoints = value; }
     }
 
-    protected UseableItemController parentItemController;
     public UseableItemController ParentItemController
     {
-        private get { return parentItemController; }
         set { parentItemController = value; }
     }
 
-    protected bool isOwner; // Used to determine if the local player owns this item
     public bool IsOwner // Property used by UseableItemController to set isOwner
-    { 
-        private get { return isOwner; } 
+    {
         set { isOwner = value; }
     }
 
-    protected int containedItemKey;
     public int ContainedItemKey
     {
         get { return containedItemKey; }
         set { containedItemKey = value; }
     }
+
+    #endregion
 
     #region Virtual On Input Methods
     public virtual void OnUseItemInput()

@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
   m_Name: Rpg7 Gun
   m_EditorClassIdentifier: 
-  inventoryItem: 6
+  itemID: 6
+  maxModifications: 0
+  maxCounterCount: 0
   itemPickupPrefab: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  useableItemPrefab: {fileID: 0}
   uiSprite: {fileID: 0}
   inventoryDimensions: {x: 0, y: 0}

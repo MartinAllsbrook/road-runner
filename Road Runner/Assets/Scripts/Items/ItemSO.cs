@@ -6,23 +6,64 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Inventory;
 
+// Everything you need to know about a item
+// Stored in a dictionary in Invenotry the with itemID as the key
+// Once an item is added to the game world it is given a uniqueItemID to track it and any changes made to it
+// But this ItemSO class contains info about how to create a new item of this type, and how it can be modified
 [Serializable] [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/Item")]
 public class ItemSO : ScriptableObject
 {
-    [Header("Item Stuff")]
-    [SerializeField] protected ItemID inventoryItem; // TODO: Rename this to inventoryItemEnum?
-    public ItemID ItemID { get { return inventoryItem; } }
+    [Header("Item Identification")]
+    [SerializeField] protected ItemID itemID;
+    [SerializeField] protected int maxModifications;
+    [SerializeField] protected int maxCounterCount;
 
+    [Header("UniqueItem Defaults")]
+    [SerializeField] protected ItemID[] defaultModifications;
+    [SerializeField] protected ItemID defaultCounterItem;
+    [SerializeField] protected int defaultCounterCount; // Could be max counter count a lot of the time
+
+    [Header("Valid Modifications")]
+    [SerializeField] protected ItemID[][] validModificationTypes;
+    [SerializeField] protected ItemID[] validCounterTypes;
+
+    [Header("Prefabs")]
     [SerializeField] protected GameObject itemPickupPrefab;
-    public GameObject ItemPickupPrefab { get { return itemPickupPrefab; } }
-    
-    [SerializeField] protected GameObject itemPrefab; // TODO: Rename this to usableItemPrefab
-    public GameObject UsableItemPrefab { get { return itemPrefab; } }
-    
-    [Header("Inventory Display Stuff")]
-    [SerializeField] protected Sprite uiSprite;
-    public Sprite UISprite { get { return uiSprite; } }
+    [SerializeField] protected GameObject useableItemPrefab;
+    // TODO: Could add [SerializeField] protected GameObject itemModelPrefab; and a default itempickup prefab that just has a collider and a rigidbody and a UniqueItemID
 
+    [Header("Inventory Display")]
+    [SerializeField] protected Sprite uiSprite;
     [SerializeField] protected Vector2Int inventoryDimensions;
-    public Vector2Int InInventoryDimensions { get { return inventoryDimensions; } }
+
+    #region Properties
+    
+    // Item Identification
+    public ItemID ItemID 
+    { get { return itemID; } }
+    
+    public int MaxModifications
+    { get { return maxModifications; } }
+
+    public int MaxCounterCount
+    { get { return maxCounterCount; } }
+
+    public ItemID[] DefaultModifications
+    { get { return defaultModifications; } }
+
+    // Prefabs
+    public GameObject ItemPickupPrefab 
+    { get { return itemPickupPrefab; } }
+    
+    public GameObject UsableItemPrefab 
+    { get { return useableItemPrefab; } }
+
+    // Inventory Display
+    public Sprite UISprite 
+    { get { return uiSprite; } }
+    
+    public Vector2Int InInventoryDimensions 
+    { get { return inventoryDimensions; } }
+    
+    #endregion
 }

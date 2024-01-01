@@ -178,7 +178,9 @@ public class GunItem : UseableItem
 
     public void SetMag(StoredItemID magazineSIID)
     {
-        // TODO: Make this use just the UniqueItemID instead of the whole StoredItemID
+/*        ItemID itemID = magazineSIID.ItemID;
+
+        uniqueItemID.TryModifyItem()*/
 
         // TODO: Check if the magazine is compatible with this gun
         // TODO: Possibly check if the bullets are compatible with this gun

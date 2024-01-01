@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
   m_Name: Empty
   m_EditorClassIdentifier: 
-  inventoryItem: 0
+  itemID: 0
+  maxModifications: 0
+  maxCounterCount: 0
   itemPickupPrefab: {fileID: 0}
-  itemPrefab: {fileID: 7488260488637646449, guid: a8dae7a9bc4da7846ba8ad3c0559a9fc, type: 3}
+  useableItemPrefab: {fileID: 7488260488637646449, guid: a8dae7a9bc4da7846ba8ad3c0559a9fc, type: 3}
   uiSprite: {fileID: 21300000, guid: 4fe178d03fee423419d97e927f686128, type: 3}
-  isGun: 0
+  inventoryDimensions: {x: 0, y: 0}
