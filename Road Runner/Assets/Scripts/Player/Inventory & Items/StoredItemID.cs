@@ -1,7 +1,8 @@
+using Unity.Netcode;
 using UnityEngine;
 using static Inventory;
 
-public class StoredItemID
+public class StoredItemID : INetworkSerializable
 {
     private UniqueItemID itemID;
 
@@ -9,6 +10,14 @@ public class StoredItemID
     private int inventoryKey;
     private int itemKey;
     private Vector2Int inventoryPosition;
+    
+    public StoredItemID()
+    {
+        itemID = new UniqueItemID();
+        inventoryKey = -1;
+        itemKey = -1;
+        inventoryPosition = new Vector2Int(-1, -1);
+    }
 
     public StoredItemID(UniqueItemID itemID, int inventoryKey, int itemKey, Vector2Int inventoryPosition)
     {
@@ -21,6 +30,7 @@ public class StoredItemID
     public UniqueItemID UniqueItemID
     {
         get { return itemID; }
+        set { itemID = value; } // TODO: Remove this setter and make a better system for updating items
     }
 
     public int InventoryKey
@@ -37,4 +47,16 @@ public class StoredItemID
     {
         get { return inventoryPosition; }
     }
+
+    // Network Serialization
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref itemID);
+
+        serializer.SerializeValue(ref inventoryKey);
+        serializer.SerializeValue(ref itemKey);
+
+        serializer.SerializeValue(ref inventoryPosition);
+    }
+
 }

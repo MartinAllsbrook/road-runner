@@ -9,14 +9,18 @@ public abstract class UseableItem : MonoBehaviour
 {
     #region Variables
 
-    [SerializeField] protected UniqueItemID uniqueItemID;
+    [SerializeField] private Inventory.ItemID baseItemID;
+
+    // Info from inventory
+    protected UniqueItemID uniqueItemID;
+    protected int inventoryKey;
+    protected int itemKey;
 
     [SerializeField] protected InspectPoint[] inspectPoints;
  
     protected UseableItemController parentItemController;
  
     protected bool isOwner; // Used to determine if the local player owns this item
-    protected int containedItemKey; // Key != ID (this refers to the key of the item in the inventory)
 
     #endregion
 
@@ -42,13 +46,14 @@ public abstract class UseableItem : MonoBehaviour
         set { isOwner = value; }
     }
 
-    public int ContainedItemKey
-    {
-        get { return containedItemKey; }
-        set { containedItemKey = value; }
-    }
-
     #endregion
+
+    public void SetUniqueItemID(StoredItemID storedItemID)
+    {
+        uniqueItemID = storedItemID.UniqueItemID;
+        inventoryKey = storedItemID.InventoryKey;
+        itemKey = storedItemID.ItemKey;
+    }
 
     #region Virtual On Input Methods
     public virtual void OnUseItemInput()

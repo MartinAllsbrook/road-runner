@@ -4,9 +4,10 @@ using UnityEngine;
 using static Inventory;
 using static ConnectedInventory;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 [System.Serializable]
-public class ItemSelectEvent : UnityEngine.Events.UnityEvent<StoredItemID> 
+public class ItemSelectEvent : UnityEngine.Events.UnityEvent<StoredItemID, int> 
 { 
 }
 
@@ -14,6 +15,8 @@ public class ModifierPoint : InspectPoint
 {
     [SerializeField] private ItemID itemTypeThatFits;
     [SerializeField] private ItemSelectEvent itemSelectEvent = new ItemSelectEvent();
+
+    [SerializeField] private int modificationSlotIndex;
 
     private StoredItemID[] _itemsThatFit;
     public StoredItemID[] ItemsThatFit
@@ -30,6 +33,6 @@ public class ModifierPoint : InspectPoint
 
     public void SelectOption(StoredItemID item)
     {
-        itemSelectEvent.Invoke(item);
+        itemSelectEvent.Invoke(item, modificationSlotIndex);
     }
 }

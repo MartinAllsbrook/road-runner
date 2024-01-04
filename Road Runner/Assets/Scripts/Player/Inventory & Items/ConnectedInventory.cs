@@ -205,6 +205,15 @@ public class ConnectedInventory
         return -1;
     }
 
+    public void UpdateUniqueItem(int itemKey, UniqueItemID uniqueItemID)
+    {
+        if (containedItems.ContainsKey(itemKey))
+        {
+            containedItems[itemKey].UniqueItemID = uniqueItemID;
+        }
+    }
+
+
     // Set of methods for setting items accross the server if required
     // Going to save these for later, probably will only be needed in a extension of this class for external inventories
     // Yeah I can literally just make a public inventory class that extends this one and then just add the rpcs to that

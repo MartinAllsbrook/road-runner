@@ -47,6 +47,9 @@ public class Inventory : NetworkBehaviour
 
         // Ammo & Attachments 301 - 400
         Attachment_Mag = 301,
+
+        // Ammo 401 - 500, Kinda just for testing rn
+        Bullet_556 = 401,
     }
 
 /*    // Public class representing the information needed to store an item in a connected inventory
@@ -62,7 +65,7 @@ public class Inventory : NetworkBehaviour
 
     #endregion
 
-    #region Properties
+    #region Variables
 
     [Header("World Interaction")]
     [SerializeField] private float maxItemPickupDistance;
@@ -519,11 +522,11 @@ public class Inventory : NetworkBehaviour
             string keyName = context.control.name;
             int hotbarSlotIndex = Int32.Parse(keyName) - 1;
 
-            UniqueItemID item = hotbar.GetItemAtSlot(hotbarSlotIndex, out int itemKey);
+            StoredItemID storedItemID = hotbar.GetItemAtSlot(hotbarSlotIndex);
 
-            Debug.Log("Slot index: " + hotbarSlotIndex + ", Item: " + item + ", Key: " + itemKey);
+            Debug.Log("Holding item with HotbarSlot index: " + hotbarSlotIndex + ", Item: " + storedItemID);
 
-            HoldItemServerRpc(item, itemKey);
+            HoldItemServerRpc(storedItemID);
         }
     }
 
@@ -532,20 +535,29 @@ public class Inventory : NetworkBehaviour
     /// </summary>
     public void RemoveUsing()
     {
-        HoldItemServerRpc(new UniqueItemID(), -1);
+        HoldItemServerRpc(new StoredItemID());
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void HoldItemServerRpc(UniqueItemID item, int itemKey)
+    private void HoldItemServerRpc(StoredItemID storedItemID)
     {
-        HoldItemClientRpc(item, itemKey);
+        HoldItemClientRpc(storedItemID);
     }
 
     [ClientRpc]
-    private void HoldItemClientRpc(UniqueItemID item, int itemKey)
+    private void HoldItemClientRpc(StoredItemID storedItemID)
     {
-        useableItemController.SetItem(item, itemKey);
+        useableItemController.SetItem(storedItemID);
     }
+    #endregion
+
+    #region Updating UniqueItemIDs
+
+    public void UpdateUniqueItem(int inventoryKey, int itemKey, UniqueItemID modifiedUniqueItem)
+    {
+        connectedInventories[inventoryKey].UpdateUniqueItem(itemKey, modifiedUniqueItem);
+    }
+
     #endregion
 
     #region Debug Commands

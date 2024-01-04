@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55d71a9adb28b774eab9969e80fdabe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseItemID: 301
   inspectPoints:
   - {fileID: 4140734142607956956}
 --- !u!1 &5238381544815012339
@@ -151,6 +152,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 3376071351633679885}
     m_Modifications:
     - target: {fileID: 5379647594563429082, guid: 84e48a332b87e9d44b674d00edc1ee00, type: 3}
+      propertyPath: useableItem
+      value: 
+      objectReference: {fileID: 6931754623997391162}
+    - target: {fileID: 5379647594563429082, guid: 84e48a332b87e9d44b674d00edc1ee00, type: 3}
       propertyPath: magazineItem
       value: 
       objectReference: {fileID: 6931754623997391162}
@@ -180,7 +185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5379647594563429082, guid: 84e48a332b87e9d44b674d00edc1ee00, type: 3}
       propertyPath: OnUse.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TryAddRound
+      value: TryAddRoundToMag
       objectReference: {fileID: 0}
     - target: {fileID: 5379647594563429082, guid: 84e48a332b87e9d44b674d00edc1ee00, type: 3}
       propertyPath: OnUse.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

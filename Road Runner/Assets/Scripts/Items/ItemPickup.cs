@@ -6,12 +6,18 @@ using UnityEngine;
 
 public class ItemPickup : SpawnedObject
 {
-    [SerializeField] protected UniqueItemID uniqueItemID;
+    [SerializeField] protected Inventory.ItemID baseItemID;
+    protected UniqueItemID uniqueItemID;
 
     private const float despawnTime = 300;
 
     public UniqueItemID GetUniqueItemID()
     {
+        Debug.Log(baseItemID);
+        if (uniqueItemID == null)
+        {
+            uniqueItemID = new UniqueItemID(baseItemID);
+        }
         return uniqueItemID;
     }
 

@@ -16,28 +16,25 @@ public class Hotbar : ConnectedInventory
         InitializeInventory();
     }
 
-    public UniqueItemID GetItemAtSlot(int slotIndex, out int itemKey)
-    {
-        itemKey = -1;
-        
+    public StoredItemID GetItemAtSlot(int slotIndex)
+    {        
         if (slotIndex < 0 || slotIndex > _numSlots)
-            return new UniqueItemID();
+            return new StoredItemID();
 
-        foreach (KeyValuePair<int, StoredItemID> item in containedItems)
+        foreach (KeyValuePair<int, StoredItemID> storedItem in containedItems)
         {
             for (int x = 0; x < _slotWidth; x++)
             {
                 for (int y = 0; y < _slotHeight; y++)
                 {
-                    if (item.Value.TopLeft.x == slotIndex * _slotWidth + x && item.Value.TopLeft.y == y)
+                    if (storedItem.Value.TopLeft.x == slotIndex * _slotWidth + x && storedItem.Value.TopLeft.y == y)
                     {
-                        itemKey = item.Key;
-                        return item.Value.UniqueItemID;
+                        return storedItem.Value;
                     }
                 }
             }
         }
 
-        return new UniqueItemID();
+        return new StoredItemID();
     }
 }

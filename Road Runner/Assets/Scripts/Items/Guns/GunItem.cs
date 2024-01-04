@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,7 +7,7 @@ using static Inventory;
 
 public class GunItem : UseableItem
 {
-    #region Properties & Fields (Variables)
+    #region Variables
 
     [Header("References")]
     [SerializeField] private GameObject bullet;
@@ -37,6 +38,9 @@ public class GunItem : UseableItem
     [SerializeField] private GameObject muzzleFlash;
     [SerializeField] protected AudioSource seccondaryUseAudio;
     [SerializeField] protected AudioSource reloadAudio;
+
+    [Header("Attachment Slots")]
+    [SerializeField] private Transform[] attachmentPoints;
 
     private Magazine magazine;
     private bool reloading = false;
@@ -176,17 +180,22 @@ public class GunItem : UseableItem
         //SpawnBulletServerRpc();
     }
 
-    public void SetMag(StoredItemID magazineSIID)
+    public void SetMag(StoredItemID magazineSIID, int modSlotIndex)
     {
-/*        ItemID itemID = magazineSIID.ItemID;
+        UniqueItemID magUIID = magazineSIID.UniqueItemID;
 
-        uniqueItemID.TryModifyItem()*/
+        Debug.Log("Equiping a mag in slot " + modSlotIndex);
 
-        // TODO: Check if the magazine is compatible with this gun
-        // TODO: Possibly check if the bullets are compatible with this gun
+        uniqueItemID.TryModifyItem(magUIID, modSlotIndex, out UniqueItemID oldMagUIID); // Edit copy in hands
 
-        Debug.Log("Equiping a mag of size " + magazineSIID.UniqueItemID.CounterCount + " Containing " + magazineSIID);
+        // TODO: Instantiate the magazine at the respective attachment point and remove the old magazine
+
+        Debug.Log("Equiping a mag of size " + magazineSIID.UniqueItemID.CounterCount + " Containing " + magazineSIID.UniqueItemID.CounterItem);
         magazine = new Magazine(magazineSIID.UniqueItemID.CounterCount);
+
+        // TODO: Check if the magazine is compatible with this gun -- This will probaby be done by the item modification point setting this
+        // TODO: Possibly check if the bullets are compatible with this gun -- Again, this will probably be done by the item modification point setting this
+
     }
 
     private IEnumerator Reload()

@@ -4,24 +4,11 @@ using UnityEngine;
 
 public class MagItem : UseableItem
 {
-    private Magazine magazine;
-    public Magazine Magazine
+    public void TryAddRoundToMag()
     {
-        get { return magazine; }
-        private set { magazine = value; }
-    }
+        uniqueItemID.TryAddItemToCounter(Inventory.ItemID.Bullet_556, 1); // Edit copy in hands
 
-    protected void Awake()
-    {
-        magazine = new Magazine(10);
-        magazine.ConsumeRound();
-        magazine.ConsumeRound();
-        magazine.ConsumeRound();
-        magazine.ConsumeRound();
-    }
-
-    public void TryAddRound()
-    {
-        magazine.TryAddRound();
+        if (isOwner)
+            Inventory.Instance.UpdateUniqueItem(inventoryKey, itemKey, uniqueItemID); // Update copy in inventory
     }
 }

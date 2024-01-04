@@ -8,7 +8,9 @@ using static Inventory;
 [System.Serializable]
 public class UniqueItemID : INetworkSerializable
 {
-    [SerializeField] private ItemID baseItemID;
+    // TODO: Add underscores before private fields
+
+    [SerializeField] private ItemID _baseItemID;
 
     private UniqueItemID[] modifications; // Ordered list of modifications to the base item, each representing an item attached to the base item
     
@@ -19,7 +21,7 @@ public class UniqueItemID : INetworkSerializable
     #region Properties
     public ItemID BaseItemID
     {
-        get { return baseItemID; }
+        get { return _baseItemID; }
     }
     
     public UniqueItemID[] Modifications
@@ -39,8 +41,9 @@ public class UniqueItemID : INetworkSerializable
 
     public Vector2Int Dimensions
     {
-        get { return ItemSODictionary[baseItemID].InInventoryDimensions; }
+        get { return ItemSODictionary[_baseItemID].InInventoryDimensions; }
     }
+
     #endregion
 
     #region Constructors
@@ -52,52 +55,56 @@ public class UniqueItemID : INetworkSerializable
     // Empty constructor creates an empty item
     public UniqueItemID()
     {
-        baseItemID = ItemID.Empty;
+        _baseItemID = ItemID.Empty;
 
         modifications = new UniqueItemID[0]; // Empty array of modifications for empty item
 
         counterItem = ItemID.Empty;
         counterCount = 0;
+
     }
 
     // Constructor for an item with no modifications or counter
     public UniqueItemID(ItemID baseItemID)
     {
-        this.baseItemID = baseItemID;
+        _baseItemID = baseItemID;
 
-        modifications = CreateDefaultModifications();
+        modifications = CreateDefaultModifications(baseItemID);
 
         counterItem = ItemID.Empty;
         counterCount = 0;
+
     }
 
     // Constructor for an item with no counter
     public UniqueItemID(ItemID baseItemID, UniqueItemID[] modifications)
     {
-        this.baseItemID = baseItemID;
+        _baseItemID = baseItemID;
         
         if(VerifyModificationsArray(modifications))
             this.modifications = modifications;
 
         counterItem = ItemID.Empty;
         counterCount = 0;
+
     }
 
     // Constructor for an item with no modifications
     public UniqueItemID(ItemID baseItemID, ItemID counterItem, int counterCount)
     {
-        this.baseItemID = baseItemID;
+        _baseItemID = baseItemID;
 
-        modifications = CreateDefaultModifications();
+        modifications = CreateDefaultModifications(baseItemID);
 
         this.counterItem = counterItem;
         this.counterCount = counterCount;
+
     }
 
     // Constructor for an item with modifications and a counter
     public UniqueItemID(ItemID baseItemID, UniqueItemID[] modifications, ItemID counterItem, int counterCount)
     {
-        this.baseItemID = baseItemID;
+        _baseItemID = baseItemID;
 
         if (VerifyModificationsArray(modifications))
             this.modifications = modifications;
@@ -106,6 +113,7 @@ public class UniqueItemID : INetworkSerializable
         this.counterCount = counterCount;
 
     }
+
     #endregion
 
     #region Public Methods
@@ -118,7 +126,9 @@ public class UniqueItemID : INetworkSerializable
             return false;
         }
 
-        if (modifications[modificationSlot].baseItemID == ItemID.Empty)
+        Debug.Log(modifications.Length);
+
+        if (modifications[modificationSlot]._baseItemID == ItemID.Empty)
         {
             modifications[modificationSlot] = modificationID;
             oldModID = new UniqueItemID();
@@ -138,7 +148,7 @@ public class UniqueItemID : INetworkSerializable
             return false;
         }
 
-        if (modifications[modificationSlot].baseItemID == ItemID.Empty)
+        if (modifications[modificationSlot]._baseItemID == ItemID.Empty)
         {
             oldModID = new UniqueItemID();
             return false;
@@ -153,6 +163,7 @@ public class UniqueItemID : INetworkSerializable
     {
         if (counterItem == ItemID.Empty)
         {
+            Debug.Log("Setting counter item to " + itemID + " with count " + count);
             counterItem = itemID;
             counterCount = count;
             return true;
@@ -160,16 +171,17 @@ public class UniqueItemID : INetworkSerializable
 
         if (counterItem != itemID)
         {
-            Debug.LogWarning("Cannot add " + itemID + " to " + baseItemID + " because it is not the same type as the counter item " + counterItem);
+            Debug.LogWarning("Cannot add " + itemID + " to " + _baseItemID + " because it is not the same type as the counter item " + counterItem);
             return false;
         }
 
         if (counterCount + count > MaxCounterCount())
         {
-            Debug.LogWarning("Cannot add " + count + " " + itemID + " to " + baseItemID + " because it would exceed the max counter count of " + MaxCounterCount());
+            Debug.LogWarning("Cannot add " + count + " " + itemID + " to " + _baseItemID + " because it would exceed the max counter count of " + MaxCounterCount());
             return false;
         }
 
+        Debug.Log("Adding " + count + " " + itemID + " to " + _baseItemID + " with counter count " + counterCount);
         counterCount += count;
         return true;
     }
@@ -178,14 +190,14 @@ public class UniqueItemID : INetworkSerializable
     {
         if (counterItem == ItemID.Empty)
         {
-            Debug.LogWarning("Cannot remove " + count + " from " + baseItemID + " because it has no counter item");
+            Debug.LogWarning("Cannot remove " + count + " from " + _baseItemID + " because it has no counter item");
             counterItemOut = ItemID.Empty;
             return false;
         }
 
         if (counterCount - count < 0)
         {
-            Debug.LogWarning("Cannot remove " + count + " from " + baseItemID + " because it would result in a negative counter count");
+            Debug.LogWarning("Cannot remove " + count + " from " + _baseItemID + " because it would result in a negative counter count");
             counterItemOut = ItemID.Empty;
             return false;
         }
@@ -209,7 +221,7 @@ public class UniqueItemID : INetworkSerializable
 
         if (modificationSlot >= ModificationCount()) 
         {
-            Debug.LogError(baseItemID + " does not have a modification slot " + modificationSlot + ". MaxMods = " + ModificationCount());
+            Debug.LogError(_baseItemID + " does not have a modification slot " + modificationSlot + ". MaxMods = " + ModificationCount());
             return false;
         }
 
@@ -220,7 +232,7 @@ public class UniqueItemID : INetworkSerializable
     {
         if (modifications.Length != ModificationCount())
         {
-            Debug.LogError("Length of modifications array must be equal to " + baseItemID + "'s ModificationCount of " + ModificationCount());
+            Debug.LogError("Length of modifications array must be equal to " + _baseItemID + "'s ModificationCount of " + ModificationCount());
             return false;
         }
 
@@ -229,8 +241,12 @@ public class UniqueItemID : INetworkSerializable
         return true;
     }
 
-    private UniqueItemID[] CreateDefaultModifications()
+    private UniqueItemID[] CreateDefaultModifications(ItemID baseItemID)
     {
+        Debug.Log("Creating default modifications for " + baseItemID);
+        Debug.Log("Default mods: " + DefaultModifications().Length);
+        Debug.Log("Max mods: " + ModificationCount());
+
         ItemID[] defaultModItemIDs = DefaultModifications();
         UniqueItemID[] defaultModifications = new UniqueItemID[ModificationCount()];
 
@@ -244,17 +260,17 @@ public class UniqueItemID : INetworkSerializable
 
     private int ModificationCount()
     {
-        return ItemSODictionary[baseItemID].MaxModifications;
+        return ItemSODictionary[_baseItemID].MaxModifications;
     }
    
     private int MaxCounterCount()
     {
-        return ItemSODictionary[baseItemID].MaxCounterCount;
+        return ItemSODictionary[_baseItemID].MaxCounterCount;
     }
 
     private ItemID[] DefaultModifications()
     {
-        return ItemSODictionary[baseItemID].DefaultModifications;
+        return ItemSODictionary[_baseItemID].DefaultModifications;
     }
 
     #endregion
@@ -263,7 +279,7 @@ public class UniqueItemID : INetworkSerializable
     // Network serialization interface
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
-        serializer.SerializeValue(ref baseItemID);
+        serializer.SerializeValue(ref _baseItemID);
 
         serializer.SerializeValue(ref modifications); // I can't believe this works
         

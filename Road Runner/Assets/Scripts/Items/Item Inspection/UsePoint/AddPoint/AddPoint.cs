@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class AddPoint : UsePoint
 {
-    [SerializeField] private MagItem magazineItem; // TODO: Make this a general counter class
+    [SerializeField] private UseableItem useableItem; // TODO: Make this a general counter class
 
     public int GetCount()
     {
-        return magazineItem.Magazine.Count;
+        return useableItem.UniqueItemID.CounterCount;
     }
 
     public override void Use()

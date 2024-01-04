@@ -15,6 +15,10 @@ MonoBehaviour:
   itemID: 1
   maxModifications: 5
   maxCounterCount: 0
+  defaultModifications: 0000000000000000000000000000000000000000
+  defaultCounterItem: 0
+  defaultCounterCount: 0
+  validCounterTypes: 
   itemPickupPrefab: {fileID: 8977773507486640780, guid: c36f6e8fe63500a46893887bf498c608, type: 3}
   useableItemPrefab: {fileID: 1180040977649026615, guid: fae4839e558c83148a7c7efa9dd4cf6b, type: 3}
   uiSprite: {fileID: 21300000, guid: c629092baca477f47a9cf53162318d01, type: 3}

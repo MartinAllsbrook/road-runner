@@ -18,8 +18,6 @@ public class AddPointUIElement : UsePointUIElement
 
         AddPoint addPoint = point as AddPoint;
 
-        Debug.Log("Add point: " + addPoint);
-        Debug.Log("Add point count: " + addPoint.GetCount());
         SetCount(addPoint.GetCount());
     }
 

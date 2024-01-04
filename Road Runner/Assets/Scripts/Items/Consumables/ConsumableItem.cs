@@ -13,7 +13,7 @@ public abstract class ConsumableItem : UseableItem
         {
             used = true;
             Inventory.Instance.RemoveUsing();
-            Inventory.Instance.ConsumeItem(containedItemKey);
+            Inventory.Instance.ConsumeItem(itemKey);
         }
     }
 }

@@ -65,7 +65,7 @@ public class UseableItemController : NetworkBehaviour
     private void Start()
     {
 
-        SetItem(new UniqueItemID(), -1);
+        SetItem(new StoredItemID());
         if (!IsOwner)
             return;
 
@@ -125,19 +125,24 @@ public class UseableItemController : NetworkBehaviour
     /// Sets the current item, within the scope of this class
     /// </summary>
     /// <param name="itemSO">The scriptable object of the item you want to equip</param>
-    public void SetItem(UniqueItemID uniqueItemID, int containedItemKey)
+    public void SetItem(StoredItemID storedItemID)
     {
         // TODO: make this work with the new UniqueItemID inventory system
-        Debug.Log("Setting item: " + uniqueItemID.BaseItemID);
+
+        ItemSO itemSO = Inventory.ItemSODictionary[storedItemID.UniqueItemID.BaseItemID];
+
+        // SO MANY DEBUG LOGS lmao
+        Debug.Log("Setting item: " + itemSO);
         Debug.Log(Inventory.ItemSODictionary);
-        ItemSO itemSO = Inventory.ItemSODictionary[uniqueItemID.BaseItemID];
 
         Destroy(currentItemPrefab);
         currentItemPrefab =  Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
 
         currentUseableItem = currentItemPrefab.GetComponent<UseableItem>();
+
+        currentUseableItem.SetUniqueItemID(storedItemID);
         currentUseableItem.ParentItemController = this;
-        currentUseableItem.ContainedItemKey = containedItemKey;
+        //currentUseableItem.ContainedItemKey = containedItemKey;
         currentUseableItem.IsOwner = IsOwner;
     }
 

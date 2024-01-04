@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5538582bd216ec4f80f92d4f2f04965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseItemID: 1
   inspectPoints:
   - {fileID: 7850882773053178972}
   - {fileID: 6720635930870952762}
@@ -76,6 +77,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 3448609111552807063}
   seccondaryUseAudio: {fileID: 0}
   reloadAudio: {fileID: 3843187122366099261}
+  attachmentPoints: []
 --- !u!1 &2261188644197948928
 GameObject:
   m_ObjectHideFlags: 0
