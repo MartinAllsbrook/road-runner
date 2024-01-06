@@ -183,6 +183,13 @@ public class Inventory : NetworkBehaviour
 
     #endregion
 
+
+    public void AddItem(UniqueItemID uniqueItemID)
+    {
+        if (uniqueItemID.BaseItemID != ItemID.Empty)
+            TryFitAnywehere(uniqueItemID);
+    }
+
     #region Picking up items
 
     /// <summary>
@@ -233,13 +240,11 @@ public class Inventory : NetworkBehaviour
     /// <returns>True if the item can fit, false otherwise.</returns>
     private bool TryFitAnywehere(UniqueItemID uniqueItemID)
     {
-        var keys = connectedInventories.Keys;
-
-        foreach (var key in keys)
+        foreach (KeyValuePair<int, ConnectedInventory> keyValuePair in connectedInventories)
         {
-            if (connectedInventories[key].TryFitItem(uniqueItemID, out int containedItemKey, out Vector2Int topLeft))
+            if (keyValuePair.Value.TryFitItem(uniqueItemID, out int containedItemKey, out Vector2Int topLeft))
             {
-                inventoryUI.AddItemDisplay(key, containedItemKey, itemSoDictionary[uniqueItemID.BaseItemID], topLeft);
+                inventoryUI.AddItemDisplay(keyValuePair.Key, containedItemKey, itemSoDictionary[uniqueItemID.BaseItemID], topLeft);
                 return true;
             }
         }
@@ -353,7 +358,7 @@ public class Inventory : NetworkBehaviour
         return true;
     }
 
-    private StoredItemID RemoveItem(int inventoryKey, int itemKey)
+    public StoredItemID RemoveItem(int inventoryKey, int itemKey)
     {
         Debug.Log("Removing item from inventory: " + inventoryKey + ", item: " + itemKey);
         StoredItemID containedItem = connectedInventories[inventoryKey].GetStoredItemID(itemKey);

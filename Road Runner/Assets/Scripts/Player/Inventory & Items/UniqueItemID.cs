@@ -263,7 +263,7 @@ public class UniqueItemID : INetworkSerializable
         return ItemSODictionary[_baseItemID].MaxModifications;
     }
    
-    private int MaxCounterCount()
+    public int MaxCounterCount()
     {
         return ItemSODictionary[_baseItemID].MaxCounterCount;
     }

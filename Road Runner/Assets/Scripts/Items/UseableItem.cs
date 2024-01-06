@@ -12,14 +12,14 @@ public abstract class UseableItem : MonoBehaviour
     [SerializeField] private Inventory.ItemID baseItemID;
 
     // Info from inventory
-    protected UniqueItemID uniqueItemID;
+    private UniqueItemID uniqueItemID;
     protected int inventoryKey;
     protected int itemKey;
 
     [SerializeField] protected InspectPoint[] inspectPoints;
- 
+
     protected UseableItemController parentItemController;
- 
+
     protected bool isOwner; // Used to determine if the local player owns this item
 
     #endregion
@@ -48,12 +48,45 @@ public abstract class UseableItem : MonoBehaviour
 
     #endregion
 
+    #region Unique Item Methods
+
     public void SetUniqueItemID(StoredItemID storedItemID)
     {
         uniqueItemID = storedItemID.UniqueItemID;
         inventoryKey = storedItemID.InventoryKey;
         itemKey = storedItemID.ItemKey;
     }
+
+    protected void ModifyUniqueItemID(StoredItemID modificationSIID, int modificationSlot)
+    {
+        UniqueItemID modificationUIID = modificationSIID.UniqueItemID;
+
+        if(!uniqueItemID.TryModifyItem(modificationUIID, modificationSlot, out UniqueItemID oldModID)) // Edit Copy in hands
+            return;
+
+        UpdateUniqueItemID();
+
+        Inventory.Instance.RemoveItem(modificationSIID.InventoryKey, modificationSIID.ItemKey); // Retrieve old mod from inventory
+
+        Debug.Log("Adding " + oldModID.BaseItemID + " to inventory");
+        Inventory.Instance.AddItem(oldModID);
+    }
+
+    protected void AddToCounter(Inventory.ItemID itemType, int count)
+    {
+        uniqueItemID.TryAddItemToCounter(itemType, count); // Edit copy in hands
+
+        UpdateUniqueItemID();
+    }
+
+    // Updates the copy of the item in the local players inventory
+    protected void UpdateUniqueItemID()
+    {
+        if (isOwner)
+            Inventory.Instance.UpdateUniqueItem(inventoryKey, itemKey, uniqueItemID); // Update copy in inventory
+    }
+
+    #endregion
 
     #region Virtual On Input Methods
     public virtual void OnUseItemInput()

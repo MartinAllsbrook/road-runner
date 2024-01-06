@@ -42,18 +42,12 @@ public class GunItem : UseableItem
     [Header("Attachment Slots")]
     [SerializeField] private Transform[] attachmentPoints;
 
-    private Magazine magazine;
+    private UniqueItemID magazine;
     private bool reloading = false;
     private float timeSinceLastShot;
     private bool triggerLifted = true;
-    private int ammoCount;
 
     #endregion
-
-    private void Start()
-    {
-        magazine = new Magazine(magSize);
-    }
 
     private void Update()
     {
@@ -100,6 +94,9 @@ public class GunItem : UseableItem
 
     public override void OnUseItemInput()
     {
+        if (magazine == null)
+            return;
+
         TryShootLoop();
     }
 
@@ -122,16 +119,13 @@ public class GunItem : UseableItem
         if (timeSinceLastShot < fireRate)
             return;
 
-
-        ammoCount = magazine.ConsumeRound();
-
-        if (ammoCount <= 0)
-            return;
-
-        parentItemController.HudController.SetAmmoCountDisplay(ammoCount - 1, magSize);
-        timeSinceLastShot = 0;
-        Fire(_inaccuracy);
-
+        if (magazine.TryRemoveItemFromCounter(1, out ItemID bullet))
+        {
+            parentItemController.HudController.SetAmmoCountDisplay(magazine.CounterCount, magazine.MaxCounterCount() );
+            timeSinceLastShot = 0;
+            Fire(_inaccuracy);
+            UpdateUniqueItemID();
+        }
     }
 
     protected virtual void Fire(float accuracy) 
@@ -186,12 +180,13 @@ public class GunItem : UseableItem
 
         Debug.Log("Equiping a mag in slot " + modSlotIndex);
 
-        uniqueItemID.TryModifyItem(magUIID, modSlotIndex, out UniqueItemID oldMagUIID); // Edit copy in hands
+        ModifyUniqueItemID(magazineSIID, modSlotIndex);
 
         // TODO: Instantiate the magazine at the respective attachment point and remove the old magazine
 
         Debug.Log("Equiping a mag of size " + magazineSIID.UniqueItemID.CounterCount + " Containing " + magazineSIID.UniqueItemID.CounterItem);
-        magazine = new Magazine(magazineSIID.UniqueItemID.CounterCount);
+        magazine = magazineSIID.UniqueItemID;
+        parentItemController.HudController.SetAmmoCountDisplay(magazine.CounterCount, magazine.MaxCounterCount());
 
         // TODO: Check if the magazine is compatible with this gun -- This will probaby be done by the item modification point setting this
         // TODO: Possibly check if the bullets are compatible with this gun -- Again, this will probably be done by the item modification point setting this
@@ -209,7 +204,7 @@ public class GunItem : UseableItem
         reloadAudio.Play();
         parentItemController.SetHandPosition(UseableItemController.HandPosition.Resting);
         parentItemController.HudController.StopReloadUIAnimation();
-        magazine.Reload();
+        //magazine.Reload();
         parentItemController.HudController.SetAmmoCountDisplay(magSize, magSize);
         reloading = false;
     }
