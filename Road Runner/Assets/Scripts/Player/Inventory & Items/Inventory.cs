@@ -227,7 +227,7 @@ public class Inventory : NetworkBehaviour
     /// <param name="itemPickup">The item to pick up.</param>
     private void TryPickUpItem(ItemPickup itemPickup)
     {
-        if (TryFitAnywehere(itemPickup.GetUniqueItemID()))
+        if (TryFitAnywehere(itemPickup.UniqueItemID))
         {
             itemPickup.RemoveFromWorld();
         }
@@ -464,10 +464,13 @@ public class Inventory : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void DropItemServerRpc(UniqueItemID uniqueItemID)
     {
-        GameObject itemGameObject = Instantiate(itemSoDictionary[uniqueItemID.BaseItemID].ItemPickupPrefab, transform.position + Vector3.up * 2.5f, new Quaternion(0, 0, 0, 0));
+        ItemPickup instantiatedItemPickup = Instantiate(itemSoDictionary[uniqueItemID.BaseItemID].ItemPickupPrefab, transform.position + Vector3.up * 2.5f, Quaternion.identity);
 
-        NetworkObject itemNetworkObject = itemGameObject.GetComponent<NetworkObject>();
+        // Spawn network object
+        NetworkObject itemNetworkObject = instantiatedItemPickup.GetComponent<NetworkObject>();
         itemNetworkObject.Spawn(true);
+
+        instantiatedItemPickup.UniqueItemID = uniqueItemID;
     }
 
     /// <summary>
@@ -554,6 +557,7 @@ public class Inventory : NetworkBehaviour
     {
         useableItemController.SetItem(storedItemID);
     }
+
     #endregion
 
     #region Updating UniqueItemIDs
@@ -564,6 +568,8 @@ public class Inventory : NetworkBehaviour
     }
 
     #endregion
+
+
 
     #region Debug Commands
     [Command]
@@ -597,12 +603,12 @@ public class Inventory : NetworkBehaviour
         ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
     }
 
+
     [ServerRpc(RequireOwnership = false)]
     private void SpawnItemServerRpc(ItemID itemEnum, Vector3 position)
     {
         SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
         ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
     }
-
     #endregion
 }

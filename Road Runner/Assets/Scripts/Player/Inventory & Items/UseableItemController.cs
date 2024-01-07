@@ -64,8 +64,8 @@ public class UseableItemController : NetworkBehaviour
 
     private void Start()
     {
-
         SetItem(new StoredItemID());
+
         if (!IsOwner)
             return;
 
@@ -127,13 +127,7 @@ public class UseableItemController : NetworkBehaviour
     /// <param name="itemSO">The scriptable object of the item you want to equip</param>
     public void SetItem(StoredItemID storedItemID)
     {
-        // TODO: make this work with the new UniqueItemID inventory system
-
         ItemSO itemSO = Inventory.ItemSODictionary[storedItemID.UniqueItemID.BaseItemID];
-
-        // SO MANY DEBUG LOGS lmao
-        Debug.Log("Setting item: " + itemSO);
-        Debug.Log(Inventory.ItemSODictionary);
 
         Destroy(currentItemPrefab);
         currentItemPrefab =  Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
@@ -142,8 +136,8 @@ public class UseableItemController : NetworkBehaviour
 
         currentUseableItem.SetUniqueItemID(storedItemID);
         currentUseableItem.ParentItemController = this;
-        //currentUseableItem.ContainedItemKey = containedItemKey;
         currentUseableItem.IsOwner = IsOwner;
+        currentUseableItem.BuildModel();
     }
 
     // Methods called by UseableItems to perform actions accross the server without having to be network objects themselves

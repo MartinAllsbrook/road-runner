@@ -28,8 +28,9 @@ public class ItemSO : ScriptableObject
     [SerializeField] protected ItemID[] validCounterTypes;
 
     [Header("Prefabs")]
-    [SerializeField] protected GameObject itemPickupPrefab;
+    [SerializeField] protected ItemPickup itemPickupPrefab;
     [SerializeField] protected GameObject useableItemPrefab;
+    [SerializeField] protected UniqueItemModel modelPrefab;
     // TODO: Could add [SerializeField] protected GameObject itemModelPrefab; and a default itempickup prefab that just has a collider and a rigidbody and a UniqueItemID
 
     [Header("Inventory Display")]
@@ -52,11 +53,14 @@ public class ItemSO : ScriptableObject
     { get { return defaultModifications; } }
 
     // Prefabs
-    public GameObject ItemPickupPrefab 
+    public ItemPickup ItemPickupPrefab 
     { get { return itemPickupPrefab; } }
     
     public GameObject UsableItemPrefab 
     { get { return useableItemPrefab; } }
+
+    public UniqueItemModel ModelPrefab
+    { get { return modelPrefab; } }
 
     // Inventory Display
     public Sprite UISprite 

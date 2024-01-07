@@ -7,18 +7,38 @@ using UnityEngine;
 public class ItemPickup : SpawnedObject
 {
     [SerializeField] protected Inventory.ItemID baseItemID;
-    protected UniqueItemID uniqueItemID;
+    [SerializeField] protected UniqueItemModel uniqueItemModel;
 
     private const float despawnTime = 300;
 
-    public UniqueItemID GetUniqueItemID()
+    protected UniqueItemID _uniqueItemID;
+    public UniqueItemID UniqueItemID
     {
-        Debug.Log(baseItemID);
-        if (uniqueItemID == null)
+        get 
         {
-            uniqueItemID = new UniqueItemID(baseItemID);
+            if (_uniqueItemID == null)
+                _uniqueItemID = new UniqueItemID(baseItemID);
+            
+            return _uniqueItemID;
         }
-        return uniqueItemID;
+
+        set 
+        { 
+            SetUniqueItemIDServerRpc(value); 
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetUniqueItemIDServerRpc(UniqueItemID uniqueItemID)
+    {
+        SetUniqueItemIDClientRpc(uniqueItemID);
+    }
+
+    [ClientRpc]
+    private void SetUniqueItemIDClientRpc(UniqueItemID uniqueItemID)
+    {
+        _uniqueItemID = uniqueItemID;
+        uniqueItemModel.BuildModel(_uniqueItemID);
     }
 
     public override void OnNetworkSpawn()

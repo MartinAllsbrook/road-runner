@@ -10,6 +10,7 @@ public abstract class UseableItem : MonoBehaviour
     #region Variables
 
     [SerializeField] private Inventory.ItemID baseItemID;
+    [SerializeField] private UniqueItemModel uniqueItemModel;
 
     // Info from inventory
     private UniqueItemID uniqueItemID;
@@ -64,6 +65,7 @@ public abstract class UseableItem : MonoBehaviour
         if(!uniqueItemID.TryModifyItem(modificationUIID, modificationSlot, out UniqueItemID oldModID)) // Edit Copy in hands
             return;
 
+        BuildModel();
         UpdateUniqueItemID();
 
         Inventory.Instance.RemoveItem(modificationSIID.InventoryKey, modificationSIID.ItemKey); // Retrieve old mod from inventory
@@ -84,6 +86,13 @@ public abstract class UseableItem : MonoBehaviour
     {
         if (isOwner)
             Inventory.Instance.UpdateUniqueItem(inventoryKey, itemKey, uniqueItemID); // Update copy in inventory
+    
+    }
+
+    public void BuildModel() 
+    {
+        if (uniqueItemID.BaseItemID != Inventory.ItemID.Empty)
+            uniqueItemModel.BuildModel(uniqueItemID);
     }
 
     #endregion
