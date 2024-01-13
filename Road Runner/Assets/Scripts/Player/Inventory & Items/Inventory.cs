@@ -26,7 +26,7 @@ public class Inventory : NetworkBehaviour
         Empty = 0,
 
         // Guns 1 - 100
-        Gun_M4_8 = 1,
+        Gun_M48 = 1,
         Gun_Ak74 = 2,
         Gun_BenneliM4 = 3,
         Gun_M107 = 4,
@@ -47,6 +47,8 @@ public class Inventory : NetworkBehaviour
 
         // Ammo & Attachments 301 - 400
         Attachment_Mag = 301,
+        Attachment_M48IronSight = 302,
+        Attachment_LargeScope = 303,
 
         // Ammo 401 - 500, Kinda just for testing rn
         Bullet_556 = 401,
@@ -74,7 +76,7 @@ public class Inventory : NetworkBehaviour
     [SerializeField] private Inventory droppedItemBag;
 
     [Header("Item Refs")]
-    [SerializeField] private ItemSO[] itemSos;
+    [SerializeField] private AllItemsSO allItemSOsSO;
 
     [Header("Hotbar")]
     [SerializeField] private int hotbarSize = 9;
@@ -88,7 +90,6 @@ public class Inventory : NetworkBehaviour
     
     private StoredItemID usingItem; // The item being used by the player
     private UseableItemController useableItemController;
-
 
     private VehicleInteractionController vehicle;
 
@@ -110,10 +111,21 @@ public class Inventory : NetworkBehaviour
         {
             if (itemSoDictionary == null)
             {
-                itemSoDictionary = new Dictionary<ItemID, ItemSO>();
-                for (int i = 0; i < itemSos.Length; i++)
-                    itemSoDictionary.Add(itemSos[i].ItemID, itemSos[i]);
+                CreateItemDictionary();
             }
+        }
+    }
+
+    // Adds each itemSO from each itemSOList to the itemSODictionary
+    private void CreateItemDictionary()
+    {
+        itemSoDictionary = new Dictionary<ItemID, ItemSO>();
+
+        ItemSO[] allItemSOs = allItemSOsSO.GetAllItemSOs();
+
+        foreach (ItemSO itemSO in allItemSOs)
+        {
+            itemSoDictionary.Add(itemSO.ItemID, itemSO);
         }
     }
 
@@ -168,7 +180,7 @@ public class Inventory : NetworkBehaviour
 
     #region Inventory Interaction Methods for other classes
 
-    public StoredItemID[] FindInvetoryObjectsOfTypes(ItemID itemTypes)
+    public StoredItemID[] GetAllItemsOfType(ItemID itemTypes)
     {
         List<StoredItemID> containedItems = new List<StoredItemID>();
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemID: 1
   maxModifications: 1
   maxCounterCount: 0
-  defaultModifications: 00000000
+  defaultModifications: 0000000000000000
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 

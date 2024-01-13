@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
-  m_Name: AK74 Gun
+  m_Name: M4-8 Iron Sights
   m_EditorClassIdentifier: 
-  itemID: 2
+  itemID: 302
   maxModifications: 0
   maxCounterCount: 0
-  defaultModifications: 2d010000
+  defaultModifications: 
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 
-  itemPickupPrefab: {fileID: 0}
+  itemPickupPrefab: {fileID: 139414504041221143, guid: 42e5ae07614f940479d2cef86a527e73, type: 3}
   useableItemPrefab: {fileID: 0}
-  modelPrefab: {fileID: 0}
-  uiSprite: {fileID: 21300000, guid: d9f374442f4bb8b46a182391414ee379, type: 3}
-  inventoryDimensions: {x: 4, y: 2}
+  modelPrefab: {fileID: 4755326859624605270, guid: d0f1b845868e57145a601a4f0e25d8b2, type: 3}
+  uiSprite: {fileID: 21300000, guid: b23a09987f2ef6146b992aa53f768ec4, type: 3}
+  inventoryDimensions: {x: 1, y: 1}

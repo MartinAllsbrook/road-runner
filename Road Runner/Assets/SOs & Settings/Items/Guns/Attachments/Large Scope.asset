@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
-  m_Name: AK74 Gun
+  m_Name: Large Scope
   m_EditorClassIdentifier: 
-  itemID: 2
+  itemID: 303
   maxModifications: 0
   maxCounterCount: 0
-  defaultModifications: 2d010000
+  defaultModifications: 
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 
-  itemPickupPrefab: {fileID: 0}
-  useableItemPrefab: {fileID: 0}
-  modelPrefab: {fileID: 0}
-  uiSprite: {fileID: 21300000, guid: d9f374442f4bb8b46a182391414ee379, type: 3}
-  inventoryDimensions: {x: 4, y: 2}
+  itemPickupPrefab: {fileID: 4132577483920125105, guid: 611dd91a67b3790408bda035ccaeaaf3, type: 3}
+  useableItemPrefab: {fileID: 691496490352996142, guid: 1a878fb27f1bb33478a58404ead185be, type: 3}
+  modelPrefab: {fileID: 5115698750081066266, guid: ccf59707e2a9a1f4fbcfa131da2b79ba, type: 3}
+  uiSprite: {fileID: 21300000, guid: b23a09987f2ef6146b992aa53f768ec4, type: 3}
+  inventoryDimensions: {x: 1, y: 1}

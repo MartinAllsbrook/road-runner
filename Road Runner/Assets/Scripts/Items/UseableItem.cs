@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public abstract class UseableItem : MonoBehaviour
+public class UseableItem : MonoBehaviour
 {
     #region Variables
 
@@ -26,7 +26,7 @@ public abstract class UseableItem : MonoBehaviour
     #endregion
 
     #region Properties
-
+    
     public UniqueItemID UniqueItemID
     {
         get { return uniqueItemID; }

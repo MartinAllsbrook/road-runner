@@ -24,13 +24,13 @@ public class ModifierPointUIElement : InspectPointUIElement
         foreach (StoredItemID item in itemOptions)
         {
             Sprite sprite = ItemSODictionary[item.UniqueItemID.BaseItemID].UISprite;
-            SpawnItemOptionUI(sprite, item.UniqueItemID.CounterCount, item, modifierPoint);
+            SpawnItemOptionUI(item, modifierPoint);
         }
     }
 
-    private void SpawnItemOptionUI(Sprite itemSprite, int count, StoredItemID item, ModifierPoint point)
+    private void SpawnItemOptionUI(StoredItemID item, ModifierPoint point)
     {
         ModifierPointOption itemOption = Instantiate(itemOptionPrefab, itemOptionParent);
-        itemOption.SetItemOption(itemSprite, count, item, point);
+        itemOption.SetItemOption(item, point);
     }
 }

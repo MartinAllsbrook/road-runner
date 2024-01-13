@@ -13,7 +13,7 @@ public class ItemSelectEvent : UnityEngine.Events.UnityEvent<StoredItemID, int>
 
 public class ModifierPoint : InspectPoint
 {
-    [SerializeField] private ItemID itemTypeThatFits;
+    [SerializeField] private AllowedModificationsSO allowedModificationsSO;
     [SerializeField] private ItemSelectEvent itemSelectEvent = new ItemSelectEvent();
 
     [SerializeField] private int modificationSlotIndex;
@@ -26,7 +26,18 @@ public class ModifierPoint : InspectPoint
 
     public override InspectPointUIElement CreateInspectHUDElement(Transform hudTransform)
     {
-        _itemsThatFit = Inventory.Instance.FindInvetoryObjectsOfTypes(itemTypeThatFits);
+        ItemID[] allowedModifications = allowedModificationsSO.AllowedModifications;
+        List<StoredItemID> itemSIIDs = new List<StoredItemID>();
+
+        for (int i = 0; i < allowedModifications.Length; i++)
+        {
+            ItemID itemID = allowedModifications[i];
+            StoredItemID[] storedItemIDs = Inventory.Instance.GetAllItemsOfType(itemID);
+
+            foreach (StoredItemID storedItemID in storedItemIDs)
+                itemSIIDs.Add(storedItemID);
+        }
+        _itemsThatFit = itemSIIDs.ToArray();
 
         return base.CreateInspectHUDElement(hudTransform);
     }

@@ -14,9 +14,12 @@ public class ModifierPointOption : MonoBehaviour
     private StoredItemID _associatedItem;
     private ModifierPoint _associatedPoint;
 
-    public void SetItemOption(Sprite itemSprite, int count, StoredItemID item, ModifierPoint point)
+    public void SetItemOption(StoredItemID item, ModifierPoint point)
     {
-        itemImage.sprite = itemSprite;
+        Sprite sprite = ItemSODictionary[item.UniqueItemID.BaseItemID].UISprite;
+        int count = item.UniqueItemID.CounterCount;
+
+        itemImage.sprite = sprite;
         countText.text = count.ToString();
 
         _associatedItem = item;
@@ -28,6 +31,6 @@ public class ModifierPointOption : MonoBehaviour
     private void OnItemOptionClicked()
     {
         _associatedPoint.SelectOption(_associatedItem);
-        Debug.Log("Item option " + _associatedItem + " on point " + _associatedPoint +  " clicked");
+        Destroy(gameObject);
     }
 }

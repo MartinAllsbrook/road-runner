@@ -10,15 +10,15 @@ using static Inventory;
 // Stored in a dictionary in Invenotry the with itemID as the key
 // Once an item is added to the game world it is given a uniqueItemID to track it and any changes made to it
 // But this ItemSO class contains info about how to create a new item of this type, and how it can be modified
-[Serializable] [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/Item")]
+[Serializable] [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/Items/Item")]
 public class ItemSO : ScriptableObject
 {
     [Header("Item Identification")]
     [SerializeField] protected ItemID itemID;
-    [SerializeField] protected int maxModifications;
-    [SerializeField] protected int maxCounterCount;
 
     [Header("UniqueItem Defaults")]
+    [SerializeField] protected int maxModifications;
+    [SerializeField] protected int maxCounterCount;
     [SerializeField] protected ItemID[] defaultModifications;
     [SerializeField] protected ItemID defaultCounterItem;
     [SerializeField] protected int defaultCounterCount; // Could be max counter count a lot of the time
@@ -35,7 +35,7 @@ public class ItemSO : ScriptableObject
 
     [Header("Inventory Display")]
     [SerializeField] protected Sprite uiSprite;
-    [SerializeField] protected Vector2Int inventoryDimensions;
+    [SerializeField] protected Vector2Int inventoryDimensions = new Vector2Int(1, 1);
 
     #region Properties
     
