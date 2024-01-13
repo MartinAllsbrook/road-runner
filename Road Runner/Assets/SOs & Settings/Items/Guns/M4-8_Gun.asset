@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: M4-8_Gun
   m_EditorClassIdentifier: 
   itemID: 1
-  maxModifications: 1
+  maxModifications: 2
   maxCounterCount: 0
   defaultModifications: 0000000000000000
   defaultCounterItem: 0

@@ -28,7 +28,7 @@ public class UniqueItemModel : MonoBehaviour
         int numModifications = uniqueItemID.Modifications.Length;
         if (numModifications != modificationPoints.Length)
         {
-            Debug.LogError("Not enough modification points for this item");
+            Debug.LogError("UIID calls for " + numModifications + " mod points, this MP has " + modificationPoints.Length);
             return;
         }
     

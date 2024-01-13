@@ -54,8 +54,8 @@ MonoBehaviour:
   uniqueItemModel: {fileID: 2531323465639916999}
   inspectPoints:
   - {fileID: 7850882773053178972}
+  - {fileID: 8597921949643883074}
   - {fileID: 6720635930870952762}
-  - {fileID: 0}
   - {fileID: 944440401200886951}
   - {fileID: 5512178753763586245}
   bullet: {fileID: 3467463768999623919, guid: a1e23832c17108245a2968ad65ec787c, type: 3}
@@ -845,6 +845,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
   m_PrefabInstance: {fileID: 5908030088157365814}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8597921949643883074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+  m_PrefabInstance: {fileID: 5908030088157365814}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639dd26979f84294db500434168b4fb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7982597912512389586
 PrefabInstance:
   m_ObjectHideFlags: 0
