@@ -5331,6 +5331,7 @@ GameObject:
   - component: {fileID: 5150687858776107323}
   - component: {fileID: 297529419240020519}
   - component: {fileID: 4350166169284157831}
+  - component: {fileID: 6265215992045964419}
   - component: {fileID: 1150016554729849836}
   - component: {fileID: 944574688111145374}
   - component: {fileID: -7003752143085786108}
@@ -5386,7 +5387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3601959125
+  GlobalObjectIdHash: 229663110
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -5510,6 +5511,19 @@ MonoBehaviour:
   - {fileID: 4439772555087257117}
   - {fileID: 2762714131860237939}
   - {fileID: 1009535064698167608}
+--- !u!114 &6265215992045964419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3167927590513813192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ffef41eb5b45a4f940105ddef7e043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: RR_CharacterData.game
 --- !u!114 &1150016554729849836
 MonoBehaviour:
   m_ObjectHideFlags: 0

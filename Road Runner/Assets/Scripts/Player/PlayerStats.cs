@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-public class PlayerStats : NetworkBehaviour
+public class PlayerStats : NetworkBehaviour, IPersistantData
 {
     public static PlayerStats Instance;
     
@@ -66,6 +66,25 @@ public class PlayerStats : NetworkBehaviour
         }
     }
 
+    #region IPersistantData Methods
+
+    public void LoadData(CharacterData allCharacterData)
+    {
+        health = allCharacterData.Health;
+        food = allCharacterData.Food;
+        water = allCharacterData.Water;
+    }
+
+    public void SaveData(ref CharacterData allCharacterData)
+    {
+        allCharacterData.Health = health;
+        allCharacterData.Food = food;
+        allCharacterData.Water = water;
+    }
+
+    #endregion
+
+    #region Change Stats Methods
     public void ChangeFood(float value)
     {
         if (!IsOwner)
@@ -107,7 +126,8 @@ public class PlayerStats : NetworkBehaviour
         if (health <= 0)
             Die();
     }
-    
+    #endregion
+
     private void Die()
     {
         Debug.Log(health);
@@ -122,13 +142,13 @@ public class PlayerStats : NetworkBehaviour
     /// </summary>
     public void ResetAndRespawn()
     {
-        health = 100f;
+        //health = 100f;
         hudController.UpdateHealthBar(health);
 
-        food = 100f;
+        //food = 100f;
         hudController.UpdateFoodBar(food);
 
-        water = 100f;
+        //water = 100f;
         hudController.UpdateWaterBar(water);
 
         _inLimbo = false;
