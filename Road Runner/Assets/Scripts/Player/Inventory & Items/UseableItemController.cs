@@ -46,7 +46,6 @@ public class UseableItemController : NetworkBehaviour
 
     private bool _inspecting = false;
 
-    private GameObject currentItemPrefab;
     private UseableItem currentUseableItem;
 
     private HUDController hudController;
@@ -129,10 +128,8 @@ public class UseableItemController : NetworkBehaviour
     {
         ItemSO itemSO = Inventory.ItemSODictionary[storedItemID.UniqueItemID.BaseItemID];
 
-        Destroy(currentItemPrefab);
-        currentItemPrefab =  Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
-
-        currentUseableItem = currentItemPrefab.GetComponent<UseableItem>();
+        Destroy(currentUseableItem.gameObject);
+        currentUseableItem = Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
 
         currentUseableItem.SetUniqueItemID(storedItemID);
         currentUseableItem.ParentItemController = this;

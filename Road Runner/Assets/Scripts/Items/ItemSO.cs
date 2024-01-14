@@ -29,7 +29,7 @@ public class ItemSO : ScriptableObject
 
     [Header("Prefabs")]
     [SerializeField] protected ItemPickup itemPickupPrefab;
-    [SerializeField] protected GameObject useableItemPrefab;
+    [SerializeField] protected UseableItem useableItemPrefab;
     [SerializeField] protected UniqueItemModel modelPrefab;
     // TODO: Could add [SerializeField] protected GameObject itemModelPrefab; and a default itempickup prefab that just has a collider and a rigidbody and a UniqueItemID
 
@@ -56,7 +56,7 @@ public class ItemSO : ScriptableObject
     public ItemPickup ItemPickupPrefab 
     { get { return itemPickupPrefab; } }
     
-    public GameObject UsableItemPrefab 
+    public UseableItem UsableItemPrefab 
     { get { return useableItemPrefab; } }
 
     public UniqueItemModel ModelPrefab
