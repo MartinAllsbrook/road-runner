@@ -129,14 +129,15 @@ public class CameraController : NetworkBehaviour
 
     public void OnLookInput(InputAction.CallbackContext context)
     {
-        //if (context.performed)
-        //{
-            Vector2 mouseDelta = context.ReadValue<Vector2>();
-            _yRotation += mouseDelta.x * ((baseSensitivityAdjustment * sensX) / zoom);
-            _xRotation -= mouseDelta.y * ((baseSensitivityAdjustment * sensY) / zoom);
+        if (_cameraLocked)
+            return;
+        
+        Vector2 mouseDelta = context.ReadValue<Vector2>();
+        
+        _yRotation += mouseDelta.x * ((baseSensitivityAdjustment * sensX) / zoom);
+        _xRotation -= mouseDelta.y * ((baseSensitivityAdjustment * sensY) / zoom);
 
-            _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
-        //}
+        _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
     }
 
     private void RotateCamera()

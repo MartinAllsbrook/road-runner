@@ -69,6 +69,25 @@ public class InputManager : MonoBehaviour
         }
     }   
 
+    public void OnConsoleInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (_playerInput.currentActionMap.name == "Player")
+            {
+                _playerInput.SwitchCurrentActionMap("Console");
+                //UIManager.Instance.SetConsoleUI(true);
+                //SetCursorLocked(false);
+            }
+            else
+            {
+                _playerInput.SwitchCurrentActionMap("Player");
+                //UIManager.Instance.SetConsoleUI(false);
+                //SetCursorLocked(true);
+            }
+        }
+    }
+
     public void SetCursorLocked(bool locked)
     {
         Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;

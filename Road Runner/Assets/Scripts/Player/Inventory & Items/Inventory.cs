@@ -101,6 +101,8 @@ public class Inventory : NetworkBehaviour
 
     private InventoryUI inventoryUI;
 
+    private StoredItemID heldItem;
+
     #endregion
 
     public override void OnNetworkSpawn()
@@ -341,7 +343,6 @@ public class Inventory : NetworkBehaviour
     /// <returns>True if the item can be retrieved, false otherwise.</returns>
     public bool RetrieveItem(int inventoryKey, int itemKey)
     {
-
         if (inventoryHand == null)
         {
             Debug.LogWarning("Inventory hand is null lol");
@@ -356,8 +357,13 @@ public class Inventory : NetworkBehaviour
             return false;
         }
 
-        StoredItemID retrievedItem = RemoveItem(inventoryKey, itemKey);
+        if (inventoryKey == 0 && itemKey == heldItem.ItemKey)
+        {
+            // We are trying to move / pick up the item we are holding
+            HoldItem(new StoredItemID()); // Hold empty item
+        }
 
+        StoredItemID retrievedItem = RemoveItem(inventoryKey, itemKey);
         SetInventoryHand(retrievedItem.UniqueItemID);
        
         return true;
@@ -546,7 +552,7 @@ public class Inventory : NetworkBehaviour
 
             Debug.Log("Holding item with HotbarSlot index: " + hotbarSlotIndex + ", Item: " + storedItemID);
 
-            HoldItemServerRpc(storedItemID);
+            HoldItem(storedItemID);
         }
     }
 
@@ -556,6 +562,12 @@ public class Inventory : NetworkBehaviour
     public void RemoveUsing()
     {
         HoldItemServerRpc(new StoredItemID());
+    }
+
+    private void HoldItem(StoredItemID storedItemID)
+    {
+        heldItem = storedItemID;
+        HoldItemServerRpc(storedItemID);
     }
 
     [ServerRpc(RequireOwnership = false)]

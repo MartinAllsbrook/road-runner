@@ -64,6 +64,30 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1522277299
       objectReference: {fileID: 0}
+    - target: {fileID: 8798568433039852657, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_Size.x
+      value: 0.1867475
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798568433039852657, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_Size.y
+      value: 0.20047516
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798568433039852657, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_Size.z
+      value: 1.1798519
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798568433039852657, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798568433039852657, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_Center.y
+      value: 0.6304412
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798568433039852657, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_Center.z
+      value: -0.15052956
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
