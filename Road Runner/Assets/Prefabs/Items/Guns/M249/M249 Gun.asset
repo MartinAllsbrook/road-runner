@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
-  m_Name: AK74 Gun
+  m_Name: M249 Gun
   m_EditorClassIdentifier: 
-  itemID: 2
+  itemID: 8
   maxModifications: 0
   maxCounterCount: 0
-  defaultModifications: 2d010000
+  defaultModifications: 
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 
-  itemPickupPrefab: {fileID: 0}
-  useableItemPrefab: {fileID: 0}
-  modelPrefab: {fileID: 0}
-  uiSprite: {fileID: 21300000, guid: d9f374442f4bb8b46a182391414ee379, type: 3}
-  inventoryDimensions: {x: 4, y: 2}
+  itemPickupPrefab: {fileID: 7016329377745620283, guid: 4d7aa55797f15f948a2482fe6ffd8e0b, type: 3}
+  useableItemPrefab: {fileID: 3280779796850542270, guid: 4e6f18c8c21150e40b2973174e562add, type: 3}
+  modelPrefab: {fileID: 5096326381492070275, guid: 27aa5d97be5b7a546994d9cd9c1cae90, type: 3}
+  uiSprite: {fileID: 21300000, guid: 1cbd55fcaa8c4984d918b1ce8dfe6dc8, type: 3}
+  inventoryDimensions: {x: 6, y: 2}

@@ -15,7 +15,12 @@ MonoBehaviour:
   itemID: 3
   maxModifications: 0
   maxCounterCount: 0
-  itemPickupPrefab: {fileID: 6002203163252597457, guid: 0223e2cd01c780843930c27d30eee71d, type: 3}
-  useableItemPrefab: {fileID: 0}
+  defaultModifications: 
+  defaultCounterItem: 0
+  defaultCounterCount: 0
+  validCounterTypes: 
+  itemPickupPrefab: {fileID: 7665447967734567470, guid: b0a0fe2b3f0923d49a6b84cdba791e55, type: 3}
+  useableItemPrefab: {fileID: 4321604207332935188, guid: 6106cc9fd0aa90947819e992d5f2d83c, type: 3}
+  modelPrefab: {fileID: 780360672829287805, guid: 2b5cb6e66d4d18141ace4c66cf505bb0, type: 3}
   uiSprite: {fileID: 21300000, guid: 2d1d1e9d6f6bde145a1588c00c058800, type: 3}
   inventoryDimensions: {x: 5, y: 2}

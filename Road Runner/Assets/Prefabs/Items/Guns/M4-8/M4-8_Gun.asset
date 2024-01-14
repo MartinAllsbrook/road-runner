@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
+  m_Name: M4-8_Gun
+  m_EditorClassIdentifier: 
+  itemID: 1
+  maxModifications: 2
+  maxCounterCount: 0
+  defaultModifications: 000000002e010000
+  defaultCounterItem: 0
+  defaultCounterCount: 0
+  validCounterTypes: 
+  itemPickupPrefab: {fileID: 662544143013134793, guid: ded0ca0712e4e4f4a9a02c746c07e7db, type: 3}
+  useableItemPrefab: {fileID: 285483904432889134, guid: fae4839e558c83148a7c7efa9dd4cf6b, type: 3}
+  modelPrefab: {fileID: 794217115391986544, guid: b736bb21d089fdf4bb13c9c8d0f8f622, type: 3}
+  uiSprite: {fileID: 21300000, guid: c629092baca477f47a9cf53162318d01, type: 3}
+  inventoryDimensions: {x: 4, y: 2}

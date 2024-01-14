@@ -63,7 +63,7 @@ public class UseableItemController : NetworkBehaviour
 
     private void Start()
     {
-        SetItem(new StoredItemID());
+        SetItem();
 
         if (!IsOwner)
             return;
@@ -129,9 +129,21 @@ public class UseableItemController : NetworkBehaviour
         ItemSO itemSO = Inventory.ItemSODictionary[storedItemID.UniqueItemID.BaseItemID];
 
         Destroy(currentUseableItem.gameObject);
-        currentUseableItem = Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
+        currentUseableItem = Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform); 
 
         currentUseableItem.SetUniqueItemID(storedItemID);
+        currentUseableItem.ParentItemController = this;
+        currentUseableItem.IsOwner = IsOwner;
+        currentUseableItem.BuildModel();
+    }
+
+    public void SetItem()
+    {
+        ItemSO itemSO = Inventory.ItemSODictionary[Inventory.ItemID.Empty];
+
+        currentUseableItem = Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
+
+        currentUseableItem.SetUniqueItemID(new StoredItemID());
         currentUseableItem.ParentItemController = this;
         currentUseableItem.IsOwner = IsOwner;
         currentUseableItem.BuildModel();

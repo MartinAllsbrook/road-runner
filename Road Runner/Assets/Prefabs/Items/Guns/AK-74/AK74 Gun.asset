@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
-  m_Name: M4-8_Gun
+  m_Name: AK74 Gun
   m_EditorClassIdentifier: 
-  itemID: 1
-  maxModifications: 2
+  itemID: 2
+  maxModifications: 0
   maxCounterCount: 0
-  defaultModifications: 000000002e010000
+  defaultModifications: 2d010000
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 
-  itemPickupPrefab: {fileID: 662544143013134793, guid: ded0ca0712e4e4f4a9a02c746c07e7db, type: 3}
-  useableItemPrefab: {fileID: 1180040977649026615, guid: fae4839e558c83148a7c7efa9dd4cf6b, type: 3}
-  modelPrefab: {fileID: 794217115391986544, guid: b736bb21d089fdf4bb13c9c8d0f8f622, type: 3}
-  uiSprite: {fileID: 21300000, guid: c629092baca477f47a9cf53162318d01, type: 3}
+  itemPickupPrefab: {fileID: 5949341691698138262, guid: fbad3248ac76cd24ca2a0b5eaa873b40, type: 3}
+  useableItemPrefab: {fileID: 2441495672969767299, guid: e2af9ae7977e67241937fc26cb44ec74, type: 3}
+  modelPrefab: {fileID: 6213338833117673881, guid: 2c2dd68df87c84045849b36fe1ce36fe, type: 3}
+  uiSprite: {fileID: 21300000, guid: d9f374442f4bb8b46a182391414ee379, type: 3}
   inventoryDimensions: {x: 4, y: 2}
