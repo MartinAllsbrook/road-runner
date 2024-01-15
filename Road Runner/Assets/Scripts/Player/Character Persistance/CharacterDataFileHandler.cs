@@ -8,11 +8,14 @@ public class CharacterDataFileHandler
 {
     private string dataDirectoryPath = "";
     private string dataFileName = "";
+    private bool useEncryption = false;
+    private readonly string encryptionKey = "Very Secret Key Phrase";
 
-    public CharacterDataFileHandler(string dataDirectoryPath, string dataFileName)
+    public CharacterDataFileHandler(string dataDirectoryPath, string dataFileName, bool useEncryption)
     {
         this.dataDirectoryPath = dataDirectoryPath;
         this.dataFileName = dataFileName;
+        this.useEncryption = useEncryption;
     }
 
     // Load character data from file, Returns null if no data found
@@ -36,6 +39,12 @@ public class CharacterDataFileHandler
 
                         // Copilot wated to deserialize here
                     }
+                }
+
+                // Decrypt json if encryption is enabled
+                if (useEncryption)
+                {
+                    jsonDataToLoad = EncryptDecrypt(jsonDataToLoad);
                 }
 
                 // Deserialize json to character data
@@ -65,6 +74,12 @@ public class CharacterDataFileHandler
             // Serialize character data to json
             string jsonDataToStore = JsonUtility.ToJson(characterData, true);
 
+            // Encrypt json if encryption is enabled
+            if (useEncryption)
+            {
+                jsonDataToStore = EncryptDecrypt(jsonDataToStore);
+            }
+
             // Write json to file
             using (FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
@@ -78,5 +93,17 @@ public class CharacterDataFileHandler
         {
             Debug.LogError("Failed to save character data to " + fullPath + "\n" + e.Message);
         }
+    }
+
+    private string EncryptDecrypt(string input)
+    {
+        string output = "";
+        for (int i = 0; i < input.Length; i++)
+        {
+            char character = input[i];
+            character = (char)(character ^ encryptionKey[i % encryptionKey.Length]);
+            output += character;
+        }
+        return output;
     }
 }

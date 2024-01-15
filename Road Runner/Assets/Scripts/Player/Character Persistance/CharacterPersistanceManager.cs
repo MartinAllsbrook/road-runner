@@ -10,6 +10,8 @@ public class CharacterPersistanceManager : MonoBehaviour
     [Header("Data File Settings")]
     [SerializeField] private string fileName = "RR_CharacterData.game";
 
+    [SerializeField] private bool useEncryption = true;
+
     private CharacterDataFileHandler characterDataFileHandler;
 
     private CharacterData characterData;
@@ -32,7 +34,7 @@ public class CharacterPersistanceManager : MonoBehaviour
     {
         Debug.Log("CharacterPersistanceManager Start");
 
-        this.characterDataFileHandler = new CharacterDataFileHandler(Application.persistentDataPath, fileName);
+        this.characterDataFileHandler = new CharacterDataFileHandler(Application.persistentDataPath, fileName, useEncryption);
 
         this.persistantDataObjects = FindAllPersistantDataObjects();
 
