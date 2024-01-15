@@ -5331,10 +5331,10 @@ GameObject:
   - component: {fileID: 5150687858776107323}
   - component: {fileID: 297529419240020519}
   - component: {fileID: 4350166169284157831}
+  - component: {fileID: 1839879271975148042}
   - component: {fileID: 1150016554729849836}
   - component: {fileID: 944574688111145374}
   - component: {fileID: -7003752143085786108}
-  - component: {fileID: 7079056508264005875}
   - component: {fileID: 8952754896107954189}
   - component: {fileID: 5564229185589349921}
   - component: {fileID: 7392500675425729931}
@@ -5510,6 +5510,26 @@ MonoBehaviour:
   - {fileID: 4439772555087257117}
   - {fileID: 2762714131860237939}
   - {fileID: 1009535064698167608}
+--- !u!114 &1839879271975148042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3167927590513813192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19ccf6f2911a9dc48a012783cb6e69e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxItemPickupDistance: 5
+  isItemPickup:
+    serializedVersion: 2
+    m_Bits: 512
+  isVehicle:
+    serializedVersion: 2
+    m_Bits: 1024
+  droppedItemBag: {fileID: 0}
 --- !u!114 &1150016554729849836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5693,8 +5713,8 @@ MonoBehaviour:
     m_ActionName: Player/Inspect[/Keyboard/t]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7079056508264005875}
-        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+      - m_Target: {fileID: 1839879271975148042}
+        m_TargetAssemblyTypeName: WorldInteractor, Assembly-CSharp
         m_MethodName: OnItemPickUpInput
         m_Mode: 0
         m_Arguments:
@@ -5709,8 +5729,8 @@ MonoBehaviour:
     m_ActionName: Player/New action
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7079056508264005875}
-        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+      - m_Target: {fileID: 4350166169284157831}
+        m_TargetAssemblyTypeName: UseableItemController, Assembly-CSharp
         m_MethodName: OnHotbarKeyPressed
         m_Mode: 0
         m_Arguments:
@@ -5868,30 +5888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7079056508264005875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3167927590513813192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03d648944905eac40894e508fdfc64e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxItemPickupDistance: 5
-  isItemPickup:
-    serializedVersion: 2
-    m_Bits: 512
-  isVehicle:
-    serializedVersion: 2
-    m_Bits: 1024
-  droppedItemBag: {fileID: 0}
-  hotbarSize: 9
-  slotWidth: 2
-  slotHeight: 2
-  numClothingSlots: 0
 --- !u!54 &8952754896107954189
 Rigidbody:
   m_ObjectHideFlags: 0

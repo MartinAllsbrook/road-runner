@@ -89,6 +89,7 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
         _baseItemID = baseItemID;
 
         modifications = CreateDefaultModifications(baseItemID);
+        numModSlots = modifications.Length;
 
         counterItem = ItemID.Empty;
         counterCount = 0;
@@ -103,6 +104,7 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
         
         if(VerifyModificationsArray(modifications))
             this.modifications = modifications;
+        numModSlots = modifications.Length;
 
         counterItem = ItemID.Empty;
         counterCount = 0;
@@ -116,6 +118,7 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
         _baseItemID = baseItemID;
 
         modifications = CreateDefaultModifications(baseItemID);
+        numModSlots = modifications.Length;
 
         this.counterItem = counterItem;
         this.counterCount = counterCount;
@@ -144,6 +147,7 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
 
         if (VerifyModificationsArray(modifications))
             this.modifications = modifications;
+        numModSlots = modifications.Length;
 
         this.counterItem = counterItem;
         this.counterCount = counterCount;
@@ -235,14 +239,14 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
     {
         if (counterItem == ItemID.Empty)
         {
-            Debug.LogWarning(debugTag + "Cannot remove " + count + " from " + _baseItemID + " because it has no counter item");
+            //Debug.LogWarning(debugTag + "Cannot remove " + count + " from " + _baseItemID + " because it has no counter item");
             counterItemOut = ItemID.Empty;
             return false;
         }
 
         if (counterCount - count < 0)
         {
-            Debug.LogWarning(debugTag + "Cannot remove " + count + " from " + _baseItemID + " because it would result in a negative counter count");
+            //Debug.LogWarning(debugTag + "Cannot remove " + count + " from " + _baseItemID + " because it would result in a negative counter count");
             counterItemOut = ItemID.Empty;
             return false;
         }
@@ -420,13 +424,9 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
 
         serializer.SerializeValue(ref _baseItemID);
 
-        Debug.Log(debugTag + "Modifications: " + modifications);
-        for (int i = 0; i < modifications.Length; i++)
-        {
-            Debug.Log(debugTag + "Mod " + i + ": " + modifications[i]);
-        }
-        serializer.SerializeValue(ref modifications); // I can't believe this works
-        
+        serializer.SerializeValue(ref modifications); 
+        serializer.SerializeValue(ref numModSlots); 
+
         serializer.SerializeValue(ref counterItem);
         serializer.SerializeValue(ref counterCount);
     }

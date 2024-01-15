@@ -68,6 +68,7 @@ public class CharacterPersistanceManager : MonoBehaviour
         // Push data to all relevant systems
         foreach (IPersistantData persistantDataObject in persistantDataObjects)
         {
+            Debug.Log(debugTag + "Loading data for " + persistantDataObject.GetType().ToString());
             persistantDataObject.LoadData(characterData);
         }
         

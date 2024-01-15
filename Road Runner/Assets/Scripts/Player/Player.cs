@@ -23,11 +23,13 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        Debug.Log(debugTag + "Player Network Spawn");
+
         base.OnNetworkSpawn();
 
         if (!IsOwner)
         {
-            Destroy(GetComponent<PlayerInput>());
+            DestroyLocalOnlyBehaviours();
             return;
         }
 
@@ -36,6 +38,8 @@ public class Player : NetworkBehaviour
         else
             Debug.LogError(debugTag + "More than one local player instance seems to exist!");
 
+        InitializeLocalOnlyBehaviors();
+
         // Get component references
         _playerStats = GetComponent<PlayerStats>();
         _playerSpawner = GetComponent<PlayerSpawner>();
@@ -43,6 +47,17 @@ public class Player : NetworkBehaviour
 
         // Load player data
         CharacterPersistanceManager.Instance.FindAllAndLoad();
+    }
+
+    private void DestroyLocalOnlyBehaviours()
+    {
+        Destroy(GetComponent<PlayerInput>());
+        Destroy(GetComponent<WorldInteractor>());
+    }
+
+    private void InitializeLocalOnlyBehaviors()
+    {
+        GetComponent<WorldInteractor>().Initialize();
     }
 
     [Command]

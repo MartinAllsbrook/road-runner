@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 731489740}
   - component: {fileID: 731489739}
   - component: {fileID: 731489741}
+  - component: {fileID: 731489742}
   m_Layer: 0
   m_Name: LocalGameController
   m_TagString: Untagged
@@ -183,6 +184,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: RR_CharacterData.game
   useEncryption: 0
+--- !u!114 &731489742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731489738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03d648944905eac40894e508fdfc64e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hotbarSize: 9
+  slotWidth: 2
+  slotHeight: 2
+  numClothingSlots: 8
 --- !u!114 &874807427 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5698785632482808166, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}

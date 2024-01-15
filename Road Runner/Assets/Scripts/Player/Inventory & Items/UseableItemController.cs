@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using QFSW.QC;
 using static GlobalItemDictionary;
+using System;
 
 /// <summary>
 /// Sets the current item and controls it's inputs and server actions
@@ -22,6 +23,8 @@ public class UseableItemController : NetworkBehaviour
     [Header("Basics")]
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private Transform handTransform;
+
+    private readonly string debugTag = LogColors.GetColoredTag("[UseableItemController]", LogColors.PlayerColor);
 
     #region Hand Positions
 
@@ -72,6 +75,8 @@ public class UseableItemController : NetworkBehaviour
         if (Instance == null)
             Instance = this;
 
+        Inventory.Instance.HoldItem(new StoredItemID());
+
         hudController = HUDController.Instance;
     }
 
@@ -121,10 +126,40 @@ public class UseableItemController : NetworkBehaviour
         hudController.StopInspectItem();
     }
 
-    /// <summary>
-    /// Sets the current item, within the scope of this class
-    /// </summary>
-    /// <param name="itemSO">The scriptable object of the item you want to equip</param>
+    #region Hotbar => Holding Item
+    public void OnHotbarKeyPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            string keyName = context.control.name;
+            int hotbarSlotIndex = Int32.Parse(keyName) - 1;
+
+            StoredItemID storedItemID = Inventory.Instance.GetNextItemAtHotbarSlot(hotbarSlotIndex);
+
+            Debug.Log(debugTag + "Holding item with HotbarSlot index: " + hotbarSlotIndex + ", Item: " + storedItemID);
+
+            Inventory.Instance.HoldItem(storedItemID); // This is going to go to the inventory and back here for now
+        }
+    }
+
+    public void HoldItem(StoredItemID storedItemID)
+    {
+        HoldItemServerRpc(storedItemID);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void HoldItemServerRpc(StoredItemID storedItemID)
+    {
+        HoldItemClientRpc(storedItemID);
+    }
+
+    [ClientRpc]
+    private void HoldItemClientRpc(StoredItemID storedItemID)
+    {
+        SetItem(storedItemID);
+    }
+
+    // Sets the current item, within the scope of this class
     public void SetItem(StoredItemID storedItemID)
     {
         ItemSO itemSO = ItemSODictionary[storedItemID.UniqueItemID.BaseItemID];
@@ -138,6 +173,7 @@ public class UseableItemController : NetworkBehaviour
         currentUseableItem.BuildModel();
     }
 
+    // Sets to empty at start idk if we need this but yuh
     public void SetItem()
     {
         ItemSO itemSO = ItemSODictionary[ItemID.Empty];
@@ -149,6 +185,8 @@ public class UseableItemController : NetworkBehaviour
         currentUseableItem.IsOwner = IsOwner;
         currentUseableItem.BuildModel();
     }
+
+    #endregion
 
     // Methods called by UseableItems to perform actions accross the server without having to be network objects themselves
     #region Server Actions

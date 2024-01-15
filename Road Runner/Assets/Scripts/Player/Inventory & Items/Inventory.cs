@@ -10,36 +10,22 @@ using static GlobalItemDictionary;
 /// <summary>
 /// This class represents the inventory system of the game. It communicates with the InventoryUI class to update the UI based on the inventory state.
 /// </summary>
-public class Inventory : NetworkBehaviour, IPersistantData
+public class Inventory : MonoBehaviour, IPersistantData
 {
     public static Inventory Instance;
 
-    private string debugTag = LogColors.GetColoredTag("[Inventory]", LogColors.InventoryColor);
-
     #region Variables
-
-    [Header("World Interaction")]
-    [SerializeField] private float maxItemPickupDistance;
-    [SerializeField] private LayerMask isItemPickup;
-    [SerializeField] private LayerMask isVehicle;
-    [SerializeField] private Inventory droppedItemBag;
-
     [Header("Hotbar")]
     [SerializeField] private int hotbarSize = 9;
     [SerializeField] private int slotWidth = 2;
     [SerializeField] private int slotHeight = 2;
 
     [Header("Clothing")]
-    [SerializeField] private int numClothingSlots;
+    [SerializeField] private int numClothingSlots = 8;
 
     private UniqueItemID inventoryHand; // The item being moved around the inventory
     
     private StoredItemID usingItem; // The item being used by the player
-    private UseableItemController useableItemController;
-
-    private VehicleInteractionController vehicle;
-
-    private Transform mainCamera;
 
     // Inventories
     private Hotbar hotbar;
@@ -49,6 +35,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
 
     private StoredItemID heldItem;
 
+    private string debugTag = LogColors.GetColoredTag("[Inventory]", LogColors.InventoryColor);
     #endregion
 
     // Adds each itemSO from each itemSOList to the itemSODictionary
@@ -56,47 +43,19 @@ public class Inventory : NetworkBehaviour, IPersistantData
 
     protected void Start()
     {
-        useableItemController = GetComponent<UseableItemController>();
-/*        inventoryUI = InventoryUI.Instance; // Also moved
-*/
-        if (!IsOwner)
-            return;
+        //inventoryUI = InventoryUI.Instance; // Also moved
+
 
         if (Instance == null)
             Instance = this;
 
         Debug.Log(Instance);
-        mainCamera = Camera.main.transform;
-
-        HoldItem(new StoredItemID()); // Hold empty item
-
 
         // Code below moved to LoadData
-        /*        connectedInventories = new Dictionary<int, ConnectedInventory>();
-                SetInventoryHand(new UniqueItemID());
-                inventoryUI.InitializeInventoryDisplay(this);
-                CreateHotbar();*/
-    }
-
-    /// <summary>
-    /// This method is called when an item is picked up.
-    /// </summary>
-    /// <param name="context">The context of the input action.</param>
-    public void OnItemPickUpInput(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            if (vehicle != null)
-            {
-                RemoveConnectedInventory(vehicle.GetInvetory().GetLocalKey());
-                vehicle.ExitVehicle(GetNetworkObject(NetworkObjectId));
-                vehicle = null;
-            }
-            else
-            {
-                RaycastForPickups();
-            }
-        }
+/*       connectedInventories = new Dictionary<int, ConnectedInventory>();
+        SetInventoryHand(new UniqueItemID());
+        inventoryUI.InitializeInventoryDisplay(this);
+        CreateHotbar();*/
     }
 
     #region Inventory Interaction Methods for other classes
@@ -124,41 +83,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
     }
 
     #region Picking up items
-
-    /// <summary>
-    /// This method is used to raycast for pickups in the game world.
-    /// </summary>
-    private void RaycastForPickups()
-    {
-        Ray ray = new Ray(mainCamera.position, mainCamera.forward);
-        RaycastHit raycastHit;
-
-        if (Physics.Raycast(ray, out raycastHit, maxItemPickupDistance, isItemPickup))
-        {
-            if (raycastHit.transform.CompareTag("Test Add Inventory"))
-            {
-                ConnectedInventory invetoryToAdd = raycastHit.transform.GetComponent<ConnectedInventory>();
-                AddConnectedInventory(invetoryToAdd);
-                return;
-            }
-
-            ItemPickup itemPickup = raycastHit.transform.GetComponent<ItemPickup>();
-            TryPickUpItem(itemPickup);
-        }
-
-        if (Physics.Raycast(ray, out raycastHit, maxItemPickupDistance, isVehicle))
-        {
-            VehicleInteractionController vehicleInteractionController = raycastHit.transform.GetComponent<VehicleInteractionController>();
-
-            EnterVehicle(vehicleInteractionController);
-        }
-    }
-
-    /// <summary>
-    /// This method is used to try and pick up an item.
-    /// </summary>
-    /// <param name="itemPickup">The item to pick up.</param>
-    private void TryPickUpItem(ItemPickup itemPickup)
+    public void TryPickUpItem(ItemPickup itemPickup)
     {
         if (TryFitAnywehere(itemPickup.UniqueItemID))
         {
@@ -166,11 +91,6 @@ public class Inventory : NetworkBehaviour, IPersistantData
         }
     }
 
-    /// <summary>
-    /// This method is used to try and fit an item anywhere in the inventory.
-    /// </summary>
-    /// <param name="inventoryItem">The item to fit.</param>
-    /// <returns>True if the item can fit, false otherwise.</returns>
     private bool TryFitAnywehere(UniqueItemID uniqueItemID)
     {
         foreach (KeyValuePair<int, ConnectedInventory> keyValuePair in connectedInventories)
@@ -187,20 +107,12 @@ public class Inventory : NetworkBehaviour, IPersistantData
     #endregion
 
     #region All-inventory Methods
-    /// <summary>
-    /// This method is used to remove a connected inventory.
-    /// </summary>
-    /// <param name="key">The key of the inventory to remove.</param>
     private void RemoveConnectedInventory(int key)
     {
         inventoryUI.RemoveIventoryDisplay(key);
         connectedInventories.Remove(key);
     }
 
-    /// <summary>
-    /// This method is used to add a connected inventory.
-    /// </summary>
-    /// <param name="inventoryToConnect">The inventory to connect.</param>
     private void AddConnectedInventory(ConnectedInventory inventoryToConnect)
     {
         int inventoryKey = GetAvailableIndex();
@@ -219,12 +131,6 @@ public class Inventory : NetworkBehaviour, IPersistantData
         }
     }
 
-    /// <summary>
-    /// This method is used to try and place an item in a slot.
-    /// </summary>
-    /// <param name="inventoryIndex">The index of the inventory.</param>
-    /// <param name="slot">The slot to place the item in.</param>
-    /// <returns>True if the item can be placed, false otherwise.</returns>
     public bool TryPlaceInSlot(int inventoryIndex, Vector2Int slot)
     {
         if (inventoryHand.BaseItemID == ItemID.Empty)
@@ -254,12 +160,6 @@ public class Inventory : NetworkBehaviour, IPersistantData
         return false;
     }
 
-    /// <summary>
-    /// This method is used to retrieve an item from the inventory.
-    /// </summary>
-    /// <param name="inventoryIndex">The index of the inventory.</param>
-    /// <param name="containedItem">The item to retrieve.</param>
-    /// <returns>True if the item can be retrieved, false otherwise.</returns>
     public bool RetrieveItem(int inventoryKey, int itemKey)
     {
         if (inventoryHand == null)
@@ -287,7 +187,6 @@ public class Inventory : NetworkBehaviour, IPersistantData
        
         return true;
     }
-
     public bool ConsumeItem(int itemKey)
     {
         RemoveItem(0, itemKey);
@@ -308,10 +207,6 @@ public class Inventory : NetworkBehaviour, IPersistantData
         return retrievedItem;
     }
 
-    /// <summary>
-    /// This method is used to get an available index for the inventory.
-    /// </summary>
-    /// <returns>The available index.</returns>
     private int GetAvailableIndex()
     {
         int numReservedSlots = numClothingSlots + 1;
@@ -326,17 +221,6 @@ public class Inventory : NetworkBehaviour, IPersistantData
         return -1;
     }
 
-    /// <summary>
-    /// This method is used to enter a vehicle.
-    /// </summary>
-    /// <param name="vehicleInteractionController">The vehicle to enter.</param>
-    private void EnterVehicle(VehicleInteractionController vehicleInteractionController)
-    {
-        vehicle = vehicleInteractionController;
-        vehicleInteractionController.EnterVehicle(GetNetworkObject(NetworkObjectId));
-
-        AddConnectedInventory(vehicleInteractionController.GetInvetory());
-    }
     #endregion
 
     #region Clothing Methods
@@ -394,20 +278,13 @@ public class Inventory : NetworkBehaviour, IPersistantData
         if (inventoryHand.BaseItemID == ItemID.Empty)
             return;
 
-        DropItemServerRpc(inventoryHand);
+        DropItem(inventoryHand);
         SetInventoryHand(new UniqueItemID());
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void DropItemServerRpc(UniqueItemID uniqueItemID)
+    private void DropItem(UniqueItemID uniqueItemID)
     {
-        ItemPickup instantiatedItemPickup = Instantiate(ItemSODictionary[uniqueItemID.BaseItemID].ItemPickupPrefab, transform.position + Vector3.up * 2.5f, Quaternion.identity);
-
-        // Spawn network object
-        NetworkObject itemNetworkObject = instantiatedItemPickup.GetComponent<NetworkObject>();
-        itemNetworkObject.Spawn(true);
-
-        instantiatedItemPickup.UniqueItemID = uniqueItemID;
+        ObjectSpawner.Instance.ItemSpawnRequest(uniqueItemID, Player.LocalPlayerInstance.transform.position + transform.up * 2);
     }
 
     /// <summary>
@@ -417,7 +294,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
     {
         if (inventoryHand.BaseItemID != ItemID.Empty)
         {
-            DropItemServerRpc(inventoryHand);
+            DropItem(inventoryHand);
             SetInventoryHand(new UniqueItemID());
         }
 
@@ -439,7 +316,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
         foreach (KeyValuePair<int, StoredItemID> keyValuePair in containedItems)
         {
             inventoryUI.DestroyItemDisplay(inventoryKey, keyValuePair.Key);
-            DropItemServerRpc(keyValuePair.Value.UniqueItemID);
+            DropItem(keyValuePair.Value.UniqueItemID);
         }
     }
     #endregion
@@ -456,49 +333,20 @@ public class Inventory : NetworkBehaviour, IPersistantData
         inventoryUI.CreateHotbarSlotUIs(hotbarSize, slotWidth, slotHeight);
     }
 
-    /// <summary>
-    /// This method is called when a hotbar key is pressed.
-    /// </summary>
-    /// <param name="context">The context of the input action.</param>
-    public void OnHotbarKeyPressed(InputAction.CallbackContext context)
+    public StoredItemID GetNextItemAtHotbarSlot(int slotIndex)
     {
-        if (context.performed)
-        {
-            string keyName = context.control.name;
-            int hotbarSlotIndex = Int32.Parse(keyName) - 1;
-
-            StoredItemID storedItemID = hotbar.GetItemAtSlot(hotbarSlotIndex);
-
-            Debug.Log(debugTag + "Holding item with HotbarSlot index: " + hotbarSlotIndex + ", Item: " + storedItemID);
-
-            HoldItem(storedItemID);
-        }
+        return hotbar.GetItemAtSlot(slotIndex); // TODO: Add "Next" to the name of this method and make it cycle through items
     }
 
-    /// <summary>
-    /// This method is used to remove the item that is currently being used.
-    /// </summary>
     public void RemoveUsing()
     {
-        HoldItemServerRpc(new StoredItemID());
+        HoldItem(new StoredItemID());
     }
 
-    private void HoldItem(StoredItemID storedItemID)
+    public void HoldItem(StoredItemID storedItemID) // TODO: Make this private again
     {
         heldItem = storedItemID;
-        HoldItemServerRpc(storedItemID);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void HoldItemServerRpc(StoredItemID storedItemID)
-    {
-        HoldItemClientRpc(storedItemID);
-    }
-
-    [ClientRpc]
-    private void HoldItemClientRpc(StoredItemID storedItemID)
-    {
-        useableItemController.SetItem(storedItemID);
+        UseableItemController.Instance.HoldItem(storedItemID); // Instace should be the local instance
     }
 
     #endregion
@@ -545,46 +393,5 @@ public class Inventory : NetworkBehaviour, IPersistantData
         characterData.StoredItems = allStoredItems.ToArray();
     }
 
-    #endregion
-
-    #region Debug Commands
-    [Command]
-    public void SpawnItemDebug(int x, int y, int z, ItemID itemEnum)
-    {
-        Vector3 position = new Vector3(x, y, z);
-
-        if (!IsServer)
-        {
-            SpawnItemServerRpc(itemEnum, position);
-            return;
-        }
-
-        SpawnedObject itemSpawnedObject = ItemSODictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
-        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
-    }
-
-    [Command]
-    public void SpawnItemDebug(ItemID itemEnum)
-    {
-        Transform playerTransform = PlayerSpawner.localPlayerSpawner.transform;
-        Vector3 position = playerTransform.position + playerTransform.forward * 2;
-
-        if (!IsServer)
-        {
-            SpawnItemServerRpc(itemEnum, position);
-            return;
-        }
-
-        SpawnedObject itemSpawnedObject = ItemSODictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
-        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
-    }
-
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnItemServerRpc(ItemID itemEnum, Vector3 position)
-    {
-        SpawnedObject itemSpawnedObject = ItemSODictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
-        ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
-    }
     #endregion
 }
