@@ -14,6 +14,8 @@ public class Inventory : NetworkBehaviour, IPersistantData
 {
     public static Inventory Instance;
 
+    private string debugTag = LogColors.GetColoredTag("[Inventory]", LogColors.InventoryColor);
+
     #region Variables
 
     [Header("World Interaction")]
@@ -66,11 +68,14 @@ public class Inventory : NetworkBehaviour, IPersistantData
         Debug.Log(Instance);
         mainCamera = Camera.main.transform;
 
+        HoldItem(new StoredItemID()); // Hold empty item
+
+
         // Code below moved to LoadData
-/*        connectedInventories = new Dictionary<int, ConnectedInventory>();
-        SetInventoryHand(new UniqueItemID());
-        inventoryUI.InitializeInventoryDisplay(this);
-        CreateHotbar();*/
+        /*        connectedInventories = new Dictionary<int, ConnectedInventory>();
+                SetInventoryHand(new UniqueItemID());
+                inventoryUI.InitializeInventoryDisplay(this);
+                CreateHotbar();*/
     }
 
     /// <summary>
@@ -227,7 +232,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
             return false; // or true it doesn't matter
         }
 
-        Debug.Log("Trying to place item in slot: " + slot + " of Inventory: " + inventoryIndex);
+        Debug.Log(debugTag + "Trying to place item in slot: " + slot + " of Inventory: " + inventoryIndex);
 
         ConnectedInventory inventory = connectedInventories[inventoryIndex];
 
@@ -235,7 +240,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
 
         if (inventory.IsAreaAvailable(slot, dimensions))
         {
-            Debug.Log("Placing item in slot: " + slot);
+            Debug.Log(debugTag + "Placing item in slot: " + slot);
 
             int containedItemKey = inventory.AddItem(inventoryHand, slot);
 
@@ -259,18 +264,18 @@ public class Inventory : NetworkBehaviour, IPersistantData
     {
         if (inventoryHand == null)
         {
-            Debug.LogWarning("Inventory hand is null lol");
+            Debug.LogWarning(debugTag + "Inventory hand is null lol");
             inventoryHand = new UniqueItemID();
         }
 
-        Debug.Log(inventoryHand);
-        Debug.Log(inventoryHand.BaseItemID);
         if (inventoryHand.BaseItemID != ItemID.Empty)
         {
-            // Maybe swap items in the furture
+            // TODO: Maybe swap items in the furture
             return false;
         }
 
+        //Debug.Log(debugTag + "Retrieving item from inventory: " + inventoryKey + ", item: " + itemKey);
+        //Debug.Log(debugTag + "Held item: " + heldItem + " Held Item Key: " + heldItem.ItemKey);
         if (inventoryKey == 0 && itemKey == heldItem.ItemKey)
         {
             // We are trying to move / pick up the item we are holding
@@ -292,7 +297,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
 
     public StoredItemID RemoveItem(int inventoryKey, int itemKey)
     {
-        Debug.Log("Removing item from inventory: " + inventoryKey + ", item: " + itemKey);
+        Debug.Log(debugTag + "Removing item from inventory: " + inventoryKey + ", item: " + itemKey);
         StoredItemID containedItem = connectedInventories[inventoryKey].GetStoredItemID(itemKey);
 
         inventoryUI.ShowButtonArea(inventoryKey, containedItem.TopLeft, containedItem.UniqueItemID.Dimensions);
@@ -317,7 +322,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
                 return i;
         }
 
-        Debug.LogError("Dude wtf there are more than 100 inventories stop it rn. Also you just broke my inventory system");
+        Debug.LogError(debugTag + "Dude wtf there are more than 100 inventories stop it rn. Also you just broke my inventory system");
         return -1;
     }
 
@@ -464,7 +469,7 @@ public class Inventory : NetworkBehaviour, IPersistantData
 
             StoredItemID storedItemID = hotbar.GetItemAtSlot(hotbarSlotIndex);
 
-            Debug.Log("Holding item with HotbarSlot index: " + hotbarSlotIndex + ", Item: " + storedItemID);
+            Debug.Log(debugTag + "Holding item with HotbarSlot index: " + hotbarSlotIndex + ", Item: " + storedItemID);
 
             HoldItem(storedItemID);
         }

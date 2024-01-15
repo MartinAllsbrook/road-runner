@@ -17,28 +17,35 @@ public class CharacterPersistanceManager : MonoBehaviour
     private CharacterData characterData;
     private List<IPersistantData> persistantDataObjects;
 
+    // String to start debugs with
+    private string debugTag = "<color=#ffff00ff>[CharacterPersistanceManager] </color>";
+
     private void Awake()
     {
+        Debug.Log(debugTag + "Awake, Creating Singleton");
         if (Instance == null)
         {
             Instance = this;
         }
         else
         {
-            Debug.LogError("CharacterPersistanceManager already exists. Deleting new instance.");
+            Debug.LogError(debugTag + "Another CPM already exists. Deleting new instance.");
             Destroy(this);
         }
     }
 
     private void Start()
     {
-        Debug.Log("CharacterPersistanceManager Start");
+        Debug.Log(debugTag + "Start, Creating FileHandler");
 
         this.characterDataFileHandler = new CharacterDataFileHandler(Application.persistentDataPath, fileName, useEncryption);
+    }
 
+    public void FindAllAndLoad()
+    {
         this.persistantDataObjects = FindAllPersistantDataObjects();
 
-        LoadCharacter(); // Temporary
+        LoadAll();
     }
 
     public void NewCharacter()
@@ -46,7 +53,7 @@ public class CharacterPersistanceManager : MonoBehaviour
         characterData = new CharacterData();
     }
 
-    public void LoadCharacter()
+    public void LoadAll()
     {
         // Load character data from CharacterDataFileHandler
         this.characterData = characterDataFileHandler.Load();

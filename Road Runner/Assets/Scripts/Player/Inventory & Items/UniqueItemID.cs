@@ -21,14 +21,11 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
 
     #region Debug Method
 
+    private string debugTag = "<color=#ff00ffff>[UniqueItemID] </color>";
+
     private void LogAllSerilizedFields(string start)
     {
-        Debug.Log(start + "BaseItemID: " + _baseItemID + "CounterItem: " + counterItem + "CounterCount: " + counterCount + "NumModSlots: " + numModSlots);
-/*        Debug.Log("Modifications: " + modifications);
-        for (int i = 0; i < modifications.Length; i++)
-        {
-            Debug.Log("Mod " + i + ": " + modifications[i]);
-        }*/
+        Debug.Log(debugTag + start + "BaseItemID: " + _baseItemID + "CounterItem: " + counterItem + "CounterCount: " + counterCount + "NumModSlots: " + numModSlots);
     }
 
     #endregion
@@ -211,7 +208,7 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
     {
         if (counterItem == ItemID.Empty)
         {
-            Debug.Log("Setting counter item to " + itemID + " with count " + count);
+            Debug.Log(debugTag + "Setting counter item to " + itemID + " with count " + count);
             counterItem = itemID;
             counterCount = count;
             return true;
@@ -219,17 +216,17 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
 
         if (counterItem != itemID)
         {
-            Debug.LogWarning("Cannot add " + itemID + " to " + _baseItemID + " because it is not the same type as the counter item " + counterItem);
+            Debug.LogWarning(debugTag + "Cannot add " + itemID + " to " + _baseItemID + " because it is not the same type as the counter item " + counterItem);
             return false;
         }
 
         if (counterCount + count > MaxCounterCount())
         {
-            Debug.LogWarning("Cannot add " + count + " " + itemID + " to " + _baseItemID + " because it would exceed the max counter count of " + MaxCounterCount());
+            Debug.LogWarning(debugTag + "Cannot add " + count + " " + itemID + " to " + _baseItemID + " because it would exceed the max counter count of " + MaxCounterCount());
             return false;
         }
 
-        Debug.Log("Adding " + count + " " + itemID + " to " + _baseItemID + " with counter count " + counterCount);
+        Debug.Log(debugTag + "Adding " + count + " " + itemID + " to " + _baseItemID + " with counter count " + counterCount);
         counterCount += count;
         return true;
     }
@@ -238,14 +235,14 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
     {
         if (counterItem == ItemID.Empty)
         {
-            Debug.LogWarning("Cannot remove " + count + " from " + _baseItemID + " because it has no counter item");
+            Debug.LogWarning(debugTag + "Cannot remove " + count + " from " + _baseItemID + " because it has no counter item");
             counterItemOut = ItemID.Empty;
             return false;
         }
 
         if (counterCount - count < 0)
         {
-            Debug.LogWarning("Cannot remove " + count + " from " + _baseItemID + " because it would result in a negative counter count");
+            Debug.LogWarning(debugTag + "Cannot remove " + count + " from " + _baseItemID + " because it would result in a negative counter count");
             counterItemOut = ItemID.Empty;
             return false;
         }
@@ -269,7 +266,7 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
 
         if (modificationSlot >= ModificationCount()) 
         {
-            Debug.LogError(_baseItemID + " does not have a modification slot " + modificationSlot + ". MaxMods = " + ModificationCount());
+            Debug.LogError(debugTag + _baseItemID + " does not have a modification slot " + modificationSlot + ". MaxMods = " + ModificationCount());
             return false;
         }
 
@@ -280,7 +277,7 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
     {
         if (modifications.Length != ModificationCount())
         {
-            Debug.LogError("Length of modifications array must be equal to " + _baseItemID + "'s ModificationCount of " + ModificationCount());
+            Debug.LogError(debugTag + "Length of modifications array must be equal to " + _baseItemID + "'s ModificationCount of " + ModificationCount());
             return false;
         }
 
@@ -291,9 +288,9 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
 
     private UniqueItemID[] CreateDefaultModifications(ItemID baseItemID)
     {
-        Debug.Log("Creating default modifications for " + baseItemID);
-        Debug.Log("Default mods: " + DefaultModifications().Length);
-        Debug.Log("Max mods: " + ModificationCount());
+        Debug.Log(debugTag + "Creating default modifications for " + baseItemID);
+        Debug.Log(debugTag + "Default mods: " + DefaultModifications().Length);
+        Debug.Log(debugTag + "Max mods: " + ModificationCount());
 
         ItemID[] defaultModItemIDs = DefaultModifications();
         numModSlots = ModificationCount();
@@ -402,7 +399,7 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
             indent += "  ";
         }
 
-        Debug.Log(indent + modification.BaseItemID + " " + modification.counterItem + " " + modification.counterCount);
+        Debug.Log(debugTag + indent + modification.BaseItemID + " " + modification.counterItem + " " + modification.counterCount);
 
         for (int i = 0; i < modification.modifications.Length; i++)
         {
@@ -419,14 +416,14 @@ public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
     // Network serialization interface
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
-        Debug.Log("Serializing " + _baseItemID + " with " + modifications.Length + " mods");
+        Debug.Log(debugTag + "Serializing " + _baseItemID + " with " + modifications.Length + " mods");
 
         serializer.SerializeValue(ref _baseItemID);
 
-        Debug.Log("Modifications: " + modifications);
+        Debug.Log(debugTag + "Modifications: " + modifications);
         for (int i = 0; i < modifications.Length; i++)
         {
-            Debug.Log("Mod " + i + ": " + modifications[i]);
+            Debug.Log(debugTag + "Mod " + i + ": " + modifications[i]);
         }
         serializer.SerializeValue(ref modifications); // I can't believe this works
         
