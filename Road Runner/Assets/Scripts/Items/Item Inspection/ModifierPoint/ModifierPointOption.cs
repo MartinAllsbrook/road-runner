@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static Inventory;
+using static GlobalItemDictionary;
 
 public class ModifierPointOption : MonoBehaviour
 {

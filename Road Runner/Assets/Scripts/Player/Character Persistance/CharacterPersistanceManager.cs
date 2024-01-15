@@ -30,6 +30,8 @@ public class CharacterPersistanceManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("CharacterPersistanceManager Start");
+
         this.characterDataFileHandler = new CharacterDataFileHandler(Application.persistentDataPath, fileName);
 
         this.persistantDataObjects = FindAllPersistantDataObjects();
@@ -60,7 +62,7 @@ public class CharacterPersistanceManager : MonoBehaviour
             persistantDataObject.LoadData(characterData);
         }
         
-        Debug.Log("Loaded " + characterData.CName + " with " + characterData.Food + " health");
+        Debug.Log("Loaded " + characterData.CName + " with " + characterData.StoredItems.Length + " items");
     }
 
     public void SaveCharacter()
@@ -71,7 +73,7 @@ public class CharacterPersistanceManager : MonoBehaviour
             persistantDataObject.SaveData(ref characterData);
         }
 
-        Debug.Log("Saving " + characterData.CName + " with " + characterData.Food + " health");
+        Debug.Log("Saving " + characterData.CName + " with " + characterData.StoredItems.Length + " items");
 
         // Save character data to CharacterDataFileHandler
         characterDataFileHandler.Save(characterData);

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Inventory;
+using static GlobalItemDictionary;
 using static ConnectedInventory;
 
 public class ModifierPointUIElement : InspectPointUIElement

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Inventory;
+using static GlobalItemDictionary;
 
 [Serializable]
 [CreateAssetMenu(fileName = "AllowedModifications", menuName = "ScriptableObjects/Items/Allowed Modification List")]

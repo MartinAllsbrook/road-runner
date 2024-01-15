@@ -1,71 +1,18 @@
-using Mono.CSharp;
 using QFSW.QC;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static ClothingItemSO;
-using static ConnectedInventory;
+using static GlobalItemDictionary;
 
 /// <summary>
 /// This class represents the inventory system of the game. It communicates with the InventoryUI class to update the UI based on the inventory state.
 /// </summary>
-public class Inventory : NetworkBehaviour
+public class Inventory : NetworkBehaviour, IPersistantData
 {
-    #region Static Properties, Enums, and Helper Classes
     public static Inventory Instance;
-
-    protected static Dictionary<ItemID, ItemSO> itemSoDictionary;
-    public static Dictionary<ItemID, ItemSO> ItemSODictionary { get { return itemSoDictionary; } }
-
-    public enum ItemID // Item IDs used with the itemSODictionary. I don't think these could represent a modified item.
-    {
-        Empty = 0,
-
-        // Guns 1 - 100
-        Gun_M48 = 1,
-        Gun_Ak74 = 2,
-        Gun_BenneliM4 = 3,
-        Gun_M107 = 4,
-        Gun_M1911 = 5,
-        Gun_Rpg7 = 6,
-        Gun_Uzi = 7,
-        Gun_M249 = 8,
-
-        // Consumables 101 - 200
-        Consumable_Apple = 101,
-        Consumable_WaterBottle = 102,
-        Consumable_Beans = 103,
-        Consumable_Medkit = 104,
-        Consumable_Pills = 105,
-
-        // Clothing 201 - 300
-        Clothing_Backpack = 201,
-
-        // Ammo & Attachments 301 - 400
-        Attachment_Mag = 301,
-        Attachment_M48IronSight = 302,
-        Attachment_LargeScope = 303,
-
-        // Ammo 401 - 500, Kinda just for testing rn
-        Bullet_556 = 401,
-    }
-
-/*    // Public class representing the information needed to store an item in a connected inventory
-    public class ContainedItem
-    {
-        public ItemID inventoryItem;
-
-        // TODO: Think about how to store info more efficiently. Does everything need to know the position of the item or just the connectedInventory it's in?
-        public Vector2Int topLeft; // The top left corner of the item in the inventory
-        public Vector2Int inventoryDimensions; // The dimensions of the item in the inventory, although & TODO: this may not be needed because the dimensions are stored in the itemSO
-        public int count;
-    }*/
-
-    #endregion
 
     #region Variables
 
@@ -74,9 +21,6 @@ public class Inventory : NetworkBehaviour
     [SerializeField] private LayerMask isItemPickup;
     [SerializeField] private LayerMask isVehicle;
     [SerializeField] private Inventory droppedItemBag;
-
-    [Header("Item Refs")]
-    [SerializeField] private AllItemsSO allItemSOsSO;
 
     [Header("Hotbar")]
     [SerializeField] private int hotbarSize = 9;
@@ -105,37 +49,14 @@ public class Inventory : NetworkBehaviour
 
     #endregion
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-
-        if (IsOwner)
-        {
-            if (itemSoDictionary == null)
-            {
-                CreateItemDictionary();
-            }
-        }
-    }
-
     // Adds each itemSO from each itemSOList to the itemSODictionary
-    private void CreateItemDictionary()
-    {
-        itemSoDictionary = new Dictionary<ItemID, ItemSO>();
 
-        ItemSO[] allItemSOs = allItemSOsSO.GetAllItemSOs();
-
-        foreach (ItemSO itemSO in allItemSOs)
-        {
-            itemSoDictionary.Add(itemSO.ItemID, itemSO);
-        }
-    }
 
     protected void Start()
     {
         useableItemController = GetComponent<UseableItemController>();
-        inventoryUI = InventoryUI.Instance;
-
+/*        inventoryUI = InventoryUI.Instance; // Also moved
+*/
         if (!IsOwner)
             return;
 
@@ -143,20 +64,13 @@ public class Inventory : NetworkBehaviour
             Instance = this;
 
         Debug.Log(Instance);
-
-        // Create hotbar
-
-
-
-        connectedInventories = new Dictionary<int, ConnectedInventory>();
-
-        SetInventoryHand(new UniqueItemID());
-        
         mainCamera = Camera.main.transform;
 
-        // Create Inventory Stuff
+        // Code below moved to LoadData
+/*        connectedInventories = new Dictionary<int, ConnectedInventory>();
+        SetInventoryHand(new UniqueItemID());
         inventoryUI.InitializeInventoryDisplay(this);
-        CreateHotbar();
+        CreateHotbar();*/
     }
 
     /// <summary>
@@ -258,7 +172,7 @@ public class Inventory : NetworkBehaviour
         {
             if (keyValuePair.Value.TryFitItem(uniqueItemID, out int containedItemKey, out Vector2Int topLeft))
             {
-                inventoryUI.AddItemDisplay(keyValuePair.Key, containedItemKey, itemSoDictionary[uniqueItemID.BaseItemID], topLeft);
+                inventoryUI.AddItemDisplay(keyValuePair.Key, containedItemKey, ItemSODictionary[uniqueItemID.BaseItemID], topLeft);
                 return true;
             }
         }
@@ -325,7 +239,7 @@ public class Inventory : NetworkBehaviour
 
             int containedItemKey = inventory.AddItem(inventoryHand, slot);
 
-            inventoryUI.AddItemDisplay(inventoryIndex, containedItemKey, itemSoDictionary[inventoryHand.BaseItemID], slot);
+            inventoryUI.AddItemDisplay(inventoryIndex, containedItemKey, ItemSODictionary[inventoryHand.BaseItemID], slot);
             
             SetInventoryHand(new UniqueItemID());
             
@@ -482,7 +396,7 @@ public class Inventory : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void DropItemServerRpc(UniqueItemID uniqueItemID)
     {
-        ItemPickup instantiatedItemPickup = Instantiate(itemSoDictionary[uniqueItemID.BaseItemID].ItemPickupPrefab, transform.position + Vector3.up * 2.5f, Quaternion.identity);
+        ItemPickup instantiatedItemPickup = Instantiate(ItemSODictionary[uniqueItemID.BaseItemID].ItemPickupPrefab, transform.position + Vector3.up * 2.5f, Quaternion.identity);
 
         // Spawn network object
         NetworkObject itemNetworkObject = instantiatedItemPickup.GetComponent<NetworkObject>();
@@ -593,7 +507,40 @@ public class Inventory : NetworkBehaviour
 
     #endregion
 
+    #region IPersistantData Methods
 
+    public void LoadData(CharacterData characterData)
+    {
+        // Inventory initialization code moved from Start
+        inventoryUI = InventoryUI.Instance;
+
+        connectedInventories = new Dictionary<int, ConnectedInventory>();
+        inventoryUI.InitializeInventoryDisplay(this);
+        SetInventoryHand(new UniqueItemID());
+        CreateHotbar();
+
+        foreach (StoredItemID storedItemID in characterData.StoredItems)
+        {
+            TryFitAnywehere(storedItemID.UniqueItemID);
+        }
+    }
+
+    public void SaveData(ref CharacterData characterData)
+    {
+        List<StoredItemID> allStoredItems = new List<StoredItemID>();
+
+        foreach (ConnectedInventory connectedInventory in connectedInventories.Values)
+        {
+            foreach (StoredItemID storedItemID in connectedInventory.GetAllItems())
+            {
+                allStoredItems.Add(storedItemID);
+            }
+        }
+
+        characterData.StoredItems = allStoredItems.ToArray();
+    }
+
+    #endregion
 
     #region Debug Commands
     [Command]
@@ -607,7 +554,7 @@ public class Inventory : NetworkBehaviour
             return;
         }
 
-        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
+        SpawnedObject itemSpawnedObject = ItemSODictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
         ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
     }
 
@@ -623,7 +570,7 @@ public class Inventory : NetworkBehaviour
             return;
         }
 
-        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
+        SpawnedObject itemSpawnedObject = ItemSODictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
         ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
     }
 
@@ -631,7 +578,7 @@ public class Inventory : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SpawnItemServerRpc(ItemID itemEnum, Vector3 position)
     {
-        SpawnedObject itemSpawnedObject = itemSoDictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
+        SpawnedObject itemSpawnedObject = ItemSODictionary[itemEnum].ItemPickupPrefab.GetComponent<SpawnedObject>();
         ObjectSpawner.Instance.SpawnObject(itemSpawnedObject, position);
     }
     #endregion

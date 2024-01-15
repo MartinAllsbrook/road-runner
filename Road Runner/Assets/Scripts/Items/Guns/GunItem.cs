@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-using static Inventory;
+using static GlobalItemDictionary;
 
 public class GunItem : UseableItem
 {

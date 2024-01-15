@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
-using static Inventory;
+using static GlobalItemDictionary;
 
 // Everything you need to know about a item
 // Stored in a dictionary in Invenotry the with itemID as the key

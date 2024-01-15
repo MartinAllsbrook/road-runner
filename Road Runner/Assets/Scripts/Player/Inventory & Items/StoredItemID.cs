@@ -1,15 +1,17 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using static Inventory;
 
+[Serializable]
 public class StoredItemID : INetworkSerializable
 {
-    private UniqueItemID itemID;
+    [SerializeField] private UniqueItemID itemID;
 
     // Variables that describe where the item is stored
-    private int inventoryKey;
-    private int itemKey;
-    private Vector2Int inventoryPosition;
+    [SerializeField] private int inventoryKey;
+    [SerializeField] private int itemKey;
+    [SerializeField] private Vector2Int inventoryPosition;
     
     public StoredItemID()
     {

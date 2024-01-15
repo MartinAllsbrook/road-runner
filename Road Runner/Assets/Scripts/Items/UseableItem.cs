@@ -4,12 +4,13 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static GlobalItemDictionary;
 
 public class UseableItem : MonoBehaviour
 {
     #region Variables
 
-    [SerializeField] private Inventory.ItemID baseItemID;
+    [SerializeField] private ItemID baseItemID;
     [SerializeField] private UniqueItemModel uniqueItemModel;
 
     // Info from inventory
@@ -74,7 +75,7 @@ public class UseableItem : MonoBehaviour
         Inventory.Instance.AddItem(oldModID);
     }
 
-    protected void AddToCounter(Inventory.ItemID itemType, int count)
+    protected void AddToCounter(ItemID itemType, int count)
     {
         uniqueItemID.TryAddItemToCounter(itemType, count); // Edit copy in hands
 
@@ -91,7 +92,7 @@ public class UseableItem : MonoBehaviour
 
     public void BuildModel() 
     {
-        if (uniqueItemID.BaseItemID != Inventory.ItemID.Empty)
+        if (uniqueItemID.BaseItemID != ItemID.Empty)
             uniqueItemModel.BuildModel(uniqueItemID);
     }
 

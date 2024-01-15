@@ -13,6 +13,9 @@ public class CharacterData
     public float Food;
     public float Water;
 
+    // Inventory
+    public StoredItemID[] StoredItems;
+
     public CharacterData()
     {
         CName = "New Character";
@@ -20,5 +23,7 @@ public class CharacterData
         Health = 100;
         Food = 100;
         Water = 100;
+
+        StoredItems = new StoredItemID[0];
     }
 }

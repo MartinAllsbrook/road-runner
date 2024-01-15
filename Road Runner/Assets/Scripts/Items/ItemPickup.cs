@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using static GlobalItemDictionary;
 
 public class ItemPickup : SpawnedObject
 {
-    [SerializeField] protected Inventory.ItemID baseItemID;
+    [SerializeField] protected ItemID baseItemID;
     [SerializeField] protected UniqueItemModel uniqueItemModel;
 
     private const float despawnTime = 300;

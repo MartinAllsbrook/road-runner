@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static InventoryUI;
+using static GlobalItemDictionary;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -69,9 +70,9 @@ public class InventoryUI : MonoBehaviour
         conectedInventoryUIs.Add(0, hotbarUI);
     }
 
-    public void SetInventoryHand(Inventory.ItemID inventoryItem)
+    public void SetInventoryHand(ItemID inventoryItem)
     {
-        ItemSO itemSO = Inventory.ItemSODictionary[inventoryItem];
+        ItemSO itemSO = ItemSODictionary[inventoryItem];
         Vector2Int dimensions = itemSO.InInventoryDimensions;
 
         inventoryHand.sizeDelta = dimensions * inventorySlotWidth;

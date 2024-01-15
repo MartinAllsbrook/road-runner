@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using QFSW.QC;
+using static GlobalItemDictionary;
 
 /// <summary>
 /// Sets the current item and controls it's inputs and server actions
@@ -126,7 +127,7 @@ public class UseableItemController : NetworkBehaviour
     /// <param name="itemSO">The scriptable object of the item you want to equip</param>
     public void SetItem(StoredItemID storedItemID)
     {
-        ItemSO itemSO = Inventory.ItemSODictionary[storedItemID.UniqueItemID.BaseItemID];
+        ItemSO itemSO = ItemSODictionary[storedItemID.UniqueItemID.BaseItemID];
 
         Destroy(currentUseableItem.gameObject);
         currentUseableItem = Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform); 
@@ -139,7 +140,7 @@ public class UseableItemController : NetworkBehaviour
 
     public void SetItem()
     {
-        ItemSO itemSO = Inventory.ItemSODictionary[Inventory.ItemID.Empty];
+        ItemSO itemSO = ItemSODictionary[ItemID.Empty];
 
         currentUseableItem = Instantiate(itemSO.UsableItemPrefab, handTransform.position, handTransform.rotation, handTransform);
 

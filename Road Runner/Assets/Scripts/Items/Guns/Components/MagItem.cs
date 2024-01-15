@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static GlobalItemDictionary;
 public class MagItem : UseableItem
 {
     public void TryAddRoundToMag()
     {
-        AddToCounter(Inventory.ItemID.Bullet_556, 1);
+        AddToCounter(ItemID.Bullet_556, 1);
     }
 }

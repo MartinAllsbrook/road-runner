@@ -1,22 +1,37 @@
-using JetBrains.Annotations;
-using System.Collections;
+using QFSW.QC.Utilities;
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using static Inventory;
+using static GlobalItemDictionary;
 
-[System.Serializable]
-public class UniqueItemID : INetworkSerializable
+[Serializable]
+public class UniqueItemID : INetworkSerializable, ISerializationCallbackReceiver
 {
-    // TODO: Add underscores before private fields
-
     [SerializeField] private ItemID _baseItemID;
-
-    private UniqueItemID[] modifications; // Ordered list of modifications to the base item, each representing an item attached to the base item
     
-    // TODO: These fields do not need to be serialized because their default values can come from the ItemSO
     [SerializeField] private ItemID counterItem; // Item type that is stored in this 
     [SerializeField] private int counterCount; // Number of items stored in this item
+
+    [SerializeField] private int numModSlots;
+
+    private UniqueItemID[] modifications; // Ordered list of modifications to the base item, each representing an item attached to the base item
+
+    [SerializeField] private SerializedUIIDMod[] serializedModifications;
+
+    #region Debug Method
+
+    private void LogAllSerilizedFields(string start)
+    {
+        Debug.Log(start + "BaseItemID: " + _baseItemID + "CounterItem: " + counterItem + "CounterCount: " + counterCount + "NumModSlots: " + numModSlots);
+/*        Debug.Log("Modifications: " + modifications);
+        for (int i = 0; i < modifications.Length; i++)
+        {
+            Debug.Log("Mod " + i + ": " + modifications[i]);
+        }*/
+    }
+
+    #endregion
 
     #region Properties
     public ItemID BaseItemID
@@ -39,6 +54,11 @@ public class UniqueItemID : INetworkSerializable
         get { return counterCount; }
     }
 
+    public int NumModSlots
+    {
+        get { return numModSlots; }
+    }
+
     public Vector2Int Dimensions
     {
         get { return ItemSODictionary[_baseItemID].InInventoryDimensions; }
@@ -58,10 +78,12 @@ public class UniqueItemID : INetworkSerializable
         _baseItemID = ItemID.Empty;
 
         modifications = new UniqueItemID[0]; // Empty array of modifications for empty item
-
+        numModSlots = 0;
+        
         counterItem = ItemID.Empty;
         counterCount = 0;
 
+        LogAllSerilizedFields("Creted new UIID");
     }
 
     // Constructor for an item with no modifications or counter
@@ -74,6 +96,7 @@ public class UniqueItemID : INetworkSerializable
         counterItem = ItemID.Empty;
         counterCount = 0;
 
+        LogAllSerilizedFields("Creted new UIID");
     }
 
     // Constructor for an item with no counter
@@ -87,6 +110,7 @@ public class UniqueItemID : INetworkSerializable
         counterItem = ItemID.Empty;
         counterCount = 0;
 
+        LogAllSerilizedFields("Creted new UIID");
     }
 
     // Constructor for an item with no modifications
@@ -98,7 +122,22 @@ public class UniqueItemID : INetworkSerializable
 
         this.counterItem = counterItem;
         this.counterCount = counterCount;
+        
+        LogAllSerilizedFields("Creted new UIID");
+    }
 
+    // Constructor for an item with unspecified modifications (no dictionary lookup)
+    public UniqueItemID(ItemID baseItemID, int numModSlots, ItemID counterItem, int counterCount)
+    {
+        _baseItemID = baseItemID;
+
+        this.numModSlots = numModSlots;
+        this.modifications = new UniqueItemID[numModSlots];
+
+        this.counterItem = counterItem;
+        this.counterCount = counterCount;
+        
+        LogAllSerilizedFields("Creted new UIID");
     }
 
     // Constructor for an item with modifications and a counter
@@ -111,7 +150,8 @@ public class UniqueItemID : INetworkSerializable
 
         this.counterItem = counterItem;
         this.counterCount = counterCount;
-
+        
+        LogAllSerilizedFields("Creted new UIID");
     }
 
     #endregion
@@ -120,6 +160,8 @@ public class UniqueItemID : INetworkSerializable
 
     public bool TryModifyItem(UniqueItemID modificationID, int modificationSlot, out UniqueItemID oldModID)
     {
+        LogAllSerilizedFields("Started Modifying UIID");
+
         if (!CanModifySlot(modificationSlot)) // ERROR CHECK
         {
             oldModID = new UniqueItemID();
@@ -132,11 +174,17 @@ public class UniqueItemID : INetworkSerializable
         {
             modifications[modificationSlot] = modificationID;
             oldModID = new UniqueItemID();
+            
+            LogAllSerilizedFields("Finished Modifying UIID");
+
             return true;
         }
 
         oldModID = modifications[modificationSlot];
         modifications[modificationSlot] = modificationID;
+
+        LogAllSerilizedFields("Finished Modifying UIID");
+
         return true;
     }
 
@@ -248,7 +296,8 @@ public class UniqueItemID : INetworkSerializable
         Debug.Log("Max mods: " + ModificationCount());
 
         ItemID[] defaultModItemIDs = DefaultModifications();
-        UniqueItemID[] defaultModifications = new UniqueItemID[ModificationCount()];
+        numModSlots = ModificationCount();
+        UniqueItemID[] defaultModifications = new UniqueItemID[numModSlots];
 
         for (int i = 0; i < defaultModifications.Length; i++)
         {
@@ -260,7 +309,8 @@ public class UniqueItemID : INetworkSerializable
 
     private int ModificationCount()
     {
-        return ItemSODictionary[_baseItemID].MaxModifications;
+        numModSlots = ItemSODictionary[_baseItemID].MaxModifications; // This method make me go BRUH
+        return numModSlots;
     }
    
     public int MaxCounterCount()
@@ -275,12 +325,109 @@ public class UniqueItemID : INetworkSerializable
 
     #endregion
 
+    #region JSON Serialization
+
+    public void OnBeforeSerialize()
+    {
+        serializedModifications = RecursivelySerializeMods(this, new int[0]);
+    }
+
+    // Recursive function to traverse mod tree and serialize all modifications
+    private SerializedUIIDMod[] RecursivelySerializeMods(UniqueItemID modification, int[] pathToMod)
+    {
+        List<SerializedUIIDMod> serializedMods = new List<SerializedUIIDMod>();
+
+        // Add this mod to the list if it is not the base item
+        if (modification != this)
+            serializedMods.Add(new SerializedUIIDMod(modification.BaseItemID, pathToMod, modification.numModSlots, modification.counterItem, modification.counterCount));
+
+        // Check if we are at the end of the path
+        for (int i = 0; i < modification.modifications.Length; i++)
+        {
+            //if (modification.modifications[i]._baseItemID != ItemID.Empty)
+            //{
+                // Create a new path to the next mod
+                int[] newPath = new int[pathToMod.Length + 1];
+                pathToMod.CopyTo(newPath, 0);
+                newPath[newPath.Length - 1] = i;
+
+                // Recursively serialize the next mod and add it to the list
+                serializedMods.AddRange(RecursivelySerializeMods(modification.modifications[i], newPath));
+            //}
+        }
+
+        return serializedMods.ToArray();
+    }
+
+    public void OnAfterDeserialize()
+    {
+        modifications = new UniqueItemID[numModSlots];
+        DeserilaizeMods(serializedModifications);
+    }
+
+    private void DeserilaizeMods(SerializedUIIDMod[] serializedUIIDMods)
+    {
+        for (int i = 0; i < serializedUIIDMods.Length; i++)
+        {
+            int[] modPath = serializedUIIDMods[i].ModPath;
+
+            if (modPath.Length == 0)
+                continue; // Skip the base item
+
+            SerializedUIIDMod serializedMod = serializedUIIDMods[i];
+            UniqueItemID modification = new UniqueItemID(serializedMod.BaseItemID, serializedMod.NumModSlots, serializedMod.CounterItem, serializedMod.CounterCount);
+
+            AddModToTree(this, modification, modPath);
+        }
+    }
+
+    private void AddModToTree(UniqueItemID parent, UniqueItemID modification, int[] modPath)
+    {
+        if (modPath.Length == 1)
+        {
+            parent.modifications[modPath[0]] = modification;
+            return;
+        }
+
+        int[] newModPath = modPath.SubArray(1, modPath.Length - 1); // SubArray is a method from QFSW.QC.Utilities.CollectionExtensions that uses Array.Copy to create a sub array
+        AddModToTree(parent.modifications[modPath[0]], modification, newModPath);
+    }
+
+    // Debug function to print the mod tree
+    private void PrintModTree(UniqueItemID modification, int depth)
+    {
+        string indent = "";
+        for (int i = 0; i < depth; i++)
+        {
+            indent += "  ";
+        }
+
+        Debug.Log(indent + modification.BaseItemID + " " + modification.counterItem + " " + modification.counterCount);
+
+        for (int i = 0; i < modification.modifications.Length; i++)
+        {
+            if (modification.modifications[i]._baseItemID != ItemID.Empty)
+            {
+                PrintModTree(modification.modifications[i], depth + 1);
+            }
+        }
+    }
+
+    #endregion
+
     #region Network Serialization
     // Network serialization interface
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
+        Debug.Log("Serializing " + _baseItemID + " with " + modifications.Length + " mods");
+
         serializer.SerializeValue(ref _baseItemID);
 
+        Debug.Log("Modifications: " + modifications);
+        for (int i = 0; i < modifications.Length; i++)
+        {
+            Debug.Log("Mod " + i + ": " + modifications[i]);
+        }
         serializer.SerializeValue(ref modifications); // I can't believe this works
         
         serializer.SerializeValue(ref counterItem);

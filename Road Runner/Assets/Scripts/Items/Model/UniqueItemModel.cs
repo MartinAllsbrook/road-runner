@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Inventory;
+using static GlobalItemDictionary;
 
 public class UniqueItemModel : MonoBehaviour
 {
@@ -11,19 +11,9 @@ public class UniqueItemModel : MonoBehaviour
 
     public void BuildModel(UniqueItemID uniqueItemID)
     {
-        // Destroy any existing modification models
+        Debug.Log("Building model for " + uniqueItemID.BaseItemID);
 
-        if (_modificationModels != null)
-        {
-            foreach (UniqueItemModel modModel in _modificationModels)
-            {
-                // TODO: Make this better
-                if (modModel != null)
-                {
-                    Destroy(modModel.gameObject);
-                }
-            }
-        }
+        DestroyModel();
 
         int numModifications = uniqueItemID.Modifications.Length;
         if (numModifications != modificationPoints.Length)
@@ -50,4 +40,19 @@ public class UniqueItemModel : MonoBehaviour
         }
     }
 
+
+    private void DestroyModel()
+    {
+        if (_modificationModels != null)
+        {
+            foreach (UniqueItemModel modModel in _modificationModels)
+            {
+                // TODO: Make this better
+                if (modModel != null)
+                {
+                    Destroy(modModel.gameObject);
+                }
+            }
+        }
+    }
 }

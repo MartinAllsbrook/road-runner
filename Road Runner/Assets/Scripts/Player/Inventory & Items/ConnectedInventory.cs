@@ -6,12 +6,10 @@ using System.Linq;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
-using static Inventory;
+using static GlobalItemDictionary;
 
 public class ConnectedInventory
 {
-
-
     protected int _width;
     protected int _height;
 
@@ -160,6 +158,11 @@ public class ConnectedInventory
     public int GetLocalKey()
     {
         return localKey;
+    }
+
+    public StoredItemID[] GetAllItems()
+    {
+        return containedItems.Values.ToArray();
     }
 
     public StoredItemID GetStoredItemID(int containedItemKey)
