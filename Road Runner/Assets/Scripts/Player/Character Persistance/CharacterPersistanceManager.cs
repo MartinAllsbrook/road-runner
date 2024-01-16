@@ -8,14 +8,16 @@ public class CharacterPersistanceManager : MonoBehaviour
     public static CharacterPersistanceManager Instance { get; private set; }
 
     [Header("Data File Settings")]
-    [SerializeField] private string fileName = "RR_CharacterData.game";
-
+    [SerializeField] private string fileName = "RR_CharacterData";
+    [SerializeField] private string fileType = ".game";
     [SerializeField] private bool useEncryption = true;
 
     private CharacterDataFileHandler characterDataFileHandler;
 
     private CharacterData characterData;
     private List<IPersistantData> persistantDataObjects;
+
+    private int loadedCharacterNumber = 0;
 
     // String to start debugs with
     private string debugTag = "<color=#ffff00ff>[CharacterPersistanceManager] </color>";
@@ -38,30 +40,28 @@ public class CharacterPersistanceManager : MonoBehaviour
     {
         Debug.Log(debugTag + "Start, Creating FileHandler");
 
-        this.characterDataFileHandler = new CharacterDataFileHandler(Application.persistentDataPath, fileName, useEncryption);
+        this.characterDataFileHandler = new CharacterDataFileHandler(Application.persistentDataPath, fileName, fileType, useEncryption);
     }
 
-    public void FindAllAndLoad()
+    public void FindAllAndLoad(int characterNumber)
     {
         this.persistantDataObjects = FindAllPersistantDataObjects();
 
-        LoadAll();
+        LoadCharacter(characterNumber);
     }
 
-    public void NewCharacter()
+    public void LoadCharacter(int characterNumber)
     {
-        characterData = new CharacterData();
-    }
+        Debug.Log(debugTag + "Loading character " + characterNumber);
+        loadedCharacterNumber = characterNumber;
 
-    public void LoadAll()
-    {
-        // Load character data from CharacterDataFileHandler
-        this.characterData = characterDataFileHandler.Load();
+        string fileNameSuffix = characterNumber.ToString();
+        this.characterData = characterDataFileHandler.Load(fileNameSuffix);
 
         // if these is no character data, create a new character
         if (characterData == null)
         {
-            Debug.LogWarning("No character data found. Creating new character.");
+            Debug.LogWarning(debugTag + "No character data found. Creating new character.");
             NewCharacter();
         }
 
@@ -72,7 +72,12 @@ public class CharacterPersistanceManager : MonoBehaviour
             persistantDataObject.LoadData(characterData);
         }
         
-        Debug.Log("Loaded " + characterData.CName + " with " + characterData.StoredItems.Length + " items");
+        Debug.Log(debugTag + "Loaded Character " + characterNumber);
+    }
+
+    public void NewCharacter()
+    {
+        characterData = new CharacterData();
     }
 
     public void SaveCharacter()
@@ -83,10 +88,29 @@ public class CharacterPersistanceManager : MonoBehaviour
             persistantDataObject.SaveData(ref characterData);
         }
 
-        Debug.Log("Saving " + characterData.CName + " with " + characterData.StoredItems.Length + " items");
+        Debug.Log(debugTag + "Saving Character " + loadedCharacterNumber);
 
         // Save character data to CharacterDataFileHandler
-        characterDataFileHandler.Save(characterData);
+        string fileNameSuffix = loadedCharacterNumber.ToString();
+        characterDataFileHandler.Save(characterData, fileNameSuffix);
+    }
+
+    public void DeleteCharacter()
+    {
+        Debug.Log(debugTag + "Deleting Character " + loadedCharacterNumber);
+
+        // Delete character data from CharacterDataFileHandler
+        string fileNameSuffix = loadedCharacterNumber.ToString();
+        characterDataFileHandler.Delete(fileNameSuffix);
+    }
+
+    public void DeleteCharacter(int characterNumber)
+    {
+        Debug.Log(debugTag + "Deleting Character " + characterNumber);
+
+        // Delete character data from CharacterDataFileHandler
+        string fileNameSuffix = characterNumber.ToString();
+        characterDataFileHandler.Delete(fileNameSuffix);
     }
 
     private void OnDisable()

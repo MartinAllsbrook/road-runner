@@ -7,22 +7,24 @@ using System;
 public class CharacterDataFileHandler
 {
     private string dataDirectoryPath = "";
-    private string dataFileName = "";
+    private string genericDataFileName = "";
+    private string dataFileType = "";
     private bool useEncryption = false;
-    private readonly string encryptionKey = "Very Secret Key Phrase";
+    private readonly string encryptionKey = "Very Secret Key Phrase 123456789123456789 Bababooey";
 
-    public CharacterDataFileHandler(string dataDirectoryPath, string dataFileName, bool useEncryption)
+    public CharacterDataFileHandler(string dataDirectoryPath, string genericDataFileName, string dataFileType, bool useEncryption)
     {
         this.dataDirectoryPath = dataDirectoryPath;
-        this.dataFileName = dataFileName;
+        this.genericDataFileName = genericDataFileName;
+        this.dataFileType = dataFileType;
         this.useEncryption = useEncryption;
     }
 
     // Load character data from file, Returns null if no data found
-    public CharacterData Load()
+    public CharacterData Load(string fileNameSuffix)
     {
-        // Create full path to file
-        string fullPath = Path.Combine(dataDirectoryPath, dataFileName);
+        string fullFileName = CreateFileName(fileNameSuffix);
+        string fullPath = Path.Combine(dataDirectoryPath, fullFileName);
 
         CharacterData loadedCharacterData = null;
         if (File.Exists(fullPath))
@@ -37,7 +39,7 @@ public class CharacterDataFileHandler
                     {
                         jsonDataToLoad = reader.ReadToEnd();
 
-                        // Copilot wated to deserialize here
+                        // Copilot wanted to deserialize here
                     }
                 }
 
@@ -58,10 +60,10 @@ public class CharacterDataFileHandler
         return loadedCharacterData;
     }
 
-    public void Save(CharacterData characterData)
+    public void Save(CharacterData characterData, string fileNameSuffix)
     {
-        // Create full path to file
-        string fullPath = Path.Combine(dataDirectoryPath, dataFileName);
+        string fullFileName = CreateFileName(fileNameSuffix);
+        string fullPath = Path.Combine(dataDirectoryPath, fullFileName);
         
         try
         {
@@ -95,6 +97,25 @@ public class CharacterDataFileHandler
         }
     }
 
+    public void Delete(string fileNameSuffix)
+    {
+        string fullFileName = CreateFileName(fileNameSuffix);
+        string fullPath = Path.Combine(dataDirectoryPath, fullFileName);
+
+        try
+        {
+            // Delete file if it exists
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Failed to delete character data at " + fullPath + "\n" + e.Message);
+        }
+    }
+
     private string EncryptDecrypt(string input)
     {
         string output = "";
@@ -105,5 +126,10 @@ public class CharacterDataFileHandler
             output += character;
         }
         return output;
+    }
+
+    private string CreateFileName(string fileNameSuffix)
+    {
+        return genericDataFileName + fileNameSuffix + dataFileType;
     }
 }

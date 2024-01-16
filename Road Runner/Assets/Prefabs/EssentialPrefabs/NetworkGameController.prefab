@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 6838372037001996467}
   - component: {fileID: 2168411699179998783}
   m_Layer: 0
-  m_Name: GameController
+  m_Name: NetworkGameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

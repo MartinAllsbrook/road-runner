@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5457621872392494582}
   - component: {fileID: 4966871705813982093}
   m_Layer: 5
-  m_Name: Select Character Button
+  m_Name: Load Character Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Select Character
+  m_text: Load Character
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -348,6 +348,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterNameText: {fileID: 6955756276268633782}
+  loadCharacterButton: {fileID: 4966871705813982093}
+  deleteCharacterButton: {fileID: 6953336498277553062}
+  characterNumber: 0
 --- !u!1 &5840939838748017370
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +364,7 @@ GameObject:
   - component: {fileID: 948686669947887742}
   - component: {fileID: 6953336498277553062}
   m_Layer: 5
-  m_Name: Create New Character Button
+  m_Name: Delete Character Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -668,7 +671,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Create New Character
+  m_text: Delete Character
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

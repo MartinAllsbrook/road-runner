@@ -44,9 +44,6 @@ public class Player : NetworkBehaviour
         _playerStats = GetComponent<PlayerStats>();
         _playerSpawner = GetComponent<PlayerSpawner>();
         _playerFXController = GetComponent<PlayerFXController>();
-
-        // Load player data
-        CharacterPersistanceManager.Instance.FindAllAndLoad();
     }
 
     private void DestroyLocalOnlyBehaviours()
