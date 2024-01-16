@@ -97,7 +97,6 @@ public class GunItem : UseableItem
         UniqueItemID magUIID = UniqueItemID.Modifications[magModSlot];
         if (magUIID.BaseItemID == ItemID.Empty)
         {
-            Debug.Log("No magazine");
             return;
         }
 

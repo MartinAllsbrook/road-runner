@@ -33,6 +33,7 @@ public class InventoryUI : MonoBehaviour
     private Dictionary<int, ItemButton> _itemButtons = new Dictionary<int, ItemButton>();
     private Inventory _inventory;
 
+    private string debugTag = LogColors.GetColoredTag("[InventoryUI]", LogColors.UIColor);
     // TODO: Create an initialisation function that takes in the inventory and runs the basic setup for the inventory UI
 
     private void Awake()

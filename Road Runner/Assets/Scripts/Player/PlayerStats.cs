@@ -21,7 +21,7 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
     private float food = 100f;
     private float water = 100f;
 
-    private bool _inLimbo;
+    private bool _inLimbo = true;
 
     public override void OnNetworkSpawn()
     {
@@ -131,24 +131,20 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
     private void Die()
     {
         Debug.Log(health);
-        GetComponent<Inventory>().DropAllItems();
+        Inventory.Instance.DropAllItems();
 
         _inLimbo = true;
+        CharacterPersistanceManager.Instance.DeleteCharacter();
         GetComponent<PlayerSpawner>().EnterLimbo();
     }
 
     /// <summary>
     /// Resets the player's stats and exits stat limbo, allowing for stat upadates again
     /// </summary>
-    public void ResetAndRespawn()
+    public void Spawn()
     {
-        //health = 100f;
         hudController.UpdateHealthBar(health);
-
-        //food = 100f;
         hudController.UpdateFoodBar(food);
-
-        //water = 100f;
         hudController.UpdateWaterBar(water);
 
         _inLimbo = false;

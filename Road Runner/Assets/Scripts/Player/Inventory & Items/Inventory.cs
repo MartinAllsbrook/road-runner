@@ -35,6 +35,8 @@ public class Inventory : MonoBehaviour, IPersistantData
 
     private StoredItemID heldItem;
 
+    private bool initialized = false;
+
     private string debugTag = LogColors.GetColoredTag("[Inventory]", LogColors.InventoryColor);
     #endregion
 
@@ -315,7 +317,6 @@ public class Inventory : MonoBehaviour, IPersistantData
         Dictionary<int, StoredItemID> containedItems = connectedInventory.GetAndClearItems();
         foreach (KeyValuePair<int, StoredItemID> keyValuePair in containedItems)
         {
-            inventoryUI.DestroyItemDisplay(inventoryKey, keyValuePair.Key);
             DropItem(keyValuePair.Value.UniqueItemID);
         }
     }
@@ -365,12 +366,17 @@ public class Inventory : MonoBehaviour, IPersistantData
     public void LoadData(CharacterData characterData)
     {
         // Inventory initialization code moved from Start
-        inventoryUI = InventoryUI.Instance;
+        if (!initialized)
+        {
+            inventoryUI = InventoryUI.Instance;
 
-        connectedInventories = new Dictionary<int, ConnectedInventory>();
-        inventoryUI.InitializeInventoryDisplay(this);
-        SetInventoryHand(new UniqueItemID());
-        CreateHotbar();
+            connectedInventories = new Dictionary<int, ConnectedInventory>();
+            inventoryUI.InitializeInventoryDisplay(this);
+            SetInventoryHand(new UniqueItemID());
+            CreateHotbar();
+
+            initialized = true;
+        }
 
         foreach (StoredItemID storedItemID in characterData.StoredItems)
         {
