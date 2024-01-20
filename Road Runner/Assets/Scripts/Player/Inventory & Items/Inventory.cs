@@ -272,10 +272,7 @@ public class Inventory : MonoBehaviour, IPersistantData
     #endregion
 
     #region Drop Item Methods
-    /// <summary>
-    /// This method is used to drop an item.
-    /// </summary>
-    public void DropItem()
+    public void DropHandItem()
     {
         if (inventoryHand.BaseItemID == ItemID.Empty)
             return;
@@ -284,14 +281,17 @@ public class Inventory : MonoBehaviour, IPersistantData
         SetInventoryHand(new UniqueItemID());
     }
 
-    private void DropItem(UniqueItemID uniqueItemID)
+    public void ClearInventory()
     {
-        ObjectSpawner.Instance.ItemSpawnRequest(uniqueItemID, Player.LocalPlayerInstance.transform.position + transform.up * 2);
+        if (inventoryHand.BaseItemID != ItemID.Empty)
+            SetInventoryHand(new UniqueItemID());
+
+        inventoryUI.ResetInventoryDisplay();
+
+        foreach (var connectedInventory in connectedInventories.Values)
+            connectedInventory.GetAndClearItems();
     }
 
-    /// <summary>
-    /// This method is used to drop all items.
-    /// </summary>
     public void DropAllItems()
     {
         if (inventoryHand.BaseItemID != ItemID.Empty)
@@ -306,9 +306,9 @@ public class Inventory : MonoBehaviour, IPersistantData
         foreach (var key in connectedInventories.Keys)
         {
             // TODO: Might need to do a check in the future to make sure were not dropping from chests or vehicles
+            // TODO: Drop backpacks and clothing items
             DropAllItems(key);
         }
-
     }
 
     public void DropAllItems(int inventoryKey)
@@ -320,6 +320,12 @@ public class Inventory : MonoBehaviour, IPersistantData
             DropItem(keyValuePair.Value.UniqueItemID);
         }
     }
+
+    private void DropItem(UniqueItemID uniqueItemID)
+    {
+        ObjectSpawner.Instance.ItemSpawnRequest(uniqueItemID, Player.LocalPlayerInstance.transform.position + transform.up * 2);
+    }
+
     #endregion
 
     #region Hotbar and UsingItem Methods

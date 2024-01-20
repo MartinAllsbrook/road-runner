@@ -54,7 +54,7 @@ public class InventoryUI : MonoBehaviour
         dropItemButton.onClick.AddListener(() =>
         {
             inventoryHand.GetComponent<Image>().sprite = emptySlotSprite;
-            _inventory.DropItem();
+            _inventory.DropHandItem();
         });
     }
 
