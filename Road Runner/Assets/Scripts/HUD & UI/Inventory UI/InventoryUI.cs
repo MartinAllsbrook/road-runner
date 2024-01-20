@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static InventoryUI;
+using static GlobalItemDictionary;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class InventoryUI : MonoBehaviour
     private Dictionary<int, ItemButton> _itemButtons = new Dictionary<int, ItemButton>();
     private Inventory _inventory;
 
+    private string debugTag = LogColors.GetColoredTag("[InventoryUI]", LogColors.UIColor);
     // TODO: Create an initialisation function that takes in the inventory and runs the basic setup for the inventory UI
 
     private void Awake()
@@ -69,9 +71,9 @@ public class InventoryUI : MonoBehaviour
         conectedInventoryUIs.Add(0, hotbarUI);
     }
 
-    public void SetInventoryHand(Inventory.InventoryItem inventoryItem)
+    public void SetInventoryHand(ItemID inventoryItem)
     {
-        ItemSO itemSO = Inventory.ItemSODictionary[inventoryItem];
+        ItemSO itemSO = ItemSODictionary[inventoryItem];
         Vector2Int dimensions = itemSO.InInventoryDimensions;
 
         inventoryHand.sizeDelta = dimensions * inventorySlotWidth;

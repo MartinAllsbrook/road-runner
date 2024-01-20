@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1508334632372469092}
   - component: {fileID: 7379763544718009837}
   m_Layer: 5
-  m_Name: Title Text
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 959314861949086009}
   - component: {fileID: 4733997477137143856}
   m_Layer: 5
-  m_Name: Preview Text
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -565,7 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1902344249092550255}
   - component: {fileID: 6573050569657674097}
-  - component: {fileID: 8507354163699027593}
+  - component: {fileID: 8610477431051907310}
   m_Layer: 5
   m_Name: InspectPointUIElement
   m_TagString: Untagged
@@ -603,7 +603,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7903654961160837809}
   m_CullTransparentMesh: 1
---- !u!114 &8507354163699027593
+--- !u!114 &8610477431051907310
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -612,15 +612,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7903654961160837809}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 549d5f2e401909a40aa61b60b78e96c8, type: 3}
+  m_Script: {fileID: 11500000, guid: f4780b0aeaf35184abaaef5c9ec86372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inspectButton: {fileID: 6393016350757212366}
-  inspectPointName: Unnamed
   previewPanel: {fileID: 3444700491025295963}
-  previewText: {fileID: 4733997477137143856}
+  previewTitle: {fileID: 4733997477137143856}
   inspectPanel: {fileID: 7478343535709852699}
-  inspectNameText: {fileID: 7379763544718009837}
+  title: {fileID: 7379763544718009837}
+  description: {fileID: 5961798619200243304}
 --- !u!1 &8273707432824365524
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,7 +754,7 @@ GameObject:
   - component: {fileID: 8847839869123060314}
   - component: {fileID: 5961798619200243304}
   m_Layer: 5
-  m_Name: Title Text (1)
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

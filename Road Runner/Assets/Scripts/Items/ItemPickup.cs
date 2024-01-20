@@ -3,16 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using static GlobalItemDictionary;
 
 public class ItemPickup : SpawnedObject
 {
-    [SerializeField] protected ItemSO itemSo;
+    [SerializeField] protected ItemID baseItemID;
+    [SerializeField] protected UniqueItemModel uniqueItemModel;
 
     private const float despawnTime = 300;
 
-    public ItemSO GetScriptableObject()
+    protected UniqueItemID _uniqueItemID;
+    public UniqueItemID UniqueItemID
     {
-        return itemSo;
+        get 
+        {
+            if (_uniqueItemID == null)
+                _uniqueItemID = new UniqueItemID(baseItemID);
+            
+            return _uniqueItemID;
+        }
+
+        set 
+        { 
+            SetUniqueItemIDServerRpc(value); 
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetUniqueItemIDServerRpc(UniqueItemID uniqueItemID)
+    {
+        SetUniqueItemIDClientRpc(uniqueItemID);
+    }
+
+    [ClientRpc]
+    private void SetUniqueItemIDClientRpc(UniqueItemID uniqueItemID)
+    {
+        _uniqueItemID = uniqueItemID;
+        uniqueItemModel.BuildModel(_uniqueItemID);
     }
 
     public override void OnNetworkSpawn()

@@ -5331,10 +5331,10 @@ GameObject:
   - component: {fileID: 5150687858776107323}
   - component: {fileID: 297529419240020519}
   - component: {fileID: 4350166169284157831}
+  - component: {fileID: 1839879271975148042}
   - component: {fileID: 1150016554729849836}
   - component: {fileID: 944574688111145374}
   - component: {fileID: -7003752143085786108}
-  - component: {fileID: 7079056508264005875}
   - component: {fileID: 8952754896107954189}
   - component: {fileID: 5564229185589349921}
   - component: {fileID: 7392500675425729931}
@@ -5386,7 +5386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3601959125
+  GlobalObjectIdHash: 229663110
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -5505,12 +5505,31 @@ MonoBehaviour:
   cameraController: {fileID: 7392500675425729931}
   cameraPosition: {fileID: 925272754522898400}
   handTransform: {fileID: 7630593704939393224}
-  fists: {fileID: 11400000, guid: b3baf539b6f458c41b2a8f7a6a643daa, type: 2}
   handPositionTransforms:
   - {fileID: 5801592003791536965}
   - {fileID: 4439772555087257117}
   - {fileID: 2762714131860237939}
   - {fileID: 1009535064698167608}
+--- !u!114 &1839879271975148042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3167927590513813192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19ccf6f2911a9dc48a012783cb6e69e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxItemPickupDistance: 5
+  isItemPickup:
+    serializedVersion: 2
+    m_Bits: 512
+  isVehicle:
+    serializedVersion: 2
+    m_Bits: 1024
+  droppedItemBag: {fileID: 0}
 --- !u!114 &1150016554729849836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5694,8 +5713,8 @@ MonoBehaviour:
     m_ActionName: Player/Inspect[/Keyboard/t]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7079056508264005875}
-        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+      - m_Target: {fileID: 1839879271975148042}
+        m_TargetAssemblyTypeName: WorldInteractor, Assembly-CSharp
         m_MethodName: OnItemPickUpInput
         m_Mode: 0
         m_Arguments:
@@ -5710,8 +5729,8 @@ MonoBehaviour:
     m_ActionName: Player/New action
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7079056508264005875}
-        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
+      - m_Target: {fileID: 4350166169284157831}
+        m_TargetAssemblyTypeName: UseableItemController, Assembly-CSharp
         m_MethodName: OnHotbarKeyPressed
         m_Mode: 0
         m_Arguments:
@@ -5820,6 +5839,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7326c1ba-4f41-4ff1-99e3-99abb2e30ad3
     m_ActionName: Player/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1150016554729849836}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: OnConsoleInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a21c2376-ff30-4f38-ba1d-f871cdf99120
+    m_ActionName: Player/Open Console[/Keyboard/backquote]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1150016554729849836}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: OnConsoleInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 44c6b98e-47dc-4aaf-828f-7734cc430c21
+    m_ActionName: Console/Close Console[/Keyboard/backquote]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -5837,44 +5888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7079056508264005875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3167927590513813192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03d648944905eac40894e508fdfc64e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxItemPickupDistance: 5
-  isItemPickup:
-    serializedVersion: 2
-    m_Bits: 512
-  isVehicle:
-    serializedVersion: 2
-    m_Bits: 1024
-  droppedItemBag: {fileID: 0}
-  itemSos:
-  - {fileID: 11400000, guid: b3baf539b6f458c41b2a8f7a6a643daa, type: 2}
-  - {fileID: 11400000, guid: 36f7b16f025792f4b87f03934798625e, type: 2}
-  - {fileID: 11400000, guid: e40bb5f4986861a4c9c99ad5efe6aa17, type: 2}
-  - {fileID: 11400000, guid: f72fc388000a58d48b357107110449ac, type: 2}
-  - {fileID: 11400000, guid: f0aca54f563d3be479ef04186f3aa4d7, type: 2}
-  - {fileID: 11400000, guid: 8b791ea92eba05b40af6d8f2bbc12b8d, type: 2}
-  - {fileID: 11400000, guid: 861f8f4db417d7543bb6596a8f5459f7, type: 2}
-  - {fileID: 11400000, guid: cd1fe809342da0a459f21f0c399c5c15, type: 2}
-  - {fileID: 11400000, guid: 3b5fb556a968a0a409bddab07d8f68aa, type: 2}
-  - {fileID: 11400000, guid: d13d19a202c8f0f4ea148284ffae6984, type: 2}
-  - {fileID: 11400000, guid: d6ec0fe4636309540af72c7b76b3132b, type: 2}
-  - {fileID: 11400000, guid: cc4a9ea93c1f2ca428f398fa5941633c, type: 2}
-  - {fileID: 11400000, guid: 3c0b075850a9e4046ac41ae4cff96aee, type: 2}
-  hotbarSize: 9
-  slotWidth: 2
-  slotHeight: 2
-  numClothingSlots: 0
 --- !u!54 &8952754896107954189
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6454,7 +6467,7 @@ Transform:
   m_GameObject: {fileID: 7050672715182873899}
   serializedVersion: 2
   m_LocalRotation: {x: 0.09229579, y: -0.70105743, z: -0.092295796, w: 0.7010575}
-  m_LocalPosition: {x: 0, y: -0.321, z: 1.315}
+  m_LocalPosition: {x: 0, y: -0.055, z: 1.315}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []

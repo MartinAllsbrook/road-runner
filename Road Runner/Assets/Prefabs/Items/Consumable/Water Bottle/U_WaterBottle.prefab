@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9151578970135839905
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3445370438760092188}
+  - component: {fileID: 1103003694222784253}
+  m_Layer: 0
+  m_Name: U_WaterBottle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3445370438760092188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151578970135839905}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.577952, y: -0.222, z: 6.043862}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1251090964333266935}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1103003694222784253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151578970135839905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14182cf6430652848b5c5393ded11857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseItemID: 102
+  uniqueItemModel: {fileID: 8735107547907314263}
+  inspectPoints: []
+  deltaFood: 0
+  deltaWater: 30
+  deltaHealth: 5
+--- !u!1001 &4162619233578406370
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3445370438760092188}
+    m_Modifications:
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875894089134644588, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+      propertyPath: m_Name
+      value: MP_WaterBottle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+--- !u!4 &1251090964333266935 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2925189907858019861, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+  m_PrefabInstance: {fileID: 4162619233578406370}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8735107547907314263 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4683125874625545141, guid: af8f5641c6110b1438d962337fe6fd7b, type: 3}
+  m_PrefabInstance: {fileID: 4162619233578406370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07947e4dbf632e549aa56a40f2b4a538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

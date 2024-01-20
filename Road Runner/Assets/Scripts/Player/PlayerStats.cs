@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-public class PlayerStats : NetworkBehaviour
+public class PlayerStats : NetworkBehaviour, IPersistantData
 {
     public static PlayerStats Instance;
     
@@ -21,7 +21,7 @@ public class PlayerStats : NetworkBehaviour
     private float food = 100f;
     private float water = 100f;
 
-    private bool _inLimbo;
+    private bool _inLimbo = true;
 
     public override void OnNetworkSpawn()
     {
@@ -66,6 +66,25 @@ public class PlayerStats : NetworkBehaviour
         }
     }
 
+    #region IPersistantData Methods
+
+    public void LoadData(CharacterData allCharacterData)
+    {
+        health = allCharacterData.Health;
+        food = allCharacterData.Food;
+        water = allCharacterData.Water;
+    }
+
+    public void SaveData(ref CharacterData allCharacterData)
+    {
+        allCharacterData.Health = health;
+        allCharacterData.Food = food;
+        allCharacterData.Water = water;
+    }
+
+    #endregion
+
+    #region Change Stats Methods
     public void ChangeFood(float value)
     {
         if (!IsOwner)
@@ -107,28 +126,25 @@ public class PlayerStats : NetworkBehaviour
         if (health <= 0)
             Die();
     }
-    
+    #endregion
+
     private void Die()
     {
         Debug.Log(health);
-        GetComponent<Inventory>().DropAllItems();
+        Inventory.Instance.DropAllItems();
 
         _inLimbo = true;
+        CharacterPersistanceManager.Instance.DeleteCharacter();
         GetComponent<PlayerSpawner>().EnterLimbo();
     }
 
     /// <summary>
     /// Resets the player's stats and exits stat limbo, allowing for stat upadates again
     /// </summary>
-    public void ResetAndRespawn()
+    public void Spawn()
     {
-        health = 100f;
         hudController.UpdateHealthBar(health);
-
-        food = 100f;
         hudController.UpdateFoodBar(food);
-
-        water = 100f;
         hudController.UpdateWaterBar(water);
 
         _inLimbo = false;

@@ -7,6 +7,11 @@ public class Magazine
     private int maxAmmoCount;
     private int ammoCount;
 
+    public int Count
+    {
+        get { return ammoCount; }
+    }
+
     public Magazine(int size)
     {
         maxAmmoCount = size;
@@ -23,8 +28,32 @@ public class Magazine
         return count;
     }
 
+    public bool TryAddRound()
+    {
+        if (ammoCount < maxAmmoCount)
+        {
+            ammoCount++;
+            return true;
+        }
+        return false;
+    }
+
+    public int TryAddCount(int count)
+    {
+        int added = 0;
+        for (int i = 0; i < count; i++)
+        {
+            if (TryAddRound())
+                added++;
+            else
+                break;
+        }
+        return added;
+    }
+
     public void Reload()
     {
+        Debug.LogWarning("The reloading method is being depreciated");
         ammoCount = maxAmmoCount;
     }
 }

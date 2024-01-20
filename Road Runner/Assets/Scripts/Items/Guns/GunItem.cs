@@ -1,14 +1,14 @@
-using Newtonsoft.Json.Bson;
-using System;
+using JetBrains.Annotations;
 using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+using static GlobalItemDictionary;
+
 public class GunItem : UseableItem
 {
+    #region Variables
+
     [Header("References")]
     [SerializeField] private GameObject bullet;
 
@@ -39,16 +39,15 @@ public class GunItem : UseableItem
     [SerializeField] protected AudioSource seccondaryUseAudio;
     [SerializeField] protected AudioSource reloadAudio;
 
-    private Magazine magazine;
+    [Header("Attachment Slots")]
+    [SerializeField] private Transform[] attachmentPoints;
+    [SerializeField] private int magModSlot;
+
     private bool reloading = false;
     private float timeSinceLastShot;
     private bool triggerLifted = true;
-    private int ammoCount;
 
-    private void Start()
-    {
-        magazine = new Magazine(magSize);
-    }
+    #endregion
 
     private void Update()
     {
@@ -95,13 +94,18 @@ public class GunItem : UseableItem
 
     public override void OnUseItemInput()
     {
+        UniqueItemID magUIID = UniqueItemID.Modifications[magModSlot];
+        if (magUIID.BaseItemID == ItemID.Empty)
+        {
+            return;
+        }
+
         TryShootLoop();
     }
 
     public override void OnReloadItemInput()
     {
-        if (!reloading)
-            StartCoroutine(Reload());
+        // TODO: Put the mag with the most bullets in the players inventory in the gun
     }
 
     private void TryShootLoop()
@@ -117,16 +121,13 @@ public class GunItem : UseableItem
         if (timeSinceLastShot < fireRate)
             return;
 
-
-        ammoCount = magazine.ConsumeRound();
-
-        if (ammoCount <= 0)
-            return;
-
-        parentItemController.HudController.SetAmmoCountDisplay(ammoCount - 1, magSize);
-        timeSinceLastShot = 0;
-        Fire(_inaccuracy);
-
+        if (UniqueItemID.Modifications[magModSlot].TryRemoveItemFromCounter(1, out ItemID bullet))
+        {
+            parentItemController.HudController.SetAmmoCountDisplay(UniqueItemID.Modifications[magModSlot].CounterCount, UniqueItemID.Modifications[magModSlot].MaxCounterCount() );
+            timeSinceLastShot = 0;
+            Fire(_inaccuracy);
+            UpdateUniqueItemID();
+        }
     }
 
     protected virtual void Fire(float accuracy) 
@@ -175,6 +176,20 @@ public class GunItem : UseableItem
         //SpawnBulletServerRpc();
     }
 
+    public void SetMag(StoredItemID magazineSIID, int modSlotIndex)
+    {
+        UniqueItemID magUIID = magazineSIID.UniqueItemID;
+
+        Debug.Log("Equiping a mag in slot " + modSlotIndex);
+
+        ModifyUniqueItemID(magazineSIID, modSlotIndex);
+
+        Debug.Log("Equiping a mag of size " + magazineSIID.UniqueItemID.CounterCount + " Containing " + magazineSIID.UniqueItemID.CounterItem);
+
+        UniqueItemID mag = UniqueItemID.Modifications[modSlotIndex];
+        parentItemController.HudController.SetAmmoCountDisplay(mag.CounterCount, mag.MaxCounterCount());
+    }
+
     private IEnumerator Reload()
     {
         parentItemController.SetHandPosition(UseableItemController.HandPosition.Reloading);
@@ -186,7 +201,7 @@ public class GunItem : UseableItem
         reloadAudio.Play();
         parentItemController.SetHandPosition(UseableItemController.HandPosition.Resting);
         parentItemController.HudController.StopReloadUIAnimation();
-        magazine.Reload();
+        //magazine.Reload();
         parentItemController.HudController.SetAmmoCountDisplay(magSize, magSize);
         reloading = false;
     }

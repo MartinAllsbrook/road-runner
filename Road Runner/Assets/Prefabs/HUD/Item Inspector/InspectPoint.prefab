@@ -44,3 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a063c6eb415bad4785100642f26c24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inspectPointUIElement: {fileID: 8610477431051907310, guid: 2da862d7adb3ad74098d86ea147454f7, type: 3}
+  inspectPointName: 
+  inspectPointDescription: 
+  inspectPointType: 0

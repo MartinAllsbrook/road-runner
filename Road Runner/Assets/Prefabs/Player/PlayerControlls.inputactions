@@ -130,6 +130,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Open Console",
+                    "type": "Button",
+                    "id": "a21c2376-ff30-4f38-ba1d-f871cdf99120",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -561,6 +570,17 @@
                     "action": "Open Map (Toggle)",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "398a3266-37e5-43a0-8941-f3531891da64",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -665,6 +685,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Close Map (Toggle)",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Console",
+            "id": "e9b0a6a1-4a1e-45b6-b0b0-f08077268772",
+            "actions": [
+                {
+                    "name": "Close Console",
+                    "type": "Button",
+                    "id": "44c6b98e-47dc-4aaf-828f-7734cc430c21",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3d8c650a-f4b5-4c93-b304-6105a9744fdc",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close Console",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

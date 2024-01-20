@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7785093427683465147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2301438063988791027}
+  - component: {fileID: 8764019547117621311}
+  - component: {fileID: 8755860400281952480}
+  m_Layer: 0
+  m_Name: Basic Gun Item Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2301438063988791027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7785093427683465147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -58.379, y: 3.73, z: 21.92}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8764019547117621311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7785093427683465147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57401be60184a9f46ba8c226cb6e346c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpawnedObjects: 1
+  objectsToSpawn:
+  - {fileID: 5949341691698138262, guid: fbad3248ac76cd24ca2a0b5eaa873b40, type: 3}
+  - {fileID: 662544143013134793, guid: ded0ca0712e4e4f4a9a02c746c07e7db, type: 3}
+  - {fileID: 6268771417066880446, guid: 7e82ee1b3d40dcb4da88c1e35e708464, type: 3}
+  - {fileID: 7016329377745620283, guid: 4d7aa55797f15f948a2482fe6ffd8e0b, type: 3}
+  - {fileID: 6118101639910329184, guid: 0c62b041845311040990f378824b9a74, type: 3}
+  - {fileID: 1308275452318576089, guid: f40d360a11df5204a9237ff72a36709b, type: 3}
+  - {fileID: 5084200945131873853, guid: 6c008c308c47d2847b69ca220795411e, type: 3}
+  - {fileID: 6256527598473796770, guid: ee7fe5ca15d36cb46bb5520978b1f53a, type: 3}
+  - {fileID: 7481850305113148750, guid: 4727f71c17a719b43ad8649cdd5064cd, type: 3}
+  - {fileID: 2434658338353587186, guid: d75f20aea2d552544861fcf2acfd29a9, type: 3}
+--- !u!65 &8755860400281952480
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7785093427683465147}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 1, z: 3}
+  m_Center: {x: 0, y: 0, z: 0}

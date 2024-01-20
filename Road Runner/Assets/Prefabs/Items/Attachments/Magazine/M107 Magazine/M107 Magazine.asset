@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
+  m_Name: M107 Magazine
+  m_EditorClassIdentifier: 
+  itemID: 305
+  maxModifications: 0
+  maxCounterCount: 10
+  defaultModifications: 
+  defaultCounterItem: 401
+  defaultCounterCount: 0
+  validCounterTypes: 
+  itemPickupPrefab: {fileID: 6256527598473796770, guid: ee7fe5ca15d36cb46bb5520978b1f53a, type: 3}
+  useableItemPrefab: {fileID: 2970592877375941190, guid: 9c46fa66f4b6ee34889f7ebcba729f4e, type: 3}
+  modelPrefab: {fileID: 4047158848181713416, guid: dd68eb51e34b2ac45a212932ed9bb585, type: 3}
+  uiSprite: {fileID: 21300000, guid: 528eb67a1389e44419dc3952226655fb, type: 3}
+  inventoryDimensions: {x: 1, y: 1}

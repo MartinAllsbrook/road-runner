@@ -73,7 +73,7 @@ public class PlayerSpawner : NetworkBehaviour
         _rigidbody.useGravity = true;
         UIManager.Instance.ExitLimbo();
 
-        GetComponent<PlayerStats>().ResetAndRespawn();
+        GetComponent<PlayerStats>().Spawn();
 
         SpawnPlayer();
 

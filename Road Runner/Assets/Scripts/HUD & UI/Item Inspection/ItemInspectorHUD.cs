@@ -1,49 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static InspectPoint;
 
+/// <summary>
+/// This class is used to display the inspect points of the item being inspected on the HUD
+/// </summary>
 public class ItemInspectorHUD : MonoBehaviour
 {
     private InspectPoint[] itemInspectPoints;
-    private GameObject[] inspectOverlays;
+    private InspectPointUIElement[] pointUIs;
 
-    [SerializeField] private GameObject inspectOverlayTester;
+    [SerializeField] private InspectPointUIElement inspectOverlayTester;
 
     public void StartInspectItem(UseableItem item)
     {
-        itemInspectPoints = item.GetInspectPoints();
+        itemInspectPoints = item.InspectPoints;
 
-        inspectOverlays = new GameObject[itemInspectPoints.Length];
+        pointUIs = new InspectPointUIElement[itemInspectPoints.Length];
 
-        for (int i = 0; i < itemInspectPoints.Length; i++)
+        for(int i = 0; i < itemInspectPoints.Length; i++)
         {
-            Vector3 worldPosition = itemInspectPoints[i].transform.position;
-            Vector2 screenPosition = WorldToScreenPosition(worldPosition);
-
-            GameObject newInspectOverlay = Instantiate(inspectOverlayTester, screenPosition, Quaternion.identity, transform);
-            inspectOverlays[i] = newInspectOverlay;
+            pointUIs[i] = itemInspectPoints[i].CreateInspectHUDElement(transform);
         }
     }
 
     public void StopInspectItem()
     {
-        foreach (GameObject inspectOverlay in inspectOverlays)
-            Destroy(inspectOverlay);
-    }
-
-    private Vector2 WorldToScreenPosition(Vector3 worldPosition)
-    {
-        /*float minX = image.GetPixelAdjustedRect().width / 2;
-        float maxX = Screen.width - minX;
-
-        float minY = image.GetPixelAdjustedRect().height / 2;
-        float maxY = Screen.height - minY;*/
-
-        Vector2 position = Camera.main.WorldToScreenPoint(worldPosition);
-
-        /*position.x = Mathf.Clamp(position.x, minX, maxX);
-        position.y = Mathf.Clamp(position.y, minY, maxY);*/
-
-        return position;
+        foreach (InspectPointUIElement inspectOverlay in pointUIs)
+            Destroy(inspectOverlay.gameObject);
     }
 }

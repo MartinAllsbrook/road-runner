@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Inventory;
@@ -17,28 +16,25 @@ public class Hotbar : ConnectedInventory
         InitializeInventory();
     }
 
-    public InventoryItem GetItemAtSlot(int slotIndex, out int itemKey)
-    {
-        itemKey = -1;
-        
+    public StoredItemID GetItemAtSlot(int slotIndex)
+    {        
         if (slotIndex < 0 || slotIndex > _numSlots)
-            return InventoryItem.Empty;
+            return new StoredItemID();
 
-        foreach (KeyValuePair<int, ContainedItem> item in containedItems)
+        foreach (KeyValuePair<int, StoredItemID> storedItem in containedItems)
         {
             for (int x = 0; x < _slotWidth; x++)
             {
                 for (int y = 0; y < _slotHeight; y++)
                 {
-                    if (item.Value.topLeft.x == slotIndex * _slotWidth + x && item.Value.topLeft.y == y)
+                    if (storedItem.Value.TopLeft.x == slotIndex * _slotWidth + x && storedItem.Value.TopLeft.y == y)
                     {
-                        itemKey = item.Key;
-                        return item.Value.inventoryItem;
+                        return storedItem.Value;
                     }
                 }
             }
         }
 
-        return InventoryItem.Empty;
+        return new StoredItemID();
     }
 }

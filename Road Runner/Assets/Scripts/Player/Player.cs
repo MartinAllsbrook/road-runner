@@ -18,22 +18,43 @@ public class Player : NetworkBehaviour
     private PlayerFXController _playerFXController;
     // private PlayerMovement playerMovement;
 
+    // String to start debugs with
+    private string debugTag = "<color=#0000ffff>[Player] </color>"; // TODO: Make a debug helper class
+
     public override void OnNetworkSpawn()
     {
+        Debug.Log(debugTag + "Player Network Spawn");
+
         base.OnNetworkSpawn();
 
         if (!IsOwner)
         {
-            Destroy(GetComponent<PlayerInput>());
+            DestroyLocalOnlyBehaviours();
             return;
         }
 
         if (LocalPlayerInstance == null)
             LocalPlayerInstance = this;
+        else
+            Debug.LogError(debugTag + "More than one local player instance seems to exist!");
 
+        InitializeLocalOnlyBehaviors();
+
+        // Get component references
         _playerStats = GetComponent<PlayerStats>();
         _playerSpawner = GetComponent<PlayerSpawner>();
         _playerFXController = GetComponent<PlayerFXController>();
+    }
+
+    private void DestroyLocalOnlyBehaviours()
+    {
+        Destroy(GetComponent<PlayerInput>());
+        Destroy(GetComponent<WorldInteractor>());
+    }
+
+    private void InitializeLocalOnlyBehaviors()
+    {
+        GetComponent<WorldInteractor>().Initialize();
     }
 
     [Command]
