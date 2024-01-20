@@ -15,6 +15,7 @@ public class SpawnZone : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("SpawnZone Start");
         boxCollider = GetComponent<BoxCollider>();
     }
 
@@ -46,6 +47,8 @@ public class SpawnZone : MonoBehaviour
 
     protected Vector3 GetRandomPointInBounds()
     {
+        Debug.Log(boxCollider);
+        Debug.Log(boxCollider.bounds);
         spawnBounds = boxCollider.bounds;
 
         float x = Random.Range(spawnBounds.min.x, spawnBounds.max.x);

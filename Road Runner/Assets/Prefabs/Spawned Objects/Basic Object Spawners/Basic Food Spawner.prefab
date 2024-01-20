@@ -47,11 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpawnedObjects: 2
   objectsToSpawn:
-  - {fileID: 3631181282061707521, guid: 606399bdddabd994aa84c1d0594b975c, type: 3}
-  - {fileID: 1759775119069430186, guid: a446e1caf4278c247a8c20ffe240ff9b, type: 3}
-  - {fileID: 1348412770824767264, guid: 01ef8b90e93bf8e4c9547ca490ec5a29, type: 3}
-  - {fileID: 8764318865283818626, guid: bdc1684ce5fb5144d9e1dcfb4be8d232, type: 3}
-  - {fileID: 5297098069347844722, guid: 32e82eda866a52446b5267cd3876555e, type: 3}
+  - {fileID: 2799855117554263906, guid: b2af6ec8df78d1847810ef5b4cbc7970, type: 3}
+  - {fileID: 6883089369936800223, guid: 9ff38e16aed343849aca1b572858d59c, type: 3}
+  - {fileID: 5547021357169260416, guid: 00ff9cf58371f0d45893f9a4cd1d1ccb, type: 3}
+  - {fileID: 9000013167515047515, guid: b49eb774a21317540b3bb100dbf64614, type: 3}
+  - {fileID: 1621168950865682826, guid: 8e22e1f22c8977e41bbe70573b6302c6, type: 3}
 --- !u!65 &2762544930057609877
 BoxCollider:
   m_ObjectHideFlags: 0

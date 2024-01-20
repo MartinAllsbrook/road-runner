@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
+  m_Name: UZI Magazine
+  m_EditorClassIdentifier: 
+  itemID: 307
+  maxModifications: 0
+  maxCounterCount: 40
+  defaultModifications: 
+  defaultCounterItem: 401
+  defaultCounterCount: 0
+  validCounterTypes: 
+  itemPickupPrefab: {fileID: 2434658338353587186, guid: d75f20aea2d552544861fcf2acfd29a9, type: 3}
+  useableItemPrefab: {fileID: 6090143174560054025, guid: 14f5c7f8127de3547bfe6c4beba27ecc, type: 3}
+  modelPrefab: {fileID: 5451293336281502284, guid: 86e9cc9a594e76b4482cc6b10c46c56d, type: 3}
+  uiSprite: {fileID: 21300000, guid: 6247abc57157a8a4ca167dc4f79d30b7, type: 3}
+  inventoryDimensions: {x: 1, y: 2}

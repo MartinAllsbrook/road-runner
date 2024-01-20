@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: AK74 Gun
   m_EditorClassIdentifier: 
   itemID: 2
-  maxModifications: 0
+  maxModifications: 1
   maxCounterCount: 0
-  defaultModifications: 2d010000
+  defaultModifications: 30010000
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 

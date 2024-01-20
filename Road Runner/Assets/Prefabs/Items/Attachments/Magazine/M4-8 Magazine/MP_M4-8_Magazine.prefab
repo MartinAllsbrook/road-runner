@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1279382899126282588}
   - component: {fileID: 4326772655722786376}
   m_Layer: 9
-  m_Name: MP_Mag
+  m_Name: MP_M4-8_Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

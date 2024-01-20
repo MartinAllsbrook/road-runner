@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemID: 3
   maxModifications: 0
-  maxCounterCount: 0
+  maxCounterCount: 6
   defaultModifications: 
-  defaultCounterItem: 0
+  defaultCounterItem: 401
   defaultCounterCount: 0
   validCounterTypes: 
   itemPickupPrefab: {fileID: 7665447967734567470, guid: b0a0fe2b3f0923d49a6b84cdba791e55, type: 3}

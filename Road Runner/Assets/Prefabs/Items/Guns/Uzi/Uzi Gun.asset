@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Uzi Gun
   m_EditorClassIdentifier: 
   itemID: 7
-  maxModifications: 0
+  maxModifications: 1
   maxCounterCount: 0
-  defaultModifications: 
+  defaultModifications: 00000000
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 

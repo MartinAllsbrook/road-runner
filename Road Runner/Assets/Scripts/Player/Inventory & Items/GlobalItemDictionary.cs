@@ -52,9 +52,13 @@ public class GlobalItemDictionary : MonoBehaviour
         Clothing_Backpack = 201,
 
         // Ammo & Attachments 301 - 400
-        Attachment_Mag = 301,
+        Attachment_M48Magazine = 301, // TODO: Rename to Attachment_M48Magaizne
         Attachment_M48IronSight = 302,
         Attachment_LargeScope = 303,
+        Attachment_AK74Magazine = 304,
+        Attachment_M107Magazine = 305,
+        Attachment_M249Magazine = 306,
+        Attachment_UZIMagazine = 307,
 
         // Ammo 401 - 500, Kinda just for testing rn
         Bullet_556 = 401,

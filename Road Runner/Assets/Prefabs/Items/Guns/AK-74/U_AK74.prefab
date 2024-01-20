@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3032672701620449532}
   - component: {fileID: 2441495672969767299}
   m_Layer: 0
-  m_Name: U_AK-74
+  m_Name: U_AK74
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,6 +35,7 @@ Transform:
   - {fileID: 1180717698202248260}
   - {fileID: 7905538824492623132}
   - {fileID: 8901618744581192856}
+  - {fileID: 2025720036280780678}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2441495672969767299
@@ -51,7 +52,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseItemID: 2
   uniqueItemModel: {fileID: 4189512270814562827}
-  inspectPoints: []
+  inspectPoints:
+  - {fileID: 2345775277425115136}
   bullet: {fileID: 3467463768999623919, guid: a1e23832c17108245a2968ad65ec787c, type: 3}
   magSize: 30
   singleShot: 0
@@ -231,6 +233,159 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3032672701620449532}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7250404920990841625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2025720036280780678}
+  m_Layer: 0
+  m_Name: Insoect Points
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2025720036280780678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7250404920990841625}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8873133345796478095}
+  m_Father: {fileID: 3032672701620449532}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &441810478351451252
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2025720036280780678}
+    m_Modifications:
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: inspectPointName
+      value: Magazine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: inspectPointType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemTypeThatFits
+      value: 301
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: allowedModificationsSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 6178b215264ea8c448d82487cef93b83, type: 2}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: inspectPointDescription
+      value: Swap your magazine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2441495672969767299}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetMag
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GunItem, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: itemSelectEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214556037378710215, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_Name
+      value: Magazine ModifierPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+--- !u!114 &2345775277425115136 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2786741244812739700, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+  m_PrefabInstance: {fileID: 441810478351451252}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639dd26979f84294db500434168b4fb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &8873133345796478095 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9007783706054643963, guid: 698b340e002f8674a8ac44c841ae123c, type: 3}
+  m_PrefabInstance: {fileID: 441810478351451252}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6582810750918313004
 PrefabInstance:
   m_ObjectHideFlags: 0

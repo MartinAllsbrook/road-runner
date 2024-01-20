@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: M107 Gun
   m_EditorClassIdentifier: 
   itemID: 4
-  maxModifications: 0
+  maxModifications: 1
   maxCounterCount: 0
-  defaultModifications: 
+  defaultModifications: 00000000
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 
   itemPickupPrefab: {fileID: 6268771417066880446, guid: 7e82ee1b3d40dcb4da88c1e35e708464, type: 3}
   useableItemPrefab: {fileID: 8945624369575493281, guid: fba2b21f7683c424eb7d86bf9f5569de, type: 3}
   modelPrefab: {fileID: 5823999385263388730, guid: 6d7c9d03fa170df45a8e289e1a1556a9, type: 3}
-  uiSprite: {fileID: 21300000, guid: 77da6e2750678bc4c8030fd767494b04, type: 3}
+  uiSprite: {fileID: 21300000, guid: 1426f4f3c3babad4895c9bdda942c3cf, type: 3}
   inventoryDimensions: {x: 6, y: 2}
