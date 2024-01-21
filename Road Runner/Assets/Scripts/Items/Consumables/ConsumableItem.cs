@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ConsumableItem : UseableItem
 {
-    private bool used = false;
+    protected bool used = false;
 
     public override void OnUseItemInput()
     {

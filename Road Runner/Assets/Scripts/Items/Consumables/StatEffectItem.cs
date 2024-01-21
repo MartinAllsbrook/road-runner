@@ -10,9 +10,14 @@ public class StatEffectItem : ConsumableItem
     [SerializeField] private int deltaHealth;
     public override void OnUseItemInput()
     {
-        base.OnUseItemInput();
+        if (used)
+            return;
+
         PlayerStats.Instance.ChangeFood(deltaFood);
         PlayerStats.Instance.ChangeWater(deltaWater);
         PlayerStats.Instance.ChangeHealth(deltaHealth);
+
+        base.OnUseItemInput();
+
     }
 }
