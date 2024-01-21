@@ -442,7 +442,7 @@ MonoBehaviour:
   flatRadius: 256
   blendRadius: 512
   spawnItems: 1
-  itemSpawnCheckInterval: 2
+  itemSpawnCheckInterval: 30
   itemSpawnZones:
   - {fileID: 7374789803791321375}
   - {fileID: 7630253775601090442}
@@ -454,7 +454,7 @@ MonoBehaviour:
   - {fileID: 395592080587976993}
   - {fileID: 9031088329173119041}
   spawnEnemies: 1
-  enemyNPCSpawnCheckInterval: 90
+  enemyNPCSpawnCheckInterval: 30
   enemyNPCSpawnZones:
   - {fileID: 5932754648855167780}
   - {fileID: 997239408672736639}
