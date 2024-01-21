@@ -8,7 +8,10 @@ public class ClothingItem : ConsumableItem
 
     public override void OnUseItemInput()
     {
+        if (!used)
+        {
+            Inventory.Instance.UpdateClothingInventory(clothingItemSO);
+        }
         base.OnUseItemInput();
-        Inventory.Instance.UpdateClothingInventory(clothingItemSO);
     }
 }
