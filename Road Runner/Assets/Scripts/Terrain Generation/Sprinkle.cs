@@ -5,30 +5,25 @@ using UnityEngine;
 
 public class Sprinkle : MonoBehaviour
 {
+    [Serializable]
+    public class SpawnSettings
+    {
+        [SerializeField] public SpawnType Type;
+        [SerializeField] public bool Spawn = true;
+        [SerializeField] public float SpawnCheckInterval = 90f;
+        [SerializeField] public SpawnZone[] SpawnZones;
+        [SerializeField] public int MaxSpawnCount = 5;
+        public int SpawnedCount = 0;
+    }
+
     [Header("Terrain Generation")]
     [SerializeField] int flatRadius = 16;
     [SerializeField] int blendRadius = 32;
 
-    [Header("Item Spawning")]
-    [SerializeField] private bool spawnItems = true;
-    [SerializeField] private float itemSpawnCheckInterval = 90f;
-    [SerializeField] private SpawnZone[] itemSpawnZones;
+    [Header("Spawn Settings")]
+    [SerializeField] private SpawnSettings[] spawnSettings = new SpawnSettings[3];
 
-    [Header("Enemy NPC Spawning")]
-    [SerializeField] private bool spawnEnemies = true;
-    [SerializeField] private float enemyNPCSpawnCheckInterval = 90f;
-    [SerializeField] private SpawnZone[] enemyNPCSpawnZones;
-
-    [Header("Vehicle Spawning")]
-    [SerializeField] private bool spawnVehicles = true;
-    [SerializeField] private float vehicleSpawnCheckInterval = 180f;
-    [SerializeField] private SpawnZone[] vehicleSpawnZones;
-
-    [SerializeField] private int[] maxSpawnCounts = new int[3];
-
-    private int[] numSpawnedCounters = new int[3];
-
-    private enum SpawnType
+    public enum SpawnType
     {
         Item = 0,
         EnemyNPC = 1,
@@ -43,44 +38,51 @@ public class Sprinkle : MonoBehaviour
         });
     }
 
-    public void DecrementCounter(int spawnedObjectType)
-    {
-        numSpawnedCounters[spawnedObjectType]--;
-    }
-
-    #region Start and Initialization
     private void AfterTerrainLoadedStart()
     {
         if (!TerrainManager.Instance.IsServer)
         {
             Debug.LogWarning("Disableing Sprinkle on Client");
-            foreach (var itemSpawnZone in itemSpawnZones)
-                itemSpawnZone.enabled = false;
-            foreach (var enemyNPCSpawnZone in enemyNPCSpawnZones)
-                enemyNPCSpawnZone.enabled = false;
-            foreach (var vehicleSpawnZone in vehicleSpawnZones)
-                vehicleSpawnZone.enabled = false;
+
+            foreach (var spawnSetting in spawnSettings)
+            {
+                foreach (var spawnZone in spawnSetting.SpawnZones)
+                    spawnZone.enabled = false;
+            }
 
             enabled = false;
-
             return;
         }
 
         InitializeSpawnZones();
+        FillSprinkle();
 
-        if (spawnItems)
-            StartCoroutine(SpawnRoutine(itemSpawnCheckInterval, itemSpawnZones, SpawnType.Item));
-        if (spawnEnemies)
-            StartCoroutine(SpawnRoutine(enemyNPCSpawnCheckInterval, enemyNPCSpawnZones, SpawnType.EnemyNPC));
-        if (spawnVehicles)
-            StartCoroutine(SpawnRoutine(vehicleSpawnCheckInterval, vehicleSpawnZones, SpawnType.Vehicle));
+        foreach (var spawnSetting in spawnSettings)
+        {
+            if (spawnSetting.Spawn)
+                StartCoroutine(SpawnRoutine(spawnSetting.SpawnCheckInterval, spawnSetting.SpawnZones, spawnSetting.Type));
+        }
     }
 
+    #region Counter Inc/Dec
+    private void IncrementCounter(int spawnedObjectType)
+    {
+        spawnSettings[spawnedObjectType].SpawnedCount++;
+    }
+
+    public void DecrementCounter(int spawnedObjectType)
+    {
+        spawnSettings[spawnedObjectType].SpawnedCount--;
+    }
+    #endregion
+
+    #region Initialization
     private void InitializeSpawnZones()
     {
-        InitializeSpawnZoneSet(itemSpawnZones, SpawnType.Item);
-        InitializeSpawnZoneSet(enemyNPCSpawnZones, SpawnType.EnemyNPC);
-        InitializeSpawnZoneSet(vehicleSpawnZones, SpawnType.Vehicle);
+        foreach (var spawnSetting in spawnSettings)
+        {
+            InitializeSpawnZoneSet(spawnSetting.SpawnZones, spawnSetting.Type);            
+        }
     }
 
     private void InitializeSpawnZoneSet(SpawnZone[] spawnZones, SpawnType spawnType)
@@ -93,23 +95,36 @@ public class Sprinkle : MonoBehaviour
     #endregion
 
     #region Item Spawning
+    private void FillSprinkle()
+    {
+        foreach (var spawnSetting in spawnSettings)
+        {
+            if (spawnSetting.Spawn)
+            {
+                int maxSpawns = spawnSetting.MaxSpawnCount;
+                for (int j = 0; j < maxSpawns; j++)
+                {
+                    TrySpawnObject(spawnSetting.SpawnZones, spawnSetting.Type);
+                }
+            }
+        }
+    }
+
     private IEnumerator SpawnRoutine(float spawnInterval, SpawnZone[] spawnZones, SpawnType objectType)
     {
         while (true)
         { 
             yield return new WaitForSeconds(spawnInterval);
 
-            bool objectSpawned = false;
+            int numSpawned = spawnSettings[(int)objectType].SpawnedCount;
+            int maxSpawned = spawnSettings[(int)objectType].MaxSpawnCount;
 
-            if (numSpawnedCounters[(int)objectType] < maxSpawnCounts[(int)objectType])
-                objectSpawned = TrySpawnObject(spawnZones);
-
-            if (objectSpawned)
-                numSpawnedCounters[(int)objectType]++;
+            if (numSpawned < maxSpawned)
+                TrySpawnObject(spawnZones, objectType);
         }
     }
 
-    private bool TrySpawnObject(SpawnZone[] spawnZones)
+    private bool TrySpawnObject(SpawnZone[] spawnZones, SpawnType objectType)
     {
         // Find all spawn zones that are not full
         List<int> avialableSpawnZones = new List<int>();
@@ -126,6 +141,8 @@ public class Sprinkle : MonoBehaviour
         // Pick a random spawn zone from the list and spawn an object in it
         int randomIndex = avialableSpawnZones[UnityEngine.Random.Range(0, avialableSpawnZones.Count)];
         spawnZones[randomIndex].SpawnRandomObject(transform.position, flatRadius);
+
+        IncrementCounter((int)objectType);
         return true;
     }
     #endregion

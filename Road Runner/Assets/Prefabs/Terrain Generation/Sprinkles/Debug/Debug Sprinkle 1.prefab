@@ -125,24 +125,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flatRadius: 16
   blendRadius: 32
-  spawnItems: 1
-  itemSpawnCheckInterval: 3
-  itemSpawnZones:
-  - {fileID: 1442052584001918219}
-  - {fileID: 430125037697832210}
-  - {fileID: 3937868450907026219}
-  - {fileID: 8020035160748901638}
-  - {fileID: 4202689574751480872}
-  - {fileID: 7675962238300444507}
-  - {fileID: 1171028513298283250}
-  spawnEnemies: 0
-  enemyNPCSpawnCheckInterval: 90
-  enemyNPCSpawnZones:
-  - {fileID: 2431147043267364247}
-  spawnVehicles: 0
-  vehicleSpawnCheckInterval: 90
-  vehicleSpawnZones: []
-  maxSpawnCounts: 050000000500000005000000
+  spawnSettings:
+  - Type: 0
+    Spawn: 1
+    SpawnCheckInterval: 3
+    SpawnZones:
+    - {fileID: 1442052584001918219}
+    - {fileID: 430125037697832210}
+    - {fileID: 3937868450907026219}
+    - {fileID: 8020035160748901638}
+    - {fileID: 4202689574751480872}
+    - {fileID: 7675962238300444507}
+    - {fileID: 1171028513298283250}
+    MaxSpawnCount: 4
+    SpawnedCount: 0
+  - Type: 1
+    Spawn: 0
+    SpawnCheckInterval: 90
+    SpawnZones:
+    - {fileID: 2431147043267364247}
+    MaxSpawnCount: 1
+    SpawnedCount: 0
+  - Type: 2
+    Spawn: 0
+    SpawnCheckInterval: 0
+    SpawnZones: []
+    MaxSpawnCount: 0
+    SpawnedCount: 0
 --- !u!65 &1623168669993045497
 BoxCollider:
   m_ObjectHideFlags: 0
