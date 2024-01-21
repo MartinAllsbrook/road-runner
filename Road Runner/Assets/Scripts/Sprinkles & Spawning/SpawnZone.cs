@@ -13,10 +13,18 @@ public class SpawnZone : MonoBehaviour
     protected BoxCollider boxCollider;
     protected Bounds spawnBounds;
 
+    protected Sprinkle parentSprinkle;
+    protected int spawnedObjectType;
+
     private void Start()
-    {
-        Debug.Log("SpawnZone Start");
+    { 
         boxCollider = GetComponent<BoxCollider>();
+    }
+
+    public void Initialize(Sprinkle parentSprinkle, int spawnedObjectType)
+    {
+        this.parentSprinkle = parentSprinkle;  
+        this.spawnedObjectType = spawnedObjectType;
     }
 
     public bool IsFull()
@@ -27,6 +35,8 @@ public class SpawnZone : MonoBehaviour
     public void RemoveSpawnedObject()
     {
         numSpawnedObjects--;
+
+        parentSprinkle.DecrementCounter(spawnedObjectType);
     }
     
     public virtual void SpawnRandomObject(Vector3 sprinkleCenter, float sprinkleRadius)

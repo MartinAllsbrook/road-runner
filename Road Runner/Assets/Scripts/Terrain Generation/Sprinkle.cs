@@ -24,62 +24,111 @@ public class Sprinkle : MonoBehaviour
     [SerializeField] private float vehicleSpawnCheckInterval = 180f;
     [SerializeField] private SpawnZone[] vehicleSpawnZones;
 
-    private int numNaturalItems;
-    private int numEnemyNPCs;
+    [SerializeField] private int[] maxSpawnCounts = new int[3];
+
+    private int[] numSpawnedCounters = new int[3];
+
+    private enum SpawnType
+    {
+        Item = 0,
+        EnemyNPC = 1,
+        Vehicle = 2
+    }
 
     private void Start()
     {
         TerrainManager.onTerrainGenerated.AddListener(() =>
         {
-            if (!TerrainManager.Instance.IsServer)
-            { 
-                Debug.LogWarning("Disableing Sprinkle on Client");
-                foreach (var itemSpawnZone in itemSpawnZones)
-                    itemSpawnZone.enabled = false;
-                foreach (var enemyNPCSpawnZone in enemyNPCSpawnZones)
-                    enemyNPCSpawnZone.enabled = false;
-                foreach (var vehicleSpawnZone in vehicleSpawnZones)
-                    vehicleSpawnZone.enabled = false;
-
-                enabled = false;
-
-                return;
-            }
-
-            if (spawnItems)
-                StartCoroutine(SpawnRoutine(itemSpawnCheckInterval, itemSpawnZones));
-            if (spawnEnemies)                
-                StartCoroutine(SpawnRoutine(enemyNPCSpawnCheckInterval, enemyNPCSpawnZones));
-            if (spawnVehicles)
-                StartCoroutine(SpawnRoutine(vehicleSpawnCheckInterval, vehicleSpawnZones));
+            AfterTerrainLoadedStart();
         });
     }
 
-    private IEnumerator SpawnRoutine(float spawnInterval, SpawnZone[] spawnZones)
+    public void DecrementCounter(int spawnedObjectType)
+    {
+        numSpawnedCounters[spawnedObjectType]--;
+    }
+
+    #region Start and Initialization
+    private void AfterTerrainLoadedStart()
+    {
+        if (!TerrainManager.Instance.IsServer)
+        {
+            Debug.LogWarning("Disableing Sprinkle on Client");
+            foreach (var itemSpawnZone in itemSpawnZones)
+                itemSpawnZone.enabled = false;
+            foreach (var enemyNPCSpawnZone in enemyNPCSpawnZones)
+                enemyNPCSpawnZone.enabled = false;
+            foreach (var vehicleSpawnZone in vehicleSpawnZones)
+                vehicleSpawnZone.enabled = false;
+
+            enabled = false;
+
+            return;
+        }
+
+        InitializeSpawnZones();
+
+        if (spawnItems)
+            StartCoroutine(SpawnRoutine(itemSpawnCheckInterval, itemSpawnZones, SpawnType.Item));
+        if (spawnEnemies)
+            StartCoroutine(SpawnRoutine(enemyNPCSpawnCheckInterval, enemyNPCSpawnZones, SpawnType.EnemyNPC));
+        if (spawnVehicles)
+            StartCoroutine(SpawnRoutine(vehicleSpawnCheckInterval, vehicleSpawnZones, SpawnType.Vehicle));
+    }
+
+    private void InitializeSpawnZones()
+    {
+        InitializeSpawnZoneSet(itemSpawnZones, SpawnType.Item);
+        InitializeSpawnZoneSet(enemyNPCSpawnZones, SpawnType.EnemyNPC);
+        InitializeSpawnZoneSet(vehicleSpawnZones, SpawnType.Vehicle);
+    }
+
+    private void InitializeSpawnZoneSet(SpawnZone[] spawnZones, SpawnType spawnType)
+    {
+        foreach (var spawnZone in spawnZones)
+        {
+            spawnZone.Initialize(this, (int)spawnType);
+        }
+    }
+    #endregion
+
+    #region Item Spawning
+    private IEnumerator SpawnRoutine(float spawnInterval, SpawnZone[] spawnZones, SpawnType objectType)
     {
         while (true)
         { 
             yield return new WaitForSeconds(spawnInterval);
 
-            TrySpawnItem(spawnZones);
+            bool objectSpawned = false;
+
+            if (numSpawnedCounters[(int)objectType] < maxSpawnCounts[(int)objectType])
+                objectSpawned = TrySpawnObject(spawnZones);
+
+            if (objectSpawned)
+                numSpawnedCounters[(int)objectType]++;
         }
     }
 
-    private void TrySpawnItem(SpawnZone[] spawnZones)
+    private bool TrySpawnObject(SpawnZone[] spawnZones)
     {
-        List<int> avialableIndexes = new List<int>();
+        // Find all spawn zones that are not full
+        List<int> avialableSpawnZones = new List<int>();
         for (int i = 0; i < spawnZones.Length; i++)
         {
             if (!spawnZones[i].IsFull())
-                avialableIndexes.Add(i);
+                avialableSpawnZones.Add(i);
         }
 
-        if (avialableIndexes.Count <= 0)
-            return;
+        // If there are no spawn zones that are not full, return false
+        if (avialableSpawnZones.Count <= 0)
+            return false;
 
-        int randomIndex = avialableIndexes[UnityEngine.Random.Range(0, avialableIndexes.Count)];
+        // Pick a random spawn zone from the list and spawn an object in it
+        int randomIndex = avialableSpawnZones[UnityEngine.Random.Range(0, avialableSpawnZones.Count)];
         spawnZones[randomIndex].SpawnRandomObject(transform.position, flatRadius);
+        return true;
     }
+    #endregion
 
     #region Terrain Generation
 
