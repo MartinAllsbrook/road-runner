@@ -13,9 +13,9 @@ public class StatEffectItem : ConsumableItem
         if (used)
             return;
 
-        PlayerStats.Instance.ChangeFood(deltaFood);
-        PlayerStats.Instance.ChangeWater(deltaWater);
-        PlayerStats.Instance.ChangeHealth(deltaHealth);
+        LocalPlayerStats.Instance.ChangeFood(deltaFood);
+        LocalPlayerStats.Instance.ChangeWater(deltaWater);
+        LocalPlayerStats.Instance.ChangeHealth(deltaHealth);
 
         base.OnUseItemInput();
 

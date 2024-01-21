@@ -85,7 +85,7 @@ public class NavMeshEnemyNPC : EnemyNPC
 
     protected Vector3 GetVectorToLocalPlayer()
     {
-        Vector3 localPlayerPosition = Player.LocalPlayerInstance.transform.position + Vector3.up * 0.5f;
+        Vector3 localPlayerPosition = Player.LocalInstance.transform.position + Vector3.up * 0.5f;
         Vector3 vectorToPlayer = localPlayerPosition - transform.position;
         return vectorToPlayer;
     }
@@ -126,7 +126,7 @@ public class NavMeshEnemyNPC : EnemyNPC
     [Command ("BotsTargetMe", MonoTargetType.All)]
     private void SetTargetToLocalPlayer()
     {
-        Vector3 destination = Player.LocalPlayerInstance.transform.position;
+        Vector3 destination = Player.LocalInstance.transform.position;
         SetTargetPositionServerRpc(destination);
     }
 

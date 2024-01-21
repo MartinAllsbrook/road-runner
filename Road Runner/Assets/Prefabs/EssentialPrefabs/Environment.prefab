@@ -408,6 +408,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2935390251777952128}
     m_Modifications:
     - target: {fileID: 983755526239623390, guid: 64905056659aa4b40859e1d47c7d68a4, type: 3}
+      propertyPath: m_Intensity
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 983755526239623390, guid: 64905056659aa4b40859e1d47c7d68a4, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 69599
       objectReference: {fileID: 0}
@@ -453,7 +457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3291550390586942257, guid: 64905056659aa4b40859e1d47c7d68a4, type: 3}
       propertyPath: m_Name
-      value: Directional Light
+      value: Sun
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

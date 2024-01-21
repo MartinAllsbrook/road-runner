@@ -18,12 +18,13 @@ public class PlayerFXController : MonoBehaviour
     [Header("Wind FX")]
     [SerializeField] private ParticleSystem windFXParticleSystem;
 
-    private PlayerStats _playerStats;
+    private LocalPlayerStats _playerStats;
     private bool inShelteredArea;
 
     private void Start()
     {
-        _playerStats = GetComponent<PlayerStats>();
+        // Singleton References
+        _playerStats = LocalPlayerStats.Instance;
 
         overridePostProcessVolume.weight = 0f;
 
@@ -88,7 +89,7 @@ public class PlayerFXController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
-            _playerStats.ChangeHealth(-0.25f);
+            _playerStats.ChangeHealth(-0.25f); // This should probably somewhere else? and not be a magic number?
         }
     }
 

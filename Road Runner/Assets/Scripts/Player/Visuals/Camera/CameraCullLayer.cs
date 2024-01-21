@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraCullLayer : MonoBehaviour
 {
-    [SerializeField] private int mediumScatterLayer;
+/*    [SerializeField] private int mediumScatterLayer;
     [SerializeField] private float mediumCullDistance;
     [SerializeField] private int smallScatterLayer;
     [SerializeField] private float smallCullDistance;
@@ -16,5 +16,5 @@ public class CameraCullLayer : MonoBehaviour
         distances[mediumScatterLayer] = mediumCullDistance;
         distances[smallScatterLayer] = smallCullDistance;
         camera.layerCullDistances = distances;
-    }
+    }*/
 }

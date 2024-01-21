@@ -43,6 +43,6 @@ public class LimboUI : MonoBehaviour
 
     private void Spawn()
     {
-        PlayerSpawner.localPlayerSpawner.ExitLimbo();
+        Player.LocalInstance.ExitLimbo();
     }
 }

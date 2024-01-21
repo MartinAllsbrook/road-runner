@@ -318,7 +318,7 @@ public class TerrainManager : NetworkBehaviour
         terrainGenerated = true;
         onTerrainGenerated.Invoke();
 
-        PlayerSpawner.localPlayerSpawner.EnterLimbo();
+        Player.LocalInstance.EnterLimbo();
         yield return null;
     }
 }

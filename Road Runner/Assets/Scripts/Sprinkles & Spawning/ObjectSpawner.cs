@@ -104,7 +104,7 @@ public class ObjectSpawner : NetworkBehaviour
     [Command("SpawnEnemyHere")]
     private void SpawnEnemyDebug(EnemyType enemyType)
     {
-        SpawnEnemyServerRpc(enemyType, Player.LocalPlayerInstance.transform.position);
+        SpawnEnemyServerRpc(enemyType, Player.LocalInstance.transform.position);
     }
 
     [Command]
@@ -133,7 +133,7 @@ public class ObjectSpawner : NetworkBehaviour
     [Command]
     public void SpawnItemDebug(ItemID itemEnum)
     {
-        Transform playerTransform = PlayerSpawner.localPlayerSpawner.transform;
+        Transform playerTransform = Player.LocalInstance.transform;
         Vector3 position = playerTransform.position + playerTransform.forward * 2;
 
         if (!IsServer)

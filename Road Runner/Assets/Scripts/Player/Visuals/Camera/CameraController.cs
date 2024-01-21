@@ -6,7 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CameraController : NetworkBehaviour
+public class CameraController : MonoBehaviour
 {
     public static CameraController Instance; // This singleton instance is only used by the PausedUI/settings at the moment
 
@@ -28,6 +28,8 @@ public class CameraController : NetworkBehaviour
             sensY = value.y;
         }
     }
+
+    private bool initialized = false;
 
     private float cameraTilt;
     private float _xRotation;
@@ -58,21 +60,23 @@ public class CameraController : NetworkBehaviour
         }
     }
 
-    void Start()
+    public void Initialize()
     {
-        if (!IsOwner) 
-            return;
-
         if (Instance == null)
             Instance = this;
         
         playerRigidbody = GetComponent<Rigidbody>();
         mainCamera = Camera.main;
+
+        initialized = true;
     }
 
     void Update()
     {
-        if (!IsOwner || _cameraLocked) 
+        if (!initialized)
+            return;
+
+        if (_cameraLocked) 
             return;
         
         if (_inLimbo)
@@ -87,7 +91,7 @@ public class CameraController : NetworkBehaviour
 
     private void LateUpdate()
     {
-        if (!IsOwner)
+        if (!initialized)
             return;
 
         if (_inLimbo)
@@ -158,8 +162,8 @@ public class CameraController : NetworkBehaviour
 
     public void SetTilt(float tilt)
     {
-        if(!IsOwner)
-            return;
+/*        if(!IsOwner)
+            return;*/
         
         cameraTilt = tilt;
         

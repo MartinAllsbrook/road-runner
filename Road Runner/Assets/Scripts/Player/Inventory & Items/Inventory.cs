@@ -332,7 +332,7 @@ public class Inventory : MonoBehaviour, IPersistantData
 
     private void DropItem(UniqueItemID uniqueItemID)
     {
-        ObjectSpawner.Instance.ItemSpawnRequest(uniqueItemID, Player.LocalPlayerInstance.transform.position + transform.up * 2);
+        ObjectSpawner.Instance.ItemSpawnRequest(uniqueItemID, Player.LocalInstance.transform.position + transform.up * 2);
     }
 
     #endregion

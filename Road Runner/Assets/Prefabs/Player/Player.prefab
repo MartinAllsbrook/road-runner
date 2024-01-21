@@ -5210,7 +5210,7 @@ GameObject:
   - component: {fileID: 2279015088211806387}
   - component: {fileID: 165315188949425044}
   m_Layer: 7
-  m_Name: Capsule
+  m_Name: Body
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5326,8 +5326,6 @@ GameObject:
   - component: {fileID: 3021136442123150925}
   - component: {fileID: 1178886692299003422}
   - component: {fileID: 5344291784692746818}
-  - component: {fileID: 5735164545608879644}
-  - component: {fileID: 7688972238298114382}
   - component: {fileID: 5150687858776107323}
   - component: {fileID: 297529419240020519}
   - component: {fileID: 4350166169284157831}
@@ -5406,40 +5404,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d81254db548ee7f46a551b77cdd1dd1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5735164545608879644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3167927590513813192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcbb887f0c655204b864b726f041def9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapSize: 300
-  foodDecayRate: 0.25
-  waterDecayRate: 0.25
-  healthDecayRate: 1
---- !u!114 &7688972238298114382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3167927590513813192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ae6f38673248ad49b73a571a86f2423, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   playerModel:
   - {fileID: 2518289621423585354}
   - {fileID: 5510497649071639412}
-  layerMask:
+  groundLayerMask:
     serializedVersion: 2
-    m_Bits: 7169
+    m_Bits: 6145
 --- !u!114 &5150687858776107323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6156,7 +6126,7 @@ GameObject:
   - component: {fileID: 9077295516848893197}
   - component: {fileID: 5218755029226038747}
   m_Layer: 7
-  m_Name: Capsule (1)
+  m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

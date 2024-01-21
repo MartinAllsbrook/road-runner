@@ -34,7 +34,9 @@ public class BulletNetworkManager : NetworkBehaviour
         // Getting player that got hit
         playerNetworkObjectReference.TryGet(out NetworkObject playerNetworkObject);
         Player player = playerNetworkObject.GetComponent<Player>();
-        player.HitWithBullet(damage);
+
+        if (player.IsOwner) // try IsLocalPlayer too
+            LocalPlayerStats.Instance.TakeDamage(damage);
     }
     #endregion
 

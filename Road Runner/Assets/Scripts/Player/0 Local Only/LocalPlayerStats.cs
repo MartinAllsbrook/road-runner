@@ -1,19 +1,21 @@
+using QFSW.QC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-public class PlayerStats : NetworkBehaviour, IPersistantData
+public class LocalPlayerStats : MonoBehaviour, IPersistantData
 {
-    public static PlayerStats Instance;
-    
-    [SerializeField] private int mapSize;
-    [SerializeField] private float foodDecayRate;
-    [SerializeField] private float waterDecayRate;
-    [SerializeField] private float healthDecayRate;
+    public static LocalPlayerStats Instance;
+
+    [Header("Stat Decay Rates")]
+    [SerializeField] private float foodDecayRate = 0.25f;
+    [SerializeField] private float waterDecayRate = 0.25f;
+    [SerializeField] private float healthDecayRate = 0.5f;
 
     private HUDController hudController;
 
@@ -23,24 +25,21 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
 
     private bool _inLimbo = true;
 
-    public override void OnNetworkSpawn()
+    private void Awake()
     {
-        base.OnNetworkSpawn();
-
-        if (!IsOwner)
-            return;
-
         if (Instance == null)
             Instance = this;
+        else
+            Debug.LogError("More than one LocalPlayerStats instance exists!");
+    }
 
+    private void Start()
+    {
         hudController = HUDController.Instance;
     }
 
     private void Update()
     {
-        if (!IsOwner)
-            return;
-
         if (_inLimbo)
             return;
 
@@ -49,9 +48,6 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
 
     private void UpdateFoodAndWater()
     {
-        if (!IsOwner)
-            return;
-
         if (_inLimbo)
             return;
 
@@ -90,9 +86,6 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
     #region Change Stats Methods
     public void ChangeFood(float value)
     {
-        if (!IsOwner)
-            return;
-
         if (_inLimbo)
             return;
 
@@ -103,9 +96,6 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
 
     public void ChangeWater(float value)
     {
-        if (!IsOwner)
-            return;
-
         if (_inLimbo)
             return;
 
@@ -116,9 +106,6 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
 
     public void ChangeHealth(float value)
     {
-        if (!IsOwner)
-            return;
-
         if (_inLimbo)
             return;
 
@@ -138,7 +125,7 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
 
         _inLimbo = true;
         CharacterPersistanceManager.Instance.DeleteCharacter();
-        GetComponent<PlayerSpawner>().EnterLimbo();
+        Player.LocalInstance.EnterLimbo();
     }
 
     /// <summary>
@@ -152,4 +139,16 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
 
         _inLimbo = false;
     }
+
+    #region Commands
+
+    [Command]
+    public void TakeDamage(float damage)
+    {
+        ChangeHealth(-damage);
+        Player.LocalInstance.GetComponent<PlayerFXController>().PlayHitWithBulletFX();
+    }
+
+    #endregion
+
 }

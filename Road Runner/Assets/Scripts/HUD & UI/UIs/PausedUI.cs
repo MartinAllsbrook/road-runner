@@ -63,6 +63,6 @@ public class PausedUI : MonoBehaviour
 
         Inventory.Instance.ClearInventory();
 
-        PlayerSpawner.localPlayerSpawner.EnterLimbo();
+        Player.LocalInstance.EnterLimbo();
     }
 }
