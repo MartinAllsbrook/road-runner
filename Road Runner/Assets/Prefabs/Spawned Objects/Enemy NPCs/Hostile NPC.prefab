@@ -76,8 +76,6 @@ MonoBehaviour:
   maxHealth: 100
   deathEffects: {fileID: 5660273623069248526, guid: 283756586f93d9646857f11396fbfee9, type: 3}
   agent: {fileID: 6463423080979344466}
-  patrolCenter: {x: 0, y: 0, z: 0}
-  maxPatrolDistance: 32
   visionRange: 32
   visionOrigin: {fileID: 6491887429467883825}
   visionAngle: 90
@@ -587,7 +585,7 @@ Light:
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Intensity: 12
   m_Range: 32
-  m_SpotAngle: 45
+  m_SpotAngle: 90
   m_InnerSpotAngle: 4
   m_CookieSize: 10
   m_Shadows:

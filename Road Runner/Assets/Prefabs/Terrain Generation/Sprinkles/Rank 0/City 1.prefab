@@ -441,30 +441,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flatRadius: 256
   blendRadius: 512
-  spawnItems: 1
-  itemSpawnCheckInterval: 30
-  itemSpawnZones:
-  - {fileID: 7374789803791321375}
-  - {fileID: 7630253775601090442}
-  - {fileID: 8899217137908556141}
-  - {fileID: 3920274070959290833}
-  - {fileID: 2595157266825045814}
-  - {fileID: 6399661759812647525}
-  - {fileID: 5468445589101669372}
-  - {fileID: 395592080587976993}
-  - {fileID: 9031088329173119041}
-  spawnEnemies: 1
-  enemyNPCSpawnCheckInterval: 30
-  enemyNPCSpawnZones:
-  - {fileID: 5932754648855167780}
-  - {fileID: 997239408672736639}
-  - {fileID: 8411210095509788663}
-  - {fileID: 9071408166848139509}
-  - {fileID: 7474330616163457805}
-  - {fileID: 8195662687201221834}
-  spawnVehicles: 1
-  vehicleSpawnCheckInterval: 180
-  vehicleSpawnZones: []
+  spawnSettings:
+  - Type: 0
+    Spawn: 1
+    SpawnCheckInterval: 30
+    SpawnZones:
+    - {fileID: 7374789803791321375}
+    - {fileID: 7630253775601090442}
+    - {fileID: 8899217137908556141}
+    - {fileID: 3920274070959290833}
+    - {fileID: 2595157266825045814}
+    - {fileID: 6399661759812647525}
+    - {fileID: 5468445589101669372}
+    - {fileID: 395592080587976993}
+    - {fileID: 9031088329173119041}
+    MaxSpawnCount: 15
+    SpawnedCount: 0
+  - Type: 1
+    Spawn: 1
+    SpawnCheckInterval: 90
+    SpawnZones:
+    - {fileID: 8411210095509788663}
+    - {fileID: 9071408166848139509}
+    - {fileID: 7474330616163457805}
+    - {fileID: 8195662687201221834}
+    MaxSpawnCount: 5
+    SpawnedCount: 0
+  - Type: 2
+    Spawn: 0
+    SpawnCheckInterval: 90
+    SpawnZones: []
+    MaxSpawnCount: 5
+    SpawnedCount: 0
 --- !u!1001 &57742518854655114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1882,7 +1890,8 @@ PrefabInstance:
       value: Appartments Group
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8992324548516503649, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
@@ -1891,17 +1900,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1988795861618274290, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
   m_PrefabInstance: {fileID: 1950040219361869472}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5932754648855167780 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5285695257198378372, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
-  m_PrefabInstance: {fileID: 1950040219361869472}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57401be60184a9f46ba8c226cb6e346c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7630253775601090442 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8280981027569058090, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
@@ -4170,7 +4168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3756558180959337035, guid: 4d4f6f9441f943c469d4f05dcc604262, type: 3}
       propertyPath: m_Size.x
-      value: 213.62
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4370,21 +4368,11 @@ PrefabInstance:
       value: Appartments Group (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8992324548516503649, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
---- !u!114 &997239408672736639 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5285695257198378372, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
-  m_PrefabInstance: {fileID: 4939437384437807355}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57401be60184a9f46ba8c226cb6e346c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2595157266825045814 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6957975564952166349, guid: d29d1963085835c4cb040b87a261f41a, type: 3}
@@ -4652,7 +4640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3756558180959337035, guid: 4d4f6f9441f943c469d4f05dcc604262, type: 3}
       propertyPath: m_Size.x
-      value: 213.62
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4915,7 +4903,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3756558180959337035, guid: 4d4f6f9441f943c469d4f05dcc604262, type: 3}
       propertyPath: m_Size.x
-      value: 213.62
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5860,7 +5848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3756558180959337035, guid: 4d4f6f9441f943c469d4f05dcc604262, type: 3}
       propertyPath: m_Size.x
-      value: 213.62
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6142,6 +6130,10 @@ PrefabInstance:
     - target: {fileID: 757114918897833283, guid: cce068ce04d94f34b921018d9ec36b18, type: 3}
       propertyPath: m_Name
       value: Little Baracade (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4400074085203669623, guid: cce068ce04d94f34b921018d9ec36b18, type: 3}
+      propertyPath: maxSpawnedObjects
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8173779078873480958, guid: cce068ce04d94f34b921018d9ec36b18, type: 3}
       propertyPath: m_LocalPosition.x

@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57401be60184a9f46ba8c226cb6e346c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpawnedObjects: 2
+  maxSpawnedObjects: 3
   objectsToSpawn:
   - {fileID: 2799855117554263906, guid: b2af6ec8df78d1847810ef5b4cbc7970, type: 3}
   - {fileID: 6883089369936800223, guid: 9ff38e16aed343849aca1b572858d59c, type: 3}
