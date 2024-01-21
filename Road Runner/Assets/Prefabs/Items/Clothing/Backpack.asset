@@ -15,8 +15,13 @@ MonoBehaviour:
   itemID: 201
   maxModifications: 0
   maxCounterCount: 0
-  itemPickupPrefab: {fileID: 7966503058900778980, guid: 15a9d48115f00ac4d8647c04da0c49d4, type: 3}
-  useableItemPrefab: {fileID: 0}
+  defaultModifications: 
+  defaultCounterItem: 0
+  defaultCounterCount: 0
+  validCounterTypes: 
+  itemPickupPrefab: {fileID: 2771929494867383981, guid: b46e3b89704c21e479631227055c5298, type: 3}
+  useableItemPrefab: {fileID: 5961890721052885514, guid: ae2617b5809313945be81b4916b7963b, type: 3}
+  modelPrefab: {fileID: 958211436652670693, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
   uiSprite: {fileID: 21300000, guid: 34213e7bb8ce10549973eb7952dc416c, type: 3}
   inventoryDimensions: {x: 2, y: 2}
   clothingSlot: 5

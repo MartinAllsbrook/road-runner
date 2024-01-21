@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static ClothingSlotUI;
+using static GlobalItemDictionary;
 
 [Serializable]
 public class CharacterData
@@ -15,6 +17,7 @@ public class CharacterData
 
     // Inventory
     public StoredItemID[] StoredItems;
+    public ItemID[] ClothingItems;
 
     public CharacterData()
     {
@@ -25,5 +28,8 @@ public class CharacterData
         Water = 100;
 
         StoredItems = new StoredItemID[0];
+        ClothingItems = new ItemID[0];
     }
 }
+
+

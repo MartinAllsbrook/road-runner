@@ -30,12 +30,17 @@ public class Inventory : MonoBehaviour, IPersistantData
     // Inventories
     private Hotbar hotbar;
     private Dictionary<int, ConnectedInventory> connectedInventories;
+    private ItemID[] wornClothingIDs;
 
     private InventoryUI inventoryUI;
 
     private StoredItemID heldItem;
 
     private bool initialized = false;
+    public bool Initialized
+    {
+        get { return initialized; }
+    }
 
     private string debugTag = LogColors.GetColoredTag("[Inventory]", LogColors.InventoryColor);
     #endregion
@@ -242,6 +247,8 @@ public class Inventory : MonoBehaviour, IPersistantData
 
         inventoryUI.CreateInventoryDisplay(inventoryKey, clothingSO.ClothingInventoryDimensions);
         inventoryUI.SetClothingSlot(clothingSO);
+
+        wornClothingIDs[inventoryKey - 1] = clothingSO.ItemID;
     }
 
     public void RemoveClothingInventory(ClothingItemSO clothingItemSO)
@@ -256,6 +263,8 @@ public class Inventory : MonoBehaviour, IPersistantData
             RemoveConnectedInventory(inventoryKey);
 
             inventoryUI.RemoveClothingSlot(inventoryKey);
+
+            wornClothingIDs[inventoryKey - 1] = ItemID.Empty;
         }
     }
 
@@ -381,12 +390,31 @@ public class Inventory : MonoBehaviour, IPersistantData
             SetInventoryHand(new UniqueItemID());
             CreateHotbar();
 
+            wornClothingIDs = new ItemID[numClothingSlots];
+            for (int i = 0; i < wornClothingIDs.Length; i++)
+            {
+                wornClothingIDs[i] = ItemID.Empty;
+            }
+
             initialized = true;
         }
 
         foreach (StoredItemID storedItemID in characterData.StoredItems)
         {
             TryFitAnywehere(storedItemID.UniqueItemID);
+        }
+
+        foreach (ItemID savedClothing in characterData.ClothingItems)
+        {
+            if (savedClothing == ItemID.Empty) // TODO: This is a temporary fix for the fact that we are saving empty clothing slots
+                continue;
+
+            ItemSO itemSO = ItemSODictionary[savedClothing];
+
+            Debug.Log(debugTag + "Loading clothing item: " + itemSO);
+
+            ClothingItemSO clothingItemSO = (ClothingItemSO) itemSO;
+            UpdateClothingInventory(clothingItemSO);
         }
     }
 
@@ -403,6 +431,17 @@ public class Inventory : MonoBehaviour, IPersistantData
         }
 
         characterData.StoredItems = allStoredItems.ToArray();
+
+        ItemID[] savedClothing = new ItemID[numClothingSlots];
+        for (int i = 0; i < wornClothingIDs.Length; i++)
+        {
+            ItemID clothingID = wornClothingIDs[i];
+            if (clothingID != ItemID.Empty)
+            {
+                savedClothing[i] = wornClothingIDs[i];
+            }
+        }
+        characterData.ClothingItems = savedClothing;
     }
 
     #endregion

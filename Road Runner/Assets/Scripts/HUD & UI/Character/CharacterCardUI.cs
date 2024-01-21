@@ -27,6 +27,11 @@ public class CharacterCardUI : MonoBehaviour
 
     private void OnLoadCharacterButtonClicked()
     {
+        if (Inventory.Instance.Initialized)
+        {
+            Inventory.Instance.ClearInventory();
+        }
+
         CharacterPersistanceManager.Instance.FindAllAndLoad(characterNumber);
     }
 
