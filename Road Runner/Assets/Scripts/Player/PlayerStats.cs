@@ -27,6 +27,9 @@ public class PlayerStats : NetworkBehaviour, IPersistantData
     {
         base.OnNetworkSpawn();
 
+        if (!IsOwner)
+            return;
+
         if (Instance == null)
             Instance = this;
 
