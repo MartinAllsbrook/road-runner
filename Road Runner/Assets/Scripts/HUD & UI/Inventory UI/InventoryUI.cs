@@ -149,11 +149,11 @@ public class InventoryUI : MonoBehaviour
         return containedItemKey * 20 + inventoryKey;
     }
 
-    public void SetClothingSlot(ClothingItemSO clothingItemSO)
+    public void SetClothingSlot(ClothingData clothingData)
     {
-        ClothingSlotUI clothingSlotUI = clothingSlotUIs[(int)clothingItemSO.ClothingSlot];
+        ClothingSlotUI clothingSlotUI = clothingSlotUIs[(int)clothingData.ClothingSlot];
 
-        clothingSlotUI.Set(clothingItemSO);
+        clothingSlotUI.Set(clothingData);
     }
 
     public void RemoveClothingSlot(int slot)

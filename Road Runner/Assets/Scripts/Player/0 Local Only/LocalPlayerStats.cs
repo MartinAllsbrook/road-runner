@@ -25,6 +25,18 @@ public class LocalPlayerStats : MonoBehaviour, IPersistantData
 
     private bool _inLimbo = true;
 
+    // Clothing / resistance
+    private float[] resistances = new float[5] {0,0,0,0,0};
+
+    public enum BodyArea
+    {
+        Global,
+        Head,
+        Torso,
+        Arms,
+        Legs
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -63,6 +75,40 @@ public class LocalPlayerStats : MonoBehaviour, IPersistantData
         { 
             ChangeHealth(-Time.deltaTime * healthDecayRate);
         }
+    }
+
+    #region Clothing / Resistance Methods
+    [Command]
+    public void ChangeResistance(BodyArea bodyArea, int deltaResistance)
+    {
+        int bodyAreaIndex = (int)bodyArea;
+
+        resistances[bodyAreaIndex] += deltaResistance;
+
+        Debug.Log("Resistance changed to " + resistances[bodyAreaIndex] + " for " + bodyArea);
+    }
+
+    [Command]
+    public void DealDamage(BodyArea bodyArea, float damage, bool playEffect)
+    {
+        int bodyAreaIndex = (int)bodyArea;
+
+        float rawResistancePercent = resistances[bodyAreaIndex] / 100; // Can be over 100% resistance
+        float finalResistancePercent = 1/(-1 - rawResistancePercent) + 1; // Approach 1 as resistance approaches infinity
+
+        float damageMultiplier = 1 - finalResistancePercent;
+
+        if (playEffect)
+            Player.LocalInstance.GetComponent<PlayerFXController>().PlayHitWithBulletFX();
+
+        ChangeHealth(-damage * damageMultiplier);
+    }
+    #endregion
+
+    [Command]
+    public void AddHealth(float value)
+    {
+        ChangeHealth(value);
     }
 
     #region IPersistantData Methods
@@ -104,7 +150,7 @@ public class LocalPlayerStats : MonoBehaviour, IPersistantData
         hudController.UpdateWaterBar(water);
     }
 
-    public void ChangeHealth(float value)
+    private void ChangeHealth(float value)
     {
         if (_inLimbo)
             return;
@@ -139,16 +185,4 @@ public class LocalPlayerStats : MonoBehaviour, IPersistantData
 
         _inLimbo = false;
     }
-
-    #region Commands
-
-    [Command]
-    public void TakeDamage(float damage)
-    {
-        ChangeHealth(-damage);
-        Player.LocalInstance.GetComponent<PlayerFXController>().PlayHitWithBulletFX();
-    }
-
-    #endregion
-
 }

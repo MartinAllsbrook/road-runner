@@ -89,7 +89,7 @@ public class PlayerFXController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
-            _playerStats.ChangeHealth(-0.25f); // This should probably somewhere else? and not be a magic number?
+            _playerStats.DealDamage(LocalPlayerStats.BodyArea.Global, 0.25f, false); // This should probably somewhere else? and not be a magic number?
         }
     }
 

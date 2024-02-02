@@ -17,7 +17,7 @@ public class CharacterData
 
     // Inventory
     public StoredItemID[] StoredItems;
-    public ItemID[] ClothingItems;
+    public ClothingData[] ClothingItems;
 
     public CharacterData()
     {
@@ -28,7 +28,7 @@ public class CharacterData
         Water = 100;
 
         StoredItems = new StoredItemID[0];
-        ClothingItems = new ItemID[0];
+        ClothingItems = new ClothingData[0];
     }
 }
 

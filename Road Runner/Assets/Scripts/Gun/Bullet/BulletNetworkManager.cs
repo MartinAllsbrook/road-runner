@@ -36,7 +36,7 @@ public class BulletNetworkManager : NetworkBehaviour
         Player player = playerNetworkObject.GetComponent<Player>();
 
         if (player.IsOwner) // try IsLocalPlayer too
-            LocalPlayerStats.Instance.TakeDamage(damage);
+            LocalPlayerStats.Instance.DealDamage(LocalPlayerStats.BodyArea.Global, damage, true); // TODO: BodyArea.Global is a placeholder
     }
     #endregion
 

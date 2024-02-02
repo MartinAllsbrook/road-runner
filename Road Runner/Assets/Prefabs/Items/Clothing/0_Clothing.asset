@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82d6d52aed2abb741b335b7a5aed3cfb, type: 3}
   m_Name: 0_Clothing
   m_EditorClassIdentifier: 
-  itemScriptableObjects: []
+  itemScriptableObjects:
+  - {fileID: 11400000, guid: 3c0b075850a9e4046ac41ae4cff96aee, type: 2}

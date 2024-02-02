@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static GlobalItemDictionary;
 
 public class ClothingSlotUI : InventoryUIButton
 {
@@ -10,7 +11,7 @@ public class ClothingSlotUI : InventoryUIButton
 
     [SerializeField] private Sprite emptySlotSprite;
 
-    private ClothingItemSO _clothingItemSO;
+    private ClothingData clothingData;
 
     public enum ClothingSlot
     {
@@ -24,12 +25,16 @@ public class ClothingSlotUI : InventoryUIButton
         Shoes
     }
 
-    public void Set(ClothingItemSO clothingItemSO)
+    public void Set(ClothingData clothingData)
     {
-        _clothingItemSO = clothingItemSO;
+        this.clothingData = clothingData;
+
+        ItemID itemID = clothingData.BaseItemID;
+        ItemSO clothingItemSO = ItemSODictionary[itemID];
+
+        clothingSlotType = clothingData.ClothingSlot;
 
         clothingImage.sprite = clothingItemSO.UISprite;
-        clothingSlotType = clothingItemSO.ClothingSlot;
 
         AddListener();
     }
@@ -43,7 +48,7 @@ public class ClothingSlotUI : InventoryUIButton
 
     protected override void OnClick()
     {
-        Inventory.Instance.RemoveClothingInventory(_clothingItemSO);
+        Inventory.Instance.RemoveClothingInventory(clothingData);
     }
 
 }

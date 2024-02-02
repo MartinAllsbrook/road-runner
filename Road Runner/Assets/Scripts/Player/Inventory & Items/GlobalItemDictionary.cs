@@ -79,6 +79,7 @@ public class GlobalItemDictionary : MonoBehaviour
 
     private void CreateItemDictionary()
     {
+        Debug.Log(" -===============-=-=-=-=================== Creating item dictionary");
         itemSoDictionary = new Dictionary<ItemID, ItemSO>();
 
         ItemSO[] allItemSOs = allItemSOsSO.GetAllItemSOs();

@@ -48,7 +48,11 @@ MonoBehaviour:
   baseItemID: 201
   uniqueItemModel: {fileID: 3314389138075204034}
   inspectPoints: []
-  clothingItemSO: {fileID: 11400000, guid: 3c0b075850a9e4046ac41ae4cff96aee, type: 2}
+  clothingData:
+    baseItemID: 201
+    clothingSlot: 5
+    clothingInventoryDimensions: {x: 10, y: 10}
+    clothingPrefab: {fileID: 4132182957373410520, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
 --- !u!1001 &2356318726976214823
 PrefabInstance:
   m_ObjectHideFlags: 0

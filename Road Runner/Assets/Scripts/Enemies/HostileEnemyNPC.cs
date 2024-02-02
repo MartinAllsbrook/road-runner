@@ -51,8 +51,7 @@ public class HostileEnemyNPC : NavMeshEnemyNPC
     protected void AttackLocalPlayer()
     {
         _nextAttackTime = Time.time + attackCooldown;
-        LocalPlayerStats.Instance.TakeDamage(damage); //Player.LocalPlayerInstance.TakeDamage(damage);
-
+        LocalPlayerStats.Instance.DealDamage(LocalPlayerStats.BodyArea.Global, damage, true); // TODO: BodyArea.Global is a placeholder
 
         PlayAttackEffectsServerRpc();
     }

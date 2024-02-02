@@ -15,7 +15,7 @@ public class StatEffectItem : ConsumableItem
 
         LocalPlayerStats.Instance.ChangeFood(deltaFood);
         LocalPlayerStats.Instance.ChangeWater(deltaWater);
-        LocalPlayerStats.Instance.ChangeHealth(deltaHealth);
+        LocalPlayerStats.Instance.AddHealth(deltaHealth); // Really just a public wrapper for ChangeHealth
 
         base.OnUseItemInput();
 
