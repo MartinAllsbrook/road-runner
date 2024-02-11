@@ -97,6 +97,17 @@ public class LocalPlayerStats : MonoBehaviour, IPersistantData
         }
     }
 
+    public void ChangeResistances(int[] deltaResistances, bool flipValues)
+    {
+        int sign = flipValues ? -1 : 1;
+
+        for (int i = 0; i < resistances.Length; i++)
+        {
+            resistances[i] += deltaResistances[i] * sign;
+            Debug.Log("Resistance changed to " + resistances[i] + " for " + i);
+        }
+    }
+
     [Command]
     public void DealDamage(BodyArea bodyArea, float damage, bool playEffect)
     {

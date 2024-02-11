@@ -260,14 +260,14 @@ public class Inventory : MonoBehaviour, IPersistantData
     {
         if(inventoryHand.BaseItemID == ItemID.Empty)
         {
-            int inventoryKey = (int)clothingData.ClothingSlot;
+            int inventoryKey = (int)clothingData.ClothingSlot + 1;
 
             SetInventoryHand(new UniqueItemID(clothingData.BaseItemID));
 
             DropAllItems(inventoryKey);
             RemoveConnectedInventory(inventoryKey);
 
-            inventoryUI.RemoveClothingSlot(inventoryKey);
+            inventoryUI.RemoveClothingSlot((int) clothingData.ClothingSlot);
 
             clothing.UnequipClothingItem(clothingData); 
         }

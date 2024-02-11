@@ -36,6 +36,9 @@ public class Clothing
     public void UnequipClothingItem(ClothingData clothingData)
     {
         wornClothingData[(int)clothingData.ClothingSlot] = null;
+        LocalPlayerStats.Instance.ChangeResistances(clothingData.Resistances, true);
+        Player.LocalInstance.PlayerClothingVisuals.RemoveClothingModel((int)clothingData.ClothingSlot);
+
     }
 
     public ClothingData[] GetWornClothingData()
