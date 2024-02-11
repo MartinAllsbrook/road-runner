@@ -402,11 +402,7 @@ public class Inventory : MonoBehaviour, IPersistantData
             initialized = true;
         }
 
-        foreach (StoredItemID storedItemID in characterData.StoredItems)
-        {
-            TryFitAnywehere(storedItemID.UniqueItemID);
-        }
-
+        // Load clothing
         foreach (ClothingData savedClothing in characterData.ClothingItems)
         {
             if (savedClothing.BaseItemID == ItemID.Empty) // TODO: This is a temporary fix for the fact that we are saving empty clothing slots
@@ -414,6 +410,12 @@ public class Inventory : MonoBehaviour, IPersistantData
             //ClothingItemSO clothingItemSO = (ClothingItemSO) itemSO;
             UpdateClothingInventory(savedClothing); // TODO: Finish this
 
+        }
+
+        // Load items
+        foreach (StoredItemID storedItemID in characterData.StoredItems)
+        {
+            TryFitAnywehere(storedItemID.UniqueItemID);
         }
     }
 
