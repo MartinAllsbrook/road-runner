@@ -36,6 +36,12 @@ public class Player : NetworkBehaviour
     private PlayerInput playerInput;
     private Rigidbody rigidbodyRef;
     private CameraController cameraController;
+    private PlayerClothingVisuals playerClothingVisuals;
+
+    public PlayerClothingVisuals PlayerClothingVisuals
+    {
+        get { return playerClothingVisuals; }
+    }
 
     // String to start debugs with
     private string debugTag = "<color=#0000ffff>[Player] </color>"; // TODO: Make a debug helper class
@@ -45,6 +51,7 @@ public class Player : NetworkBehaviour
         playerInput = GetComponent<PlayerInput>();
         rigidbodyRef = GetComponent<Rigidbody>();
         cameraController = GetComponent<CameraController>();
+        playerClothingVisuals = GetComponent<PlayerClothingVisuals>();
 
         rigidbodyRef.useGravity = false;
         cameraController.SetLimbo(true);

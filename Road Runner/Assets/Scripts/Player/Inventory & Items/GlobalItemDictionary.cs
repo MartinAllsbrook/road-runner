@@ -50,6 +50,13 @@ public class GlobalItemDictionary : MonoBehaviour
 
         // Clothing 201 - 300
         Clothing_Backpack = 201,
+        Clothing_Hat = 202,
+        Clothing_Vest = 203,
+        Clothing_Shirt = 204,
+        Clothing_Pants = 205,
+        Clothing_Shoes = 206,
+        Clothing_Mask = 207,
+        Clothing_Goggles = 208,
 
         // Ammo & Attachments 301 - 400
         Attachment_M48Magazine = 301, // TODO: Rename to Attachment_M48Magaizne

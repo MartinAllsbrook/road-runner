@@ -14,3 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemScriptableObjects:
   - {fileID: 11400000, guid: 3c0b075850a9e4046ac41ae4cff96aee, type: 2}
+  - {fileID: 11400000, guid: ee832a258c158ef408575e6d1d1bbffe, type: 2}
+  - {fileID: 11400000, guid: d664def9e9c33ba4e93b6f2329bd9869, type: 2}
+  - {fileID: 11400000, guid: aaaeb1ba948dd054f8cf32e6dddd88ce, type: 2}
+  - {fileID: 11400000, guid: 7ee4fd786961fae449583e700b515a3f, type: 2}
+  - {fileID: 11400000, guid: f68951d12e96f9349ba44081ce1ad934, type: 2}
+  - {fileID: 11400000, guid: 92f6e0a7ba53e7f4696eb697666e224a, type: 2}
+  - {fileID: 11400000, guid: 605df709b0426ed4fb043c65cb6452a6, type: 2}

@@ -13,10 +13,24 @@ public class ClothingData
     [SerializeField] private Vector2Int clothingInventoryDimensions;
     [SerializeField] private GameObject clothingPrefab;
 
+    [Header("Resistance")]
+    [SerializeField] private int headResitance;
+    [SerializeField] private int torsoResistance;
+    [SerializeField] private int armsResistance;
+    [SerializeField] private int legsResistance;
+
     public ItemID BaseItemID { get { return baseItemID; } }
     public ClothingSlot ClothingSlot { get { return clothingSlot; } }
     public Vector2Int ClothingInventoryDimensions { get { return clothingInventoryDimensions; } }
     public GameObject ClothingPrefab { get { return clothingPrefab; } }
+    public int[] Resistances 
+    { 
+        get
+        {
+            int[] resistances = new int[] {0, headResitance, torsoResistance, armsResistance, legsResistance};
+            return resistances;
+        }
+    }
 }
 
 public class ClothingItem : ConsumableItem

@@ -92,6 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9143008140980324552}
+  - component: {fileID: 4034532801440345135}
   m_Layer: 0
   m_Name: MP_Goggles
   m_TagString: Untagged
@@ -117,6 +118,19 @@ Transform:
   - {fileID: 4886314299686587282}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4034532801440345135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2361206515925953756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07947e4dbf632e549aa56a40f2b4a538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modificationPoints: []
 --- !u!1 &8307161427452328158
 GameObject:
   m_ObjectHideFlags: 0

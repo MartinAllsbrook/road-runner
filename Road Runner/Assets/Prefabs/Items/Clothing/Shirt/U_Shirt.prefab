@@ -1,66 +1,66 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &407409736824460272
+--- !u!1001 &2806776649695757896
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 685565649957019404}
+    m_TransformParent: {fileID: 2592438027839695163}
     m_Modifications:
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 4897626293382231047, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
+      propertyPath: m_Name
+      value: MP_Shirt
+      objectReference: {fileID: 0}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+    - target: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4132182957373410520, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
-      propertyPath: m_Name
-      value: MP_Backpack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
---- !u!114 &642652206122876181 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
+--- !u!114 &4769696641230494443 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 958211436652670693, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
-  m_PrefabInstance: {fileID: 407409736824460272}
+  m_CorrespondingSourceObject: {fileID: -1962740753892320093, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
+  m_PrefabInstance: {fileID: 2806776649695757896}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -68,12 +68,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07947e4dbf632e549aa56a40f2b4a538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &2095446359431760190 stripped
+--- !u!4 &5524830103218287207 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1780027565745232590, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
-  m_PrefabInstance: {fileID: 407409736824460272}
+  m_CorrespondingSourceObject: {fileID: 7665003184029430831, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
+  m_PrefabInstance: {fileID: 2806776649695757896}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &5594574577817187305
+--- !u!1001 &7483369712026764766
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -122,39 +122,55 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
+      propertyPath: baseItemID
+      value: 204
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
       propertyPath: uniqueItemModel
       value: 
-      objectReference: {fileID: 642652206122876181}
+      objectReference: {fileID: 4769696641230494443}
+    - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
+      propertyPath: clothingData.baseItemID
+      value: 204
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
+      propertyPath: clothingData.clothingSlot
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
+      propertyPath: clothingData.armsResistance
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
       propertyPath: clothingData.clothingPrefab
       value: 
-      objectReference: {fileID: 4132182957373410520, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
+      objectReference: {fileID: 4897626293382231047, guid: 8424efef614718b44a6dfd5dbbf849aa, type: 3}
     - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
       propertyPath: clothingData.torsoResistance
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
       propertyPath: clothingData.clothingInventoryDimensions.x
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5961890721052885514, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
       propertyPath: clothingData.clothingInventoryDimensions.y
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7449846098560375984, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
       propertyPath: m_Name
-      value: U_Backpack
+      value: U_Shirt
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4909053045890657509, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2095446359431760190}
+      addedObject: {fileID: 5524830103218287207}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
---- !u!4 &685565649957019404 stripped
+--- !u!4 &2592438027839695163 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4909053045890657509, guid: ffe8455ec79744e4394733d30e122c2f, type: 3}
-  m_PrefabInstance: {fileID: 5594574577817187305}
+  m_PrefabInstance: {fileID: 7483369712026764766}
   m_PrefabAsset: {fileID: 0}

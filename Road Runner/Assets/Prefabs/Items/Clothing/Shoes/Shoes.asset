@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
-  m_Name: Backpack
+  m_Name: Shoes
   m_EditorClassIdentifier: 
-  itemID: 201
+  itemID: 206
   maxModifications: 0
   maxCounterCount: 0
   defaultModifications: 
   defaultCounterItem: 0
   defaultCounterCount: 0
   validCounterTypes: 
-  itemPickupPrefab: {fileID: 2771929494867383981, guid: b46e3b89704c21e479631227055c5298, type: 3}
-  useableItemPrefab: {fileID: 2242528637523292643, guid: d6500dbed29067243ab86acbfaa26c9f, type: 3}
-  modelPrefab: {fileID: 958211436652670693, guid: 7e14c6181b716114eb52a7393bd5b57c, type: 3}
-  uiSprite: {fileID: 21300000, guid: de58aef791d483048973d5fda6c98fdf, type: 3}
-  inventoryDimensions: {x: 2, y: 2}
+  itemPickupPrefab: {fileID: 4659075359193189859, guid: e2a924299a7253943869dbd63fae7f95, type: 3}
+  useableItemPrefab: {fileID: 3847940087128770516, guid: 7fa08d30a974f79409e1dfd6173f5fac, type: 3}
+  modelPrefab: {fileID: 3110223379826392736, guid: ae79137b6dfe6bd4b99673ac865d3d33, type: 3}
+  uiSprite: {fileID: 0}
+  inventoryDimensions: {x: 2, y: 1}

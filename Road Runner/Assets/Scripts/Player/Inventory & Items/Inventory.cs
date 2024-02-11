@@ -27,11 +27,12 @@ public class Inventory : MonoBehaviour, IPersistantData
     
     private StoredItemID usingItem; // The item being used by the player
 
+    public Clothing clothing = new Clothing(8);
+
     // Inventories
     private Hotbar hotbar;
     private Dictionary<int, ConnectedInventory> connectedInventories;
     // private ItemID[] wornClothingIDs;
-    private ClothingData[] wornClothingData;
 
     private InventoryUI inventoryUI;
 
@@ -42,7 +43,7 @@ public class Inventory : MonoBehaviour, IPersistantData
     {
         get { return initialized; }
     }
-
+    
     private string debugTag = LogColors.GetColoredTag("[Inventory]", LogColors.InventoryColor);
     #endregion
 
@@ -237,7 +238,7 @@ public class Inventory : MonoBehaviour, IPersistantData
     public void UpdateClothingInventory(ClothingData clothingData)
     {
         Debug.Log(debugTag + "Updating clothing inventory for: " + clothingData.ClothingSlot);
-        int inventoryKey = (int) clothingData.ClothingSlot;
+        int inventoryKey = (int) clothingData.ClothingSlot + 1;
 
         if (connectedInventories.ContainsKey(inventoryKey))
         {
@@ -252,7 +253,7 @@ public class Inventory : MonoBehaviour, IPersistantData
         inventoryUI.CreateInventoryDisplay(inventoryKey, clothingData.ClothingInventoryDimensions);
         inventoryUI.SetClothingSlot(clothingData);
 
-        wornClothingData[inventoryKey - 1] = clothingData;
+        clothing.EquipClothingItem(clothingData);
     }
 
     public void RemoveClothingInventory(ClothingData clothingData)
@@ -268,7 +269,7 @@ public class Inventory : MonoBehaviour, IPersistantData
 
             inventoryUI.RemoveClothingSlot(inventoryKey);
 
-            wornClothingData[inventoryKey - 1] = null; // TODO: how does this work This is a temporary fix for the fact that we are saving empty clothing slots
+            clothing.UnequipClothingItem(clothingData); 
         }
     }
     #endregion
@@ -393,11 +394,12 @@ public class Inventory : MonoBehaviour, IPersistantData
             SetInventoryHand(new UniqueItemID());
             CreateHotbar();
 
-            wornClothingData = new ClothingData[numClothingSlots];
+            // TODO: Maybe initialize clothing here but I think it will be constructed when the variable is declared
+            /*wornClothingData = new ClothingData[numClothingSlots];
             for (int i = 0; i < wornClothingData.Length; i++)
             {
                 wornClothingData[i] = null;
-            }
+            }*/
 
             initialized = true;
         }
@@ -433,14 +435,14 @@ public class Inventory : MonoBehaviour, IPersistantData
 
         characterData.StoredItems = allStoredItems.ToArray();
 
-        ClothingData[] savedClothing = new ClothingData[numClothingSlots];
-        for (int i = 0; i < wornClothingData.Length; i++)
+        ClothingData[] savedClothing = clothing.GetWornClothingData();
+/*        for (int i = 0; i < wornClothingData.Length; i++)
         {
             if (wornClothingData[i] != null)
             {
                 savedClothing[i] = wornClothingData[i];
             }
-        }
+        }*/
         characterData.ClothingItems = savedClothing;
     }
 
