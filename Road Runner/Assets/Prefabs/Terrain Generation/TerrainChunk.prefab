@@ -68,11 +68,11 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 04c1c9e7e7155804eb15d71e9e190ea0, type: 2}
+  - {fileID: 2100000, guid: 0264baf54839f844ea4a01e0bfc4c9a7, type: 2}
   - {fileID: 2100000, guid: 26aacfe2eb09f1d44be1eb092eef3947, type: 2}
   - {fileID: 2100000, guid: 00729ca263e5bfd4885c1bbfdbb98ed0, type: 2}
   - {fileID: 2100000, guid: 59f22f1b113a44344a5ce13f808d1f05, type: 2}
   - {fileID: 2100000, guid: c3fccdafb250695499a78b696be33c89, type: 2}
-  - {fileID: 2100000, guid: 0264baf54839f844ea4a01e0bfc4c9a7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
   - 2
   - 6
   densityRedistributionFactor: 2
-  maxDensity: 200
+  maxDensity: 100
 --- !u!114 &579378374016420805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeUniformity: 1.25
-  numTrees: 32
+  numTrees: 64
   treeGroups: []
   minHeight: 0
 --- !u!114 &1960182261219912635

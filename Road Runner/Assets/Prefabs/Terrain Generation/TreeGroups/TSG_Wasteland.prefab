@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1226610181010314678
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 436557751262670841}
+  - component: {fileID: 582464161058517568}
+  m_Layer: 0
+  m_Name: TSG_Wasteland
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &436557751262670841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226610181010314678}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &582464161058517568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226610181010314678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80a482e09cb2c474d8be1781d39b9709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numTrees: 500
+  treesToPlace:
+  - {fileID: 5779353114879210720, guid: 76cf35840a984384b85b9c879ff08aeb, type: 3}
+  - {fileID: 1295099816564040286, guid: bc983bf933dbd9b4f99c2dce4e38b3f9, type: 3}
+  - {fileID: 6182537902941663824, guid: 8b6051ca56d7f9b4083b62338eed2d75, type: 3}
+  - {fileID: 308989878762116265, guid: b105a04db7755f14e80caebffff6edd1, type: 3}
+  - {fileID: 5665051609304106738, guid: 97fb3233c609ed545b2ae13f082a596e, type: 3}
+  - {fileID: 1837301210300712447, guid: 89a6f1bc4b7f0fe46aefe2ceaa5c55a8, type: 3}
+  - {fileID: 3621240259583596763, guid: 06cf48de8fb993240a0cf75e0488a1c5, type: 3}
+  - {fileID: 1337108901918474, guid: da41fd2967a439d409358c2214a5409e, type: 3}
+  - {fileID: 1150461584060438, guid: 836ca07fc69b4184ca14265c7d24030d, type: 3}
+  - {fileID: 1371598241635088, guid: 3a33ce58c20826a4ea7253f84444654b, type: 3}
+  - {fileID: 1106205639809762, guid: c53e680fdc8fae04d91b4ce9e548d2df, type: 3}
+  - {fileID: 1577774656813920813, guid: 11f6ee165d5c5194bb9100ac7cfadeef, type: 3}
+  - {fileID: 1577774656813920813, guid: f610f239e48bea445b18dc0e23ffecd7, type: 3}
+  trees: []
