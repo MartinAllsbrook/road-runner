@@ -134,4 +134,18 @@ public class UseableItem : MonoBehaviour
     }
 
     #endregion
+
+    protected void AlertEnemiesInRangeOfSound(float soundRange)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, soundRange, LayerMask.GetMask("Enemy NPC"));
+
+        foreach (Collider collider in colliders)
+        {
+            NavMeshEnemyNPC enemy = collider.GetComponent<NavMeshEnemyNPC>();
+            if (enemy != null)
+            {
+                enemy.OnSoundHeard();
+            }
+        }
+    }
 }

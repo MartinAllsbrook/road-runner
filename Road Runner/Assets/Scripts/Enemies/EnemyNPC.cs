@@ -4,6 +4,14 @@ using Unity.IO.LowLevel.Unsafe;
 using Unity.Netcode;
 using UnityEngine;
 
+/// <summary>
+/// The base class for all enemy NPCs
+/// 
+/// Has funtionality for:
+/// Spawning
+/// Taking damage
+/// Dieing
+/// </summary>
 public class EnemyNPC : SpawnedObject
 {
     [Header("Enemy Stats")]

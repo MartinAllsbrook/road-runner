@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3301743255
+  GlobalObjectIdHash: 1261692053
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -167,8 +167,6 @@ MonoBehaviour:
   maxHealth: 100
   deathEffects: {fileID: 5660273623069248526, guid: 283756586f93d9646857f11396fbfee9, type: 3}
   agent: {fileID: 6463423080979344466}
-  patrolCenter: {x: 0, y: 0, z: 0}
-  maxPatrolDistance: 32
   visionRange: 32
   visionOrigin: {fileID: 1372077868432618164}
   visionAngle: 45
@@ -178,6 +176,9 @@ MonoBehaviour:
   localPayer:
     serializedVersion: 2
     m_Bits: 64
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 65536
 --- !u!195 &6463423080979344466
 NavMeshAgent:
   m_ObjectHideFlags: 0

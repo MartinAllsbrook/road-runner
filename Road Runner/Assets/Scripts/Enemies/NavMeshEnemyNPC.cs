@@ -5,19 +5,23 @@ using UnityEngine.AI;
 using QFSW.QC;
 using Unity.Netcode;
 
+/// <summary>
+/// Extends the EnemyNPC class to add NavMeshAgent functionality, and vision functionality 
+/// </summary>
 public class NavMeshEnemyNPC : EnemyNPC
 {
     [SerializeField] private NavMeshAgent agent;
 
     private Vector3 patrolCenter = new Vector3(0, 0, 0);
     private float maxPatrolDistance = 32f;
-
+    private float communicationRange = 32f;
     [Header("Vision")]
     [SerializeField] private float visionRange = 32f;
     [SerializeField] private Transform visionOrigin;
     [SerializeField] private float visionAngle = 90f;
     [Tooltip("Everything the enemy can see except the LocalPlayer layer")] [SerializeField] private LayerMask canSee;
     [Tooltip("The LocalPlayer layer")] [SerializeField] private LayerMask localPayer;
+    [Tooltip("Enemy Layer")] [SerializeField] private LayerMask enemyLayer;
 
     protected bool _canSeeLocalPlayer = false;
 
@@ -45,6 +49,16 @@ public class NavMeshEnemyNPC : EnemyNPC
 
         if (_canSeeLocalPlayer)
         {
+
+            // Alert other nearby bots
+            Collider[] nearbyBots = Physics.OverlapSphere(transform.position, communicationRange, enemyLayer);
+            foreach (Collider bot in nearbyBots)
+            {
+                if (bot.TryGetComponent(out NavMeshEnemyNPC enemyNPC))
+                {
+                    enemyNPC.OnAlertRecived();
+                }
+            }
             SetTargetToLocalPlayer();
         }
 
@@ -136,4 +150,28 @@ public class NavMeshEnemyNPC : EnemyNPC
         NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, maxPatrolDistance, 1);
         agent.SetDestination(hit.position);
     }
+
+    #region Public Communication Methods
+
+    public void OnAlertRecived()
+    {
+        SetTargetToLocalPlayer();
+    }
+
+    public void OnAlertRecived(Vector3 targetPosition)
+    {
+        SetTargetPositionServerRpc(targetPosition);
+    }
+
+    public void OnSoundHeard()
+    {
+        SetTargetToLocalPlayer();
+    }
+
+    public void OnSoundHeard(Vector3 soundPosition)
+    {
+        SetTargetPositionServerRpc(soundPosition);
+    }
+
+    #endregion
 }

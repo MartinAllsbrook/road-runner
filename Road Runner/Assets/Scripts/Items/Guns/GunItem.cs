@@ -21,7 +21,10 @@ public class GunItem : UseableItem
     [SerializeField] private int bulletSpeed;
     [SerializeField] private float zoom = 1.4f;
 
-    [Header("Gun Accuracy")]
+    [Header("Gun Stats For Enemies")]
+    [SerializeField] private float soundRangeForEnemies = 64f;
+
+    [Header("Gun Accuracy")] 
     [SerializeField] private float minInaccuracy = 0.05f;
     [SerializeField] private float maxInaccuracy = 1f;
     [SerializeField] private float inaccuracyIncreasePercentPerShot = 0.1f;
@@ -134,6 +137,7 @@ public class GunItem : UseableItem
     {
         CreateBullet(accuracy);
         IncreaseInaccuracy();
+        AlertEnemiesInRangeOfSound(soundRangeForEnemies);
         parentItemController.UseServerRpc();
     }
 
