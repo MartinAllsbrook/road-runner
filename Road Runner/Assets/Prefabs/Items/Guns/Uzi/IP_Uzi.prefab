@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: IP_Uzi
       objectReference: {fileID: 0}
+    - target: {fileID: 468634300026227880, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_TagString
+      value: Item Pickup
+      objectReference: {fileID: 0}
     - target: {fileID: 3513500745005336924, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -62,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 7498567252361556106}
     - target: {fileID: 7873834179909757354, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3141659027
+      value: 1920728391
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

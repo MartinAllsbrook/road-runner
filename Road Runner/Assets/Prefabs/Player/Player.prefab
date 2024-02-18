@@ -5457,7 +5457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3601959125
+  GlobalObjectIdHash: 229663110
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -5566,12 +5566,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxItemPickupDistance: 5
-  isItemPickup:
+  isInteractable:
     serializedVersion: 2
     m_Bits: 512
-  isVehicle:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &1150016554729849836
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 2633906737434653442}
   - component: {fileID: 5023883099460024084}
   m_Layer: 9
-  m_Name: IP_
-  m_TagString: Untagged
+  m_Name: IP_Base
+  m_TagString: Item Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 856811396
+  GlobalObjectIdHash: 3707783561
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -70,7 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9358281b69f9f674d8d4fcb2a5af5440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSo: {fileID: 0}
+  baseItemID: 0
+  uniqueItemModel: {fileID: 0}
 --- !u!65 &8798568433039852657
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,22 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class TreeManager : MonoBehaviour
+public class TreeManager : NetworkBehaviour
 {
     public static TreeManager Instance;
     
-    private TreeGroup[] baseTreeGroups;
-    private TreeGroup[] treeGroups;
+    private TreeGroup[] baseTreeGroups; // To be instantiated
+    private TreeGroup[] availableTreeGroups; // Tree groups with available trees
+    private List<TreeGroup> generatedTreeGroupsList; // Tree groups that have been generated
+    //private TreeGroup[] treeGroups; // Tree groups that have been generated stored in an array for easy access
 
-    public void Initialize(Biome[] biomes)
+    private int nextTreeGroupIndex = 0;
+
+    public async void Initialize(Biome[] biomes)
     {
         if (Instance == null)
             Instance = this;
 
         baseTreeGroups = new TreeGroup[biomes.Length];
-        treeGroups = new TreeGroup[biomes.Length];
+        availableTreeGroups = new TreeGroup[biomes.Length];
+        generatedTreeGroupsList = new List<TreeGroup>();
 
         for (int i = 0;i < biomes.Length;i++)
         {
@@ -26,27 +32,60 @@ public class TreeManager : MonoBehaviour
 
         for (int i = 0; i < baseTreeGroups.Length; i++)
         {
-            treeGroups[i] = Instantiate(baseTreeGroups[i], transform);
+            CreateNewTreeGroup(i);
         }
     }
 
-    public void PlaceTree(Vector3 position, Quaternion rotation, int i)
+    private TreeGroup CreateNewTreeGroup(int biomeIndex)
     {
-        GameObject tree = treeGroups[i].GetTree();
+        TreeGroup newTreeGroup = Instantiate(baseTreeGroups[biomeIndex], transform);
+        
+        availableTreeGroups[biomeIndex] = newTreeGroup;        
+        generatedTreeGroupsList.Add(newTreeGroup);
+
+        availableTreeGroups[biomeIndex].TreeGroupIndex = nextTreeGroupIndex;
+        nextTreeGroupIndex++;
+
+        return newTreeGroup;
+    }
+
+    public void PlaceTree(Vector3 position, Quaternion rotation, int biomeIndex)
+    {
+        InteractiveScatter tree = availableTreeGroups[biomeIndex].GetTree();
 
         if (tree)
         {
-            tree.SetActive(true);
             tree.transform.rotation = rotation;
             tree.transform.position = position;
         }
         else // Make new tree group to place new trees
-        {
-            treeGroups[i] = Instantiate(baseTreeGroups[i].gameObject, transform).GetComponent<TreeGroup>();
-            tree = treeGroups[i].GetTree();
-            tree.SetActive(true);
+        { 
+            TreeGroup newTreeGroup = CreateNewTreeGroup(biomeIndex);
+            tree = newTreeGroup.GetTree();
             tree.transform.rotation = rotation;
             tree.transform.position = position;
         }
+
+    }
+
+    public void ConsumeScatter(ScatterAddress scatterAddress)
+    {
+        ConsumeScatterServerRPC(scatterAddress.groupIndex, scatterAddress.treeIndex);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ConsumeScatterServerRPC(int groupIndex, int scatterIndex)
+    {
+        ConsumeScatterClientRPC(groupIndex, scatterIndex);
+    }
+
+    [ClientRpc]
+    private void ConsumeScatterClientRPC(int groupIndex, int scatterIndex)
+    {
+        InteractiveScatter scatter = generatedTreeGroupsList[groupIndex].Scatter[scatterIndex];
+        
+        scatter.gameObject.SetActive(false);
+    
+        // TODO: Somehow reactivate scatter after a while
     }
 }

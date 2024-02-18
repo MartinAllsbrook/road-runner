@@ -85,6 +85,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: IP_BennelliM4
       objectReference: {fileID: 0}
+    - target: {fileID: 468634300026227880, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_TagString
+      value: Item Pickup
+      objectReference: {fileID: 0}
     - target: {fileID: 3513500745005336924, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -135,7 +139,7 @@ PrefabInstance:
       objectReference: {fileID: 2744341871050128567}
     - target: {fileID: 7873834179909757354, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3440245531
+      value: 659853911
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

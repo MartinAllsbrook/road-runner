@@ -85,6 +85,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: IP_M4-8
       objectReference: {fileID: 0}
+    - target: {fileID: 468634300026227880, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_TagString
+      value: Item Pickup
+      objectReference: {fileID: 0}
     - target: {fileID: 3513500745005336924, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -135,7 +139,7 @@ PrefabInstance:
       objectReference: {fileID: 3517769447597453277}
     - target: {fileID: 7873834179909757354, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 332786511
+      value: 2620550036
       objectReference: {fileID: 0}
     - target: {fileID: 8798568433039852657, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: m_Size.x

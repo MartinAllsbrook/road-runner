@@ -11,6 +11,8 @@ TagManager:
   - Sheltered Area
   - Bullet Crack
   - Enemy NPC
+  - Item Pickup
+  - Interactive Scatter
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - Local Player
   - Remote Player
   - Bullet
-  - ItemPickup
+  - Interactable
   - Vehicle
   - Medium Scatter & Props
   - Small Scatter & Props

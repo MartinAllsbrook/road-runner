@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: IP_M4-8 Iron Sights
       objectReference: {fileID: 0}
+    - target: {fileID: 468634300026227880, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
+      propertyPath: m_TagString
+      value: Item Pickup
+      objectReference: {fileID: 0}
     - target: {fileID: 3513500745005336924, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -62,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 4569583049132857863}
     - target: {fileID: 7873834179909757354, guid: 5c325b58d6ab1644b84944b8fd5b6154, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1424847323
+      value: 3393656871
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

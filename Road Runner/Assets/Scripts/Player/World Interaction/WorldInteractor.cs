@@ -8,12 +8,9 @@ public class WorldInteractor : MonoBehaviour, ILocalOnlyBehavior
 {
     [Header("World Interaction")]
     [SerializeField] private float maxItemPickupDistance;
-    [SerializeField] private LayerMask isItemPickup;
-    [SerializeField] private LayerMask isVehicle;
+    [SerializeField] private LayerMask isInteractable;
 
     private Transform mainCamera;
-
-    private VehicleInteractionController vehicle; // LAMO imma have to come back to vehicles big time
 
     public void Initialize()
     {
@@ -34,10 +31,20 @@ public class WorldInteractor : MonoBehaviour, ILocalOnlyBehavior
         Ray ray = new Ray(mainCamera.position, mainCamera.forward);
         RaycastHit raycastHit;
 
-        if (Physics.Raycast(ray, out raycastHit, maxItemPickupDistance, isItemPickup))
+        if (Physics.Raycast(ray, out raycastHit, maxItemPickupDistance, isInteractable))
         {
-            ItemPickup itemPickup = raycastHit.transform.GetComponent<ItemPickup>();
-            Inventory.Instance.TryPickUpItem(itemPickup);
+            Debug.Log("Raycast Hit: " + raycastHit.transform.name);
+            if(raycastHit.transform.CompareTag("Item Pickup"))
+            {
+                ItemPickup itemPickup = raycastHit.transform.GetComponent<ItemPickup>();
+                Inventory.Instance.TryPickUpItem(itemPickup);
+            }
+            
+            if (raycastHit.transform.CompareTag("Interactive Scatter"))
+            {
+                InteractiveScatter interactiveScatter = raycastHit.transform.GetComponent<InteractiveScatter>();
+                interactiveScatter.Interact();
+            }
         }
     }
 }
