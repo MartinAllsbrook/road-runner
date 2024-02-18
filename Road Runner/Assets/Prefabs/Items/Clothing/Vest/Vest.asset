@@ -22,5 +22,5 @@ MonoBehaviour:
   itemPickupPrefab: {fileID: 4659075359193189859, guid: 5a539b1b4e98e7941ae4cf3d342d0cd4, type: 3}
   useableItemPrefab: {fileID: 3847940087128770516, guid: e9d591578d49c7345a35dd16473a50c2, type: 3}
   modelPrefab: {fileID: 4929079665730792222, guid: ccd48b60d304cc049891615b5e3a4766, type: 3}
-  uiSprite: {fileID: 0}
+  uiSprite: {fileID: 21300000, guid: 68de755f59cc2bf43bce5bab1c32a532, type: 3}
   inventoryDimensions: {x: 1, y: 1}
