@@ -7,11 +7,13 @@ public class PointWithInputs : InspectPoint
 {
     [SerializeField] protected AllowedItemInputsSO allowedModificationsSO;
 
+    private PointWithInputsUI pointWithInputsUI;
+
     private StoredItemID[] _itemsThatFit;
 
     public virtual void SelectOption(StoredItemID item)
     {
-        
+        pointWithInputsUI.RemoveItemOptionUI(item);
     }
 
     public override InspectPointUIElement CreateInspectHUDElement(Transform hudTransform)
@@ -19,10 +21,10 @@ public class PointWithInputs : InspectPoint
         // Find and display all items that fit the allowed modifications
         _itemsThatFit = FindItemsThatFit(allowedModificationsSO.AllowedModifications);
 
-        PointWithInputsUI pointWithInputsUI = (PointWithInputsUI)base.CreateInspectHUDElement(hudTransform);
+        pointWithInputsUI = (PointWithInputsUI)base.CreateInspectHUDElement(hudTransform);
         foreach (StoredItemID item in _itemsThatFit)
         {
-            pointWithInputsUI.SpawnItemOptionUI(item, SelectOption);
+            pointWithInputsUI.AddItemOptionUI(item, SelectOption);
         }
 
         return pointWithInputsUI;

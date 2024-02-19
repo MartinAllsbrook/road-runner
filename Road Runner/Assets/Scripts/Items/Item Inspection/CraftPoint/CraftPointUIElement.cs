@@ -30,11 +30,11 @@ public class CraftPointUIElement : PointWithInputsUI
         inputedItems.Add(itemUI);
     }
 
-    public void RemoveItemFromInputUI(UniqueItemID item)
+    public void RemoveItemFromInputUI(StoredItemID item)
     {
         foreach (ItemOptionUI itemUI in inputedItems)
         {
-            if (itemUI.AssociatedItem.UniqueItemID == item)
+            if (itemUI.AssociatedItem == item)
             {
                 inputedItems.Remove(itemUI);
                 Destroy(itemUI.gameObject);

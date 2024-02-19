@@ -7,34 +7,47 @@ public class CraftPoint : PointWithInputs
 {
     [SerializeField] private CraftingRecipiesSO craftingRecipies;
 
-    private CraftPointUIElement uiElement;
+    private CraftPointUIElement craftPointUI;
 
-    private List<UniqueItemID> currentItems = new List<UniqueItemID>();
+    private List<StoredItemID> currentItems = new List<StoredItemID>();
 
     public override InspectPointUIElement CreateInspectHUDElement(Transform hudTransform)
     {
-        uiElement = base.CreateInspectHUDElement(hudTransform) as CraftPointUIElement;
+        craftPointUI = base.CreateInspectHUDElement(hudTransform) as CraftPointUIElement;
 
-        uiElement.InitializeCraftUI(TryCraft);
+        craftPointUI.InitializeCraftUI(TryCraft);
 
-        return uiElement;
+        return craftPointUI;
     }
-    
+
+    public override void DestroyUIElement()
+    {
+        StoredItemID[] currentItemsCopy = currentItems.ToArray();
+        foreach (StoredItemID item in currentItemsCopy)
+        {
+            RemoveItemFromList(item);
+        }
+        base.DestroyUIElement();
+    }
+
     // Add the item to the current items list
     public override void SelectOption(StoredItemID item)
     {
         // Add the item to the current items list
-        currentItems.Add(item.UniqueItemID);
-        uiElement.AddItemToInputUI(item, RemoveItemFromList);
+        currentItems.Add(item);
+        craftPointUI.AddItemToInputUI(item, RemoveItemFromList);
 
         // Remove the item from the inventory
         Inventory.Instance.RemoveItem(item);
+
+        base.SelectOption(item);
     }
 
     private void RemoveItemFromList(StoredItemID item)
     {
-        currentItems.Remove(item.UniqueItemID);
-        uiElement.SpawnItemOptionUI(item, SelectOption);
+        currentItems.Remove(item);
+        craftPointUI.AddItemOptionUI(item, SelectOption);
+        craftPointUI.RemoveItemFromInputUI(item);
         // Remove the item from the inventory
         Inventory.Instance.AddItem(item.UniqueItemID);
     }
@@ -53,9 +66,9 @@ public class CraftPoint : PointWithInputs
 
             // Create a copy of the current items list as ItemID (Also allows us to remove items from the list)
             List<ItemID> currentItemsCopy = new List<ItemID>();
-            foreach (UniqueItemID item in currentItems)
+            foreach (StoredItemID item in currentItems)
             {
-                currentItemsCopy.Add(item.BaseItemID);
+                currentItemsCopy.Add(item.UniqueItemID.BaseItemID);
             }
 
             // Check if all the required items are in the current items list
@@ -85,9 +98,9 @@ public class CraftPoint : PointWithInputs
 
     private void CraftItem(CraftingRecipie recipie)
     {
-        foreach (UniqueItemID item in currentItems)
+        foreach (StoredItemID item in currentItems)
         {
-            uiElement.RemoveItemFromInputUI(item);
+            craftPointUI.RemoveItemFromInputUI(item);
         }
         // Clear current items list (Items were removed from the inventory when added to list)
         currentItems.Clear();

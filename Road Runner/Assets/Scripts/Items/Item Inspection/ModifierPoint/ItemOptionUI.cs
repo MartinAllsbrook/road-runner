@@ -37,6 +37,6 @@ public class ItemOptionUI : MonoBehaviour
     {
         _callBack?.Invoke(_associatedItem); // Replacing line below
         //_associatedPoint.SelectOption(_associatedItem);
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }

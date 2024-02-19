@@ -18,5 +18,7 @@ public class ModifierPoint : PointWithInputs
     public override void SelectOption(StoredItemID item)
     {
         itemSelectEvent.Invoke(item, modificationSlotIndex);
+
+        base.SelectOption(item);
     }
 }
