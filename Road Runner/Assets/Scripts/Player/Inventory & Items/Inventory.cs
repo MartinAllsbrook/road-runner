@@ -200,6 +200,11 @@ public class Inventory : MonoBehaviour, IPersistantData
         return true;
     }
 
+    public void RemoveItem(StoredItemID storedItemID)
+    {
+        RemoveItem(storedItemID.InventoryKey, storedItemID.ItemKey);
+    }
+
     public StoredItemID RemoveItem(int inventoryKey, int itemKey)
     {
         Debug.Log(debugTag + "Removing item from inventory: " + inventoryKey + ", item: " + itemKey);
@@ -212,6 +217,8 @@ public class Inventory : MonoBehaviour, IPersistantData
 
         return retrievedItem;
     }
+
+ 
 
     private int GetAvailableIndex()
     {

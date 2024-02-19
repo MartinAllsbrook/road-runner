@@ -10,20 +10,14 @@ public class UsePointUIElement : InspectPointUIElement
     [SerializeField] private Button useButton;
     [SerializeField] private TextMeshProUGUI callToActionText;
 
-    protected UsePoint _usePoint;
+    public delegate void GenericDelegate();
+    protected GenericDelegate _callBack;
 
-    public override void GenericSet<T>(T point)
-    {
-        base.GenericSet(point);
-
-        UsePoint usePoint = point as UsePoint;
-
-        _usePoint = usePoint;
-        SetUsePoint(usePoint.CallToAction);
-    }
-    private void SetUsePoint(string callToAction)
+    public void SetUsePoint(string callToAction, GenericDelegate callBack)
     {
         useButton.onClick.AddListener(OnUseClicked);
+
+        _callBack = callBack;
 
         SetCallToAction(callToAction);
     }
@@ -31,7 +25,7 @@ public class UsePointUIElement : InspectPointUIElement
     private void OnUseClicked()
     {
         Debug.Log("Use clicked");
-        _usePoint.Use();
+        _callBack.Invoke();
     }
 
     private void SetCallToAction(string callToAction)

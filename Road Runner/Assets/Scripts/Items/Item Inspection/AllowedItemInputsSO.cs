@@ -5,8 +5,8 @@ using UnityEngine;
 using static GlobalItemDictionary;
 
 [Serializable]
-[CreateAssetMenu(fileName = "AllowedModifications", menuName = "ScriptableObjects/Items/Allowed Modification List")]
-public class AllowedModificationsSO : ScriptableObject
+[CreateAssetMenu(fileName = "NewItemInputList", menuName = "Items/Allowed Input List")]
+public class AllowedItemInputsSO : ScriptableObject
 {
     [SerializeField] private ItemID[] allowedModifications;
 

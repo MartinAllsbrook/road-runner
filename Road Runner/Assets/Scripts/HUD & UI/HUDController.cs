@@ -31,14 +31,7 @@ public class HUDController : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource hitMarkerAudio;
 
-    [Header("Inputs")]
-    [SerializeField] private KeyCode pauseKey = KeyCode.Escape;
-    [SerializeField] private KeyCode inventoryKey = KeyCode.E;
-    [SerializeField] private KeyCode mapKey = KeyCode.M;
 
-    private bool escMenuOpen = true;
-    private bool inventoryOpen = false;
-    private bool mapOpen = false;
 
     private void Awake()
     {
@@ -46,11 +39,6 @@ public class HUDController : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
-    }
-
-    private void Update()
-    {
-
     }
 
     #region Item Inspector HUD
@@ -66,59 +54,6 @@ public class HUDController : MonoBehaviour
         itemInspectorHUD.gameObject.SetActive(false);
     }
     #endregion
-
-    // TODO: Move this to the UI Manager
-/*    #region Stuff the should be in the UI Manager
-    public void ToggleEscMenu()
-    {
-        if (!escMenuOpen)
-        {
-            escMenuOpen = true;
-            pauseMenu.SetActive(true);
-            PlayerSpawner.localPlayerSpawner.Pause();
-        }
-        else
-        {
-            escMenuOpen = false;
-            pauseMenu.SetActive(false);
-            PlayerSpawner.localPlayerSpawner.Unpause();
-        }
-    }
-
-    private void ToggleInvetory()
-    {
-        if (!inventoryOpen)
-        {
-            inventoryOpen = true;
-            //inventoryDisplay.gameObject.SetActive(true);
-            PlayerSpawner.localPlayerSpawner.Pause();
-        }
-        else
-        {
-            inventoryOpen = false;
-            //inventoryDisplay.gameObject.SetActive(false);
-            PlayerSpawner.localPlayerSpawner.Unpause();
-        }
-    }
-
-    private void ToggleMap()
-    {
-        if (!mapOpen)
-        {
-            mapOpen = true;
-            mapCamera.SetActive(true);
-            map.SetActive(true);
-            PlayerSpawner.localPlayerSpawner.Pause();
-        }
-        else
-        {
-            mapOpen = false;
-            mapCamera.SetActive(false);
-            map.SetActive(false);
-            PlayerSpawner.localPlayerSpawner.Unpause();
-        }
-    }
-    #endregion*/
 
     #region Gun HUD Stuff
     public void SetAmmoCountDisplay(int ammoCount, int maxAmmoCount)

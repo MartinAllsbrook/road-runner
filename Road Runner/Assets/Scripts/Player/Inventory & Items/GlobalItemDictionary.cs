@@ -47,6 +47,7 @@ public class GlobalItemDictionary : MonoBehaviour
         Consumable_Beans = 103,
         Consumable_Medkit = 104,
         Consumable_Pills = 105,
+        Consumable_Egg = 106,
 
         // Clothing 201 - 300
         Clothing_Backpack = 201,
@@ -69,6 +70,9 @@ public class GlobalItemDictionary : MonoBehaviour
 
         // Ammo 401 - 500, Kinda just for testing rn
         Bullet_556 = 401,
+
+        // Tools 501 - 600
+        Tool_FryingPan = 501,
     }
 
     private void Awake()

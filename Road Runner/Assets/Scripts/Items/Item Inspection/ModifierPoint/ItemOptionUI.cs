@@ -5,32 +5,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using static GlobalItemDictionary;
 
-public class ModifierPointOption : MonoBehaviour
+// TODO: Needs to be renamed to PointItemOption
+public class ItemOptionUI : MonoBehaviour 
 {
     [SerializeField] private Image itemImage;
     [SerializeField] private TextMeshProUGUI countText;
     [SerializeField] private Button button;
 
     private StoredItemID _associatedItem;
-    private ModifierPoint _associatedPoint;
+    public StoredItemID AssociatedItem => _associatedItem;
 
-    public void SetItemOption(StoredItemID item, ModifierPoint point)
+    public delegate void GenericDelegate<T>(T variable);
+    private GenericDelegate<StoredItemID> _callBack;
+
+    public void SetItemOption(StoredItemID item, GenericDelegate<StoredItemID> callBack)
     {
         Sprite sprite = ItemSODictionary[item.UniqueItemID.BaseItemID].UISprite;
         int count = item.UniqueItemID.CounterCount;
+
+        _callBack = callBack;
 
         itemImage.sprite = sprite;
         countText.text = count.ToString();
 
         _associatedItem = item;
-        _associatedPoint = point;
 
         button.onClick.AddListener(OnItemOptionClicked);
     }
 
     private void OnItemOptionClicked()
     {
-        _associatedPoint.SelectOption(_associatedItem);
+        _callBack?.Invoke(_associatedItem); // Replacing line below
+        //_associatedPoint.SelectOption(_associatedItem);
         Destroy(gameObject);
     }
 }

@@ -110,6 +110,10 @@ public class UseableItemController : NetworkBehaviour
 
     private void OnStartInspect()
     {
+        // TODO: See if we can fix bug with lines below
+        //if (_inspecting)
+        //    return;
+
         cameraController.CameraLocked = true;
 
         SetHandPosition(HandPosition.Inspecting);

@@ -9,7 +9,7 @@ public class InspectPoint : MonoBehaviour
 {
     #region Variables
     [Header("References")]
-    [SerializeField] private InspectPointUIElement inspectPointUIElement;
+    [SerializeField] protected InspectPointUIElement inspectPointUIElement;
 
     [Header("Inspect Point Settings")]
     [SerializeField] private string inspectPointName;
@@ -35,7 +35,7 @@ public class InspectPoint : MonoBehaviour
     {
         Inspector,
         User,
-        Consumer,
+        Crafter,
         Transformer,
         Modifier,
         Adder
@@ -48,9 +48,16 @@ public class InspectPoint : MonoBehaviour
         Vector2 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
          
         _uiElement = Instantiate(inspectPointUIElement, screenPosition, Quaternion.identity, hudTransform);
-        _uiElement.GenericSet(this);
+        _uiElement.SetBasics(inspectPointName, inspectPointDescription);
+
+        //_uiElement.GenericSet(this);
 
         return _uiElement;
+    }
+
+    public virtual void DestroyUIElement()
+    {
+        Destroy(_uiElement.gameObject);
     }
 
 }

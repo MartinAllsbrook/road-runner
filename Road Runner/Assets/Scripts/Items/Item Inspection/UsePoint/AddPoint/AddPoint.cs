@@ -6,6 +6,15 @@ public class AddPoint : UsePoint
 {
     [SerializeField] private UseableItem useableItem; // TODO: Make this a general counter class
 
+    public override InspectPointUIElement CreateInspectHUDElement(Transform hudTransform)
+    {
+        AddPointUIElement uiElement = base.CreateInspectHUDElement(hudTransform) as AddPointUIElement;
+        
+        uiElement.SetCount(GetCount());
+
+        return uiElement;
+    }
+
     public int GetCount()
     {
         return useableItem.UniqueItemID.CounterCount;
@@ -15,6 +24,7 @@ public class AddPoint : UsePoint
     {
         base.Use();
 
-        _uiElement.GenericSet(this); // A bit of a hacky way to get the UI to update but I like it for now
+        AddPointUIElement uiElement = _uiElement as AddPointUIElement;
+        uiElement.SetCount(GetCount());
     }
 }

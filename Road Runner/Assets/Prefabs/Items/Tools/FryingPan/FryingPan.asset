@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b5b19dc4c554349b3f8034b67c8655, type: 3}
+  m_Name: FryingPan
+  m_EditorClassIdentifier: 
+  itemID: 501
+  maxModifications: 0
+  maxCounterCount: 0
+  defaultModifications: 
+  defaultCounterItem: 0
+  defaultCounterCount: 0
+  validCounterTypes: 
+  itemPickupPrefab: {fileID: 2238977533443989478, guid: cde3c63c86d57bc4aa9e9d4a4783c079, type: 3}
+  useableItemPrefab: {fileID: -4373532081946295938, guid: 8500b5c013996c245bf804a312dbc767, type: 3}
+  modelPrefab: {fileID: 8147250437832143679, guid: cce5afa45f91650499e5c3c0fd3fcf45, type: 3}
+  uiSprite: {fileID: 21300000, guid: 67e90eb701ff6f946a2ccf1a421c4b96, type: 3}
+  inventoryDimensions: {x: 2, y: 2}

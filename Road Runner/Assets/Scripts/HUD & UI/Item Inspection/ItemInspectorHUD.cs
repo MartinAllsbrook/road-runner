@@ -9,7 +9,6 @@ using static InspectPoint;
 public class ItemInspectorHUD : MonoBehaviour
 {
     private InspectPoint[] itemInspectPoints;
-    private InspectPointUIElement[] pointUIs;
 
     [SerializeField] private InspectPointUIElement inspectOverlayTester;
 
@@ -17,17 +16,14 @@ public class ItemInspectorHUD : MonoBehaviour
     {
         itemInspectPoints = item.InspectPoints;
 
-        pointUIs = new InspectPointUIElement[itemInspectPoints.Length];
 
-        for(int i = 0; i < itemInspectPoints.Length; i++)
-        {
-            pointUIs[i] = itemInspectPoints[i].CreateInspectHUDElement(transform);
-        }
+        foreach (InspectPoint point in itemInspectPoints)
+            point.CreateInspectHUDElement(transform);
     }
 
     public void StopInspectItem()
     {
-        foreach (InspectPointUIElement inspectOverlay in pointUIs)
-            Destroy(inspectOverlay.gameObject);
+        foreach (InspectPoint point in itemInspectPoints)
+            point.DestroyUIElement();
     }
 }

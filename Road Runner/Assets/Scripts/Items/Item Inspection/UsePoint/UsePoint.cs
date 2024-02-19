@@ -9,12 +9,16 @@ public class UsePoint : InspectPoint
 {
     [Header("Use Point")]
     [SerializeField] private string callToAction;
-    public string CallToAction
-    {
-        get { return callToAction; }
-    }
 
     [SerializeField] public UnityEvent OnUse = new UnityEvent();
+
+    public override InspectPointUIElement CreateInspectHUDElement(Transform hudTransform)
+    {
+        UsePointUIElement usePointUIElement = (UsePointUIElement) base.CreateInspectHUDElement(hudTransform); 
+        
+        usePointUIElement.SetUsePoint(callToAction, Use);
+        return usePointUIElement;
+    }
 
     public virtual void Use()
     {
