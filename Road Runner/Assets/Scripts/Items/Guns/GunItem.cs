@@ -184,11 +184,7 @@ public class GunItem : UseableItem
     {
         UniqueItemID magUIID = magazineSIID.UniqueItemID;
 
-        Debug.Log("Equiping a mag in slot " + modSlotIndex);
-
         ModifyUniqueItemID(magazineSIID, modSlotIndex);
-
-        Debug.Log("Equiping a mag of size " + magazineSIID.UniqueItemID.CounterCount + " Containing " + magazineSIID.UniqueItemID.CounterItem);
 
         UniqueItemID mag = UniqueItemID.Modifications[modSlotIndex];
         parentItemController.HudController.SetAmmoCountDisplay(mag.CounterCount, mag.MaxCounterCount());

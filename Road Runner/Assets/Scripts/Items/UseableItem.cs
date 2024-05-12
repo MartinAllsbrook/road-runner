@@ -59,7 +59,7 @@ public class UseableItem : MonoBehaviour
         itemKey = storedItemID.ItemKey;
     }
 
-    protected void ModifyUniqueItemID(StoredItemID modificationSIID, int modificationSlot)
+    public virtual void ModifyUniqueItemID(StoredItemID modificationSIID, int modificationSlot)
     {
         UniqueItemID modificationUIID = modificationSIID.UniqueItemID;
 

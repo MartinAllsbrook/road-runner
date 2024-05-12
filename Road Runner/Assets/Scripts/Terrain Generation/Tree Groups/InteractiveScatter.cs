@@ -30,14 +30,28 @@ public class InteractiveScatter : MonoBehaviour
         return scatterAddress;
     }
 
-    public void Interact()
+    public virtual void Interact()
     {
-        Debug.Log("Interactive Scatter Interacted With");
         ConsumeScatter();
     }
 
     private void ConsumeScatter()
     {
         TreeManager.Instance.ConsumeScatter(scatterAddress);
+    }
+
+    public virtual void ConsumeAction()
+    {
+
+    }
+
+    public void ReactivateScatter()
+    {
+        TreeManager.Instance.ReactivateScatter(scatterAddress);
+    }
+
+    public virtual void ReactivateAction()
+    {
+
     }
 }

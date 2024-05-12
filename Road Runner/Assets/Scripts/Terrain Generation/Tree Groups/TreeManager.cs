@@ -84,8 +84,26 @@ public class TreeManager : NetworkBehaviour
     {
         InteractiveScatter scatter = generatedTreeGroupsList[groupIndex].Scatter[scatterIndex];
         
-        scatter.gameObject.SetActive(false);
-    
-        // TODO: Somehow reactivate scatter after a while
+        scatter.ConsumeAction();
     }
+
+    public void ReactivateScatter(ScatterAddress scatterAddress)
+    {
+        ReactivateScatterServerRPC(scatterAddress.groupIndex, scatterAddress.treeIndex);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ReactivateScatterServerRPC(int groupIndex, int scatterIndex)
+    {
+        ReactivateScatterClientRPC(groupIndex, scatterIndex);
+    }
+
+    [ClientRpc]
+    private void ReactivateScatterClientRPC(int groupIndex, int scatterIndex)
+    {
+        InteractiveScatter scatter = generatedTreeGroupsList[groupIndex].Scatter[scatterIndex];
+        
+        scatter.ReactivateAction();
+    }
+
 }

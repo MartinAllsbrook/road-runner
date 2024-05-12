@@ -47,4 +47,5 @@ MonoBehaviour:
   numTrees: 500
   treesToPlace:
   - {fileID: 2636352792271802548, guid: b8605259c53cf5344a34b68ef21b368e, type: 3}
+  - {fileID: 4379845759852574768, guid: 4e846a129ae15f14aad1dcfe52476827, type: 3}
   trees: []

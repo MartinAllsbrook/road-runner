@@ -1786,6 +1786,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Network Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 3496451850978277344, guid: 33a4fc9ad75dd5e45876fe4322b562d1, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3496451850978277344, guid: 33a4fc9ad75dd5e45876fe4322b562d1, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: e6706640ed445e546bc9f9d8144f65ad, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

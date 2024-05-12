@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7488260488637646449
+--- !u!1 &1556287917533167336
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,45 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8432560941508897969}
-  - component: {fileID: 1683552405485494373}
+  - component: {fileID: 8183633721301031299}
+  - component: {fileID: 4793313916714934675}
   m_Layer: 0
-  m_Name: U_Empty
+  m_Name: UsI_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8432560941508897969
+--- !u!4 &8183633721301031299
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7488260488637646449}
+  m_GameObject: {fileID: 1556287917533167336}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.740962, y: -0.3044609, z: 10.551587}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1683552405485494373
+--- !u!114 &4793313916714934675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7488260488637646449}
+  m_GameObject: {fileID: 1556287917533167336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a045a4199d361a4fb2b8ab4697e64db, type: 3}
+  m_Script: {fileID: 11500000, guid: d7d7a3935fd4a444995b53e5e82cd531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useAudio: {fileID: 0}
-  isUseAudioLocal: 1
-  seccondaryUseAudio: {fileID: 0}
-  isSeccondaryUseAudioLocal: 1
-  reloadAudio: {fileID: 0}
-  isReloadAudioLocal: 1
+  baseItemID: 0
+  uniqueItemModel: {fileID: 0}
+  inspectPoints: []

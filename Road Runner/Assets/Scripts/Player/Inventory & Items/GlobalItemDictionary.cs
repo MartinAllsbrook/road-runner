@@ -73,6 +73,16 @@ public class GlobalItemDictionary : MonoBehaviour
 
         // Tools 501 - 600
         Tool_FryingPan = 501,
+
+        // Natural Objects 601 - 700
+        NaturalObject_Stick = 601,
+        NaturalObject_Rock = 602,
+        NaturalObject_LeafyTwigs = 603,
+        NaturalObject_DryTwigs = 604,
+
+        // Components 701 - 800
+        Component_StoneAxeHead = 701,
+        Component_StonePickaxeHead = 702,
     }
 
     private void Awake()

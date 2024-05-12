@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4943221072849376403}
   - component: {fileID: 7786303113225297386}
   - component: {fileID: 3365034417396204881}
-  - component: {fileID: 8790154609279387357}
   m_Layer: 11
   m_Name: DeadBush1_DeadTree4
   m_TagString: Untagged
@@ -84,26 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8790154609279387357
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 308989878762116265}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.09
-  m_Height: 0.35
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.15, z: 0}
