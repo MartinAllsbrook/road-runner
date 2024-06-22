@@ -44,7 +44,7 @@ public class ChunkData
     public ChunkData(int size, Vector2Int chunkPosition)
     {
         if (_biomes == null)
-            _biomes = TerrainManager.Instance.Biomes;
+            _biomes = Terrain.Instance.Biomes;
 
         _size = size;
         _chunkPosition = chunkPosition;

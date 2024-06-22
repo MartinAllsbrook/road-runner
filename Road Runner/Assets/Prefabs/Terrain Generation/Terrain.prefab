@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8762340282045984026}
   - component: {fileID: 2079987541488377761}
   - component: {fileID: 3629075484901468618}
-  - component: {fileID: 6451836479128290519}
   - component: {fileID: 8463256600902518824}
+  - component: {fileID: 3472110810897631191}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3225911626
+  GlobalObjectIdHash: 2989582166
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -74,32 +74,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &6451836479128290519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316009628726394368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a08310a78dc3ad04fa9f3d64a4b5383d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  navMeshManager: {fileID: 0}
-  treeManager: {fileID: 8463256600902518824}
-  sprinkleGenerator: {fileID: 2079987541488377761}
-  terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
-  terrainRadius: 1
-  chunkSize: 513
-  biomes:
-  - {fileID: 11400000, guid: 83a66b8ae8a0c6a4cb363a53d9b74360, type: 2}
-  - {fileID: 11400000, guid: 9946f19af8979a841b3561e82f9e0a8e, type: 2}
-  - {fileID: 11400000, guid: 867f392ac08caa641827a71a01c245c3, type: 2}
-  - {fileID: 11400000, guid: 6469e3ac50d9e3848badd6a9550530a3, type: 2}
-  - {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
-  - {fileID: 11400000, guid: 292b3b25df35e104bb20e5dbb4af2c98, type: 2}
-  loadingPauseTime: 0.3
 --- !u!114 &8463256600902518824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,3 +86,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 062f068653f6e784eb68a8994c71c2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3472110810897631191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316009628726394368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0854f42dfa2c92f4f98f02001576ea04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeManager: {fileID: 8463256600902518824}
+  sprinkleGenerator: {fileID: 2079987541488377761}
+  terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
+  terrainRadius: 1
+  chunkSize: 513
+  biomes:
+  - {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
+  loadingPauseTime: 0.3

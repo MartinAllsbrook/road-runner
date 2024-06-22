@@ -9,26 +9,28 @@ using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
-public class TerrainManager : NetworkBehaviour
+public class Terrain : MonoBehaviour
 {
-    public static TerrainManager Instance; // Singleton
-    public static bool terrainGenerated = false;
-    public static UnityEvent onTerrainGenerated;
+    public static Terrain Instance; // Singleton
 
     [Header("Refenences")]
-    [SerializeField] private NavMeshManager navMeshManager;
     [SerializeField] private TreeManager treeManager;
+    
     [SerializeField] private SprinkleGenerator sprinkleGenerator;
-    [Tooltip("The chunk that will be instantiated to form the terrain")] 
+    
+    [Tooltip("The chunk that will be instantiated to form the terrain")]
     [SerializeField] private GameObject terrainChunk;
 
     [Header("Terrain Generation")]
-    [Tooltip("TrueTerrainSize = (terrainRadius x 2 + 1) * chunksize")] 
-    [Range(0,2)] [SerializeField] private int terrainRadius;
-    [Tooltip("The size of an individual chunk")] 
+    [Tooltip("TrueTerrainSize = (terrainRadius x 2 + 1) * chunksize")]
+    [Range(0, 2)][SerializeField] private int terrainRadius;
+    
+    [Tooltip("The size of an individual chunk")]
     [SerializeField] private int chunkSize;
-    [Tooltip("A list of biome to be generated on the terrain")] 
+    
+    [Tooltip("A list of biome to be generated on the terrain")]
     [SerializeField] private Biome[] biomes;
+    
     public Biome[] Biomes // TODO: Should this just be a getter?
     {
         get { return biomes; }
@@ -43,7 +45,8 @@ public class TerrainManager : NetworkBehaviour
     //private GameObject[,] _activeChunks; 
     private Dictionary<Vector2Int, MeshTerrainChunk> _loadedChunks;
 
-    private int masterSeed; // All seeds and stuff
+    // All seeds and stuff
+    private int masterSeed;
     private int[] _perlinNoiseSeeds;
     private int _sprinkleSeed;
     private int _treeSeed;
@@ -56,12 +59,20 @@ public class TerrainManager : NetworkBehaviour
     private int _numLoadedChunks = 0;
     private int _chunksToLoad;
 
-    static private NetworkVariable<int> _worldSeed; // This is the seed that is sent to the server, stored accross the network
+    public delegate void GenericDelegate();
+    private GenericDelegate _finalCallback;
 
-    #region Loading Screen Debugging Stuff
+    #region Loading Screen & Debugging Stuff
     private Stopwatch timer = new Stopwatch(); // Stopwatch for testing and debugging
     private float _totalTimeElapsed = 0f;
-    
+
+    private bool _testingMode = false;
+    public bool Testing
+    {
+        get { return _testingMode; }
+        private set { }
+    }
+
     private void CompleteSection(string sectionName)
     {
         float elapsedMS = timer.ElapsedMilliseconds;
@@ -76,72 +87,21 @@ public class TerrainManager : NetworkBehaviour
         return new WaitForSeconds(loadingPauseTime);
     }
     #endregion
-    
+
     private void Start()
     {
-        onTerrainGenerated = new UnityEvent(); // This needs to hapen as soon as possible so that the things can subscribe to it
-
-        _worldSeed = new NetworkVariable<int>();
-        NetworkManager.Singleton.OnClientConnectedCallback += TryGenerateTerrain;
-    }
-
-    /// <summary>
-    /// Sort of a replacement for Start() for the Server's TerrainManager, called by the RelayUI when a new server is created.
-    /// Only used by the server.
-    /// </summary>
-    /// <param name="seed">The world seed</param>
-    public void Set(int seed) 
-    {
-        _worldSeed.Value = seed;
-        TryGenerateTerrain(NetworkManager.Singleton.LocalClientId);
-    }
-
-    /// <summary>
-    /// Attempts to generate the terrain, making sure not to if anything will cause an error.
-    /// Generates the terrain for the local client and the server.
-    /// </summary>
-    /// <param name="clientId">The clients ID</param>
-    private void TryGenerateTerrain(ulong clientId)
-    {
-        timer.Start();
-        _totalTimeElapsed = 0;
-
-        Debug.Log("[Terrain] TryGenerateTerrain attempt made");
-        // TryGenerateTerrain is called every time a client connects to the server,
-        // so we need this check to make sure that the client that just connected is the local client,
-        // because if the localClient just connected they probably need a terrain to play on.
-        if (clientId != NetworkManager.Singleton.LocalClientId)
-            return;
-
-        int seed = _worldSeed.Value; // Get the seed from the network variable
-        if (seed == 0)
-        {
-            // TODO: Maybe check if the server host entered 0 as the seed and if so, generate a random seed / do something about it?
-            //Debug.LogError("[Terrain] Seed is 0, this should never happen! If you set the seed to 0 please don't, because right now my program is asuming shit is broken because of you");
-            return;
-        }
-        Debug.Log("[Terrain] Seed: " + seed);
-
-        if (Instance == null)
-            Instance = this;       
-        else
-        {
-            Debug.LogError("[Terrain] There are multiple Terrain Managers in the scene!");
-            return;
-        }
-
-        CompleteSection("Pregeneration Checks"); // Reported 2ms
-
-        GenerateTerrain(seed); // This is where the fun really starts, all the basic checks have passed and we are ready to generate the terrain
+        Instance = this; // TODO: Make Better
     }
 
     /// <summary>
     /// Starts a predictable terrain generation process.
     /// </summary>
     /// <param name="seed">The terrain's seed</param>
-    private void GenerateTerrain(int seed)
+    public void GenerateTerrain(int seed, GenericDelegate finalCallback, bool testing)
     {
         masterSeed = seed;
+        _finalCallback = finalCallback;
+        _testingMode = testing;
 
         _loadedChunks = new Dictionary<Vector2Int, MeshTerrainChunk>();
 
@@ -157,11 +117,11 @@ public class TerrainManager : NetworkBehaviour
 
         CompleteSection("Variable Initialization"); // Reported ~57ms -> supprized this is the longest part but 57ms is like nothing so it's fine
 
-        GenerateSeeds(); 
+        GenerateSeeds();
 
         CompleteSection("Seed Generation"); // Reported ~0ms
 
-        sprinkleGenerator.GenerateSprinkles(chunkSize - 1, terrainRadius, _sprinkleSeed); 
+        sprinkleGenerator.GenerateSprinkles(chunkSize - 1, terrainRadius, _sprinkleSeed);
 
         CompleteSection("Sprinkle position generation"); // Reported ~0ms
 
@@ -190,7 +150,7 @@ public class TerrainManager : NetworkBehaviour
         {
             for (var z = 0; z < _terrainSize; z++)
             {
-                poiSeeds[x, z] = Random.Range(0,10000);
+                poiSeeds[x, z] = Random.Range(0, 10000);
             }
         }
     }
@@ -202,7 +162,9 @@ public class TerrainManager : NetworkBehaviour
     /// </summary>
     private IEnumerator GenerateMaps()
     {
-        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingTerrainMaps);
+        if (!_testingMode)
+            UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingTerrainMaps);
+        
         yield return SequencePause();
         timer.Restart();
 
@@ -245,15 +207,19 @@ public class TerrainManager : NetworkBehaviour
     /// </summary>
     private IEnumerator WhenMapsGenerated()
     {
-        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.PlacingLandmarks);
+        if (!_testingMode)
+            UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.PlacingLandmarks);
+    
         yield return SequencePause();
         timer.Restart();
 
-        sprinkleGenerator.FindHeightsAndPlace(_loadedChunks); 
+        sprinkleGenerator.FindHeightsAndPlace(_loadedChunks);
 
         CompleteSection("Landmark / Sprinkle Placement"); // Reported 9ms - 3x3 | 9ms - 5x5 -> Great
 
-        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.DrawingTerrain);
+        if (!_testingMode)
+            UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.DrawingTerrain);
+    
         yield return SequencePause();
         timer.Restart();
 
@@ -261,7 +227,7 @@ public class TerrainManager : NetworkBehaviour
         {
             for (var z = 0; z < _terrainSize; z++)
             {
-                MeshTerrainChunk chunk = _loadedChunks[new Vector2Int(x,z)];
+                MeshTerrainChunk chunk = _loadedChunks[new Vector2Int(x, z)];
 
                 chunk.DecorateAndDraw(_onChunkLoaded);
                 yield return null;
@@ -287,8 +253,10 @@ public class TerrainManager : NetworkBehaviour
     /// </summary>
     private IEnumerator FinalLoadingRoutine()
     {
-        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.ScatteringTrees);
-        yield return SequencePause(); 
+        if (!_testingMode)
+            UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.ScatteringTrees);
+    
+        yield return SequencePause();
         timer.Restart();
 
         for (int i = 0; i < _terrainSize; i++)
@@ -301,24 +269,13 @@ public class TerrainManager : NetworkBehaviour
 
         CompleteSection("Tree Placement"); // Reported 28ms - 3x3 | 103ms - 5x5 -> WOWOWOW That's the power of object pooling
 
-        UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingNavMesh);
-        yield return SequencePause(); 
+        if (!_testingMode)
+            UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.GeneratingNavMesh);
+    
+        yield return SequencePause();
         timer.Restart();
 
-        if (IsServer)
-            navMeshManager.BakeNavMesh();
-        else
-            Destroy(navMeshManager);
-
-        CompleteSection("NavMesh Baking"); // Reported 8,000ms - 3x3 | 25,000 - 5x5 -> I Don't think we can do much about this
-        yield return null;
-
-        timer.Stop();
-
-        terrainGenerated = true;
-        onTerrainGenerated.Invoke();
-
-        Player.LocalInstance.EnterLimbo();
+        _finalCallback?.Invoke();
         yield return null;
     }
 }
