@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class TerrainData
 {    
@@ -13,6 +14,8 @@ public class TerrainData
     private int _innerRadius;
     public int InnerRadius { get { return _innerRadius; } set { _innerRadius = value; } }
 
+    private Vector2Int[] peaks;
+    public Vector2Int[] Peaks { get { return peaks; } }
 
 
     // Maps
@@ -24,6 +27,7 @@ public class TerrainData
     private Plane[,] _planes;
 
     private static Biome[] _biomes;
+
 
     public TerrainData(int size)
     {
@@ -57,6 +61,82 @@ public class TerrainData
                 _planes[x, z] = new Plane(a, b, c);
             }
         }
+    }
+
+    public void FindPeaks(int numPeaks, int seed, int peakSpacing)
+    {
+        Random random = new Random(seed);
+
+        peaks = new Vector2Int[numPeaks];
+        List<Vector2Int> peakList = new List<Vector2Int>();
+
+        for (int i = 0; i < numPeaks; i++)
+        {
+            Vector2Int point = new Vector2Int(random.Next(_size), random.Next(_size)); // TODO: this could be optimized so it picks points within inner radius
+            if (GetHeight(point) < 1)
+            {
+                i--;
+                continue;
+            }
+            
+            Vector2Int newPeak = FindPeakFrom(point);
+
+            bool uniquePeak = true;
+            foreach (Vector2Int peak in peakList)
+            {
+                if (Vector2Int.Distance(peak, newPeak) < peakSpacing)
+                {
+                    uniquePeak = false;
+                    break;
+                }
+            }
+
+            if (!uniquePeak)
+            {
+                i--;
+                continue;
+            }
+
+            peakList.Add(newPeak);
+        }
+
+        peaks = peakList.ToArray();
+    }
+
+    private Vector2Int FindPeakFrom(Vector2Int point)
+    {
+        Vector2Int highestPoint = point;
+        float highestHeight = _heightMap[point.x, point.y];
+
+        Vector2Int nextPoint = point;
+        float height = highestHeight;
+
+        while (height >= highestHeight && highestHeight > 1)
+        {
+            highestPoint = nextPoint;
+            highestHeight = height;
+
+            nextPoint = GoUpSlope(highestPoint);
+            height = _heightMap[nextPoint.x, nextPoint.y];
+
+            Debug.Log("Highest height: " + highestHeight + ", Highest point: " + highestPoint + ", Next Height: " + height + ", Next Point: " + nextPoint);
+        }
+
+        return highestPoint;
+    }
+
+
+    private Vector2Int GoUpSlope(Vector2Int point)
+    {
+        Plane plane = _planes[point.x, point.y];
+
+        Vector3 normal = plane.normal;
+        Vector2 roughDirection = new Vector2(normal.x, normal.z);
+        roughDirection.Normalize();
+
+        Vector2Int direction = new Vector2Int(Mathf.RoundToInt(roughDirection.x * 2), Mathf.RoundToInt(roughDirection.y * 2));
+        
+        return point + direction;
     }
 
     public void CalculateBiomes()

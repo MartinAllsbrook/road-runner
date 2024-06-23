@@ -369,6 +369,10 @@ PrefabInstance:
       value: Terrain
       objectReference: {fileID: 0}
     - target: {fileID: 3472110810897631191, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+      propertyPath: testPrefab
+      value: 
+      objectReference: {fileID: 100000, guid: 492031f9cbc117d419c5271ccc50b76a, type: 3}
+    - target: {fileID: 3472110810897631191, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: terrainRadius
       value: 1
       objectReference: {fileID: 0}

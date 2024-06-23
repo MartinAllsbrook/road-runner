@@ -88,7 +88,7 @@ public class RiverCreator : SplineMeshCreator
             float currentHeight = terrainData.GetHeight(currentPoint.x, currentPoint.y);
             float score = GetRiverScore(candidate, distance, currentHeight, terrainData);
 
-            Debug.Log("Score: " + score + ", BestScore: " + bestScore);
+            //Debug.Log("Score: " + score + ", BestScore: " + bestScore);
 
             if (score > bestScore)
             {

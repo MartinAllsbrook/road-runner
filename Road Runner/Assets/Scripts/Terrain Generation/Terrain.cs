@@ -41,6 +41,7 @@ public class Terrain : MonoBehaviour
     [Header("Loading")]
     [SerializeField] private float loadingPauseTime = 0.3f;
 
+    [SerializeField] GameObject testPrefab;
 
     //private GameObject[,] _activeChunks; 
     private Dictionary<Vector2Int, MeshTerrainChunk> _loadedChunks;
@@ -234,6 +235,15 @@ public class Terrain : MonoBehaviour
         areaBlender.PlaceAndBlend(ref _terrainData);
 
         CompleteSection("Landmark / Sprinkle Placement"); // Reported 9ms - 3x3 | 9ms - 5x5 -> Great
+
+        _terrainData.FindPeaks(5, _treeSeed, 50);
+        foreach (Vector2Int peak in _terrainData.Peaks)
+        {
+            Vector3 peakPosition = new Vector3(peak.x, _terrainData.GetHeight(peak), peak.y);
+            Instantiate(testPrefab, peakPosition, Quaternion.identity);
+        }
+
+        CompleteSection("Finding Peaks");
 
         riverCreator.CreateRandomRiverTest(_terrainData, _treeSeed);
 
