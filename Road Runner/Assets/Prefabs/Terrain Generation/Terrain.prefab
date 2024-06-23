@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3629075484901468618}
   - component: {fileID: 8463256600902518824}
   - component: {fileID: 3472110810897631191}
+  - component: {fileID: 6863568525783734957}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2989582166
+  GlobalObjectIdHash: 1609493009
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -101,8 +102,37 @@ MonoBehaviour:
   treeManager: {fileID: 8463256600902518824}
   sprinkleGenerator: {fileID: 2079987541488377761}
   terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
+  mapGenerator: {fileID: 6863568525783734957}
   terrainRadius: 1
   chunkSize: 513
   biomes:
   - {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
   loadingPauseTime: 0.3
+--- !u!114 &6863568525783734957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316009628726394368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7781a661e8826034abb11bd5fd8cebb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heightOctaves:
+  - 0
+  heightRedistributionFactor: 1
+  maxHeight: 100
+  moistureOctaves:
+  - 0
+  moistureRedistributionFactor: 1
+  maxMoisture: 100
+  strangenessOctaves:
+  - 0
+  strangenessRedistributionFactor: 1
+  maxStrangeness: 100
+  densityOctaves:
+  - 0
+  densityRedistributionFactor: 1
+  maxDensity: 100

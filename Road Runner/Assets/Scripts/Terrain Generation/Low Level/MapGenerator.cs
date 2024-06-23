@@ -37,7 +37,7 @@ public class MapGenerator : MonoBehaviour
     #region Map Generation
 
     // Step 1: Generate Heights
-    public void GenerateMap(Vector2Int tile, int[] seeds, ChunkData chunkData, GenericDelegate finalCallback)
+    public void GenerateMap(Vector2Int tile, int[] seeds, TerrainData chunkData, GenericDelegate finalCallback)
     {
         _size = chunkData.Size;
 
@@ -48,7 +48,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     // Step 2: Generate Moisture
-    private void GenerateMap(Vector2Int tile, int[] seeds, float[,] heightMap, ChunkData chunkData, GenericDelegate finalCallback)
+    private void GenerateMap(Vector2Int tile, int[] seeds, float[,] heightMap, TerrainData chunkData, GenericDelegate finalCallback)
     {
         GenerateNoise(seeds[1], tile, moistureOctaves, moistureRedistributionFactor, maxMoisture, () =>
         {
@@ -57,7 +57,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     // Step 3: Generate Strangeness
-    private void GenerateMap(Vector2Int tile, int[] seeds, float[,] heightMap, float[,] moistureMap, ChunkData chunkData, GenericDelegate finalCallback)
+    private void GenerateMap(Vector2Int tile, int[] seeds, float[,] heightMap, float[,] moistureMap, TerrainData chunkData, GenericDelegate finalCallback)
     {
         GenerateNoise(seeds[2], tile, strangenessOctaves, strangenessRedistributionFactor, maxStrangeness, () =>
         {
@@ -66,7 +66,7 @@ public class MapGenerator : MonoBehaviour
     }
     
     // Step 4: Generate Density
-    private void GenerateMap(Vector2Int tile, int[] seeds, float[,] heightMap, float[,] moistureMap, float[,] strangenessMap, ChunkData chunkData, GenericDelegate finalCallback)
+    private void GenerateMap(Vector2Int tile, int[] seeds, float[,] heightMap, float[,] moistureMap, float[,] strangenessMap, TerrainData chunkData, GenericDelegate finalCallback)
     {
         GenerateNoise(seeds[3], tile, densityOctaves, densityRedistributionFactor, maxDensity, () =>
         {
@@ -75,7 +75,7 @@ public class MapGenerator : MonoBehaviour
     }
     
     // Step 5: Compile into biome map
-    private void GenerateMap(float[,] heightMap, float[,] moistureMap, float[,] strangenessMap, float[,] densityMap, ChunkData chunkData, GenericDelegate finalCallback)
+    private void GenerateMap(float[,] heightMap, float[,] moistureMap, float[,] strangenessMap, float[,] densityMap, TerrainData chunkData, GenericDelegate finalCallback)
     {
         chunkData.SetMaps(heightMap, moistureMap, strangenessMap, densityMap);
         

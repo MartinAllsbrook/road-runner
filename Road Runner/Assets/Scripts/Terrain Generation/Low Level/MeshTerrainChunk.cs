@@ -20,7 +20,8 @@ public class MeshTerrainChunk : MonoBehaviour
     private TreeScatter _treeScatter;
 
     [Header("General Data")]
-    private ChunkData _chunkData;
+    private float[,] _heightMap;
+    private int[,] _biomeMap;
 
     [Header("Mesh Data")]
     [SerializeField] private int numSubMeshes;
@@ -31,7 +32,9 @@ public class MeshTerrainChunk : MonoBehaviour
     private int[][] _triangles;
     private Vector2[] _uvs;
 
-    public void CreateMaps(int[] noiseSeeds, UnityEvent onFinished, int size, int terrainRadius)
+    private ChunkData _chunkData;
+
+/*    public void CreateMaps(int[] noiseSeeds, UnityEvent onFinished, int size, int terrainRadius)
     {
         _mapGenerator = GetComponent<MapGenerator>();
         _landmarkGenerator = GetComponent<LandmarkGenerator>();
@@ -44,21 +47,24 @@ public class MeshTerrainChunk : MonoBehaviour
 
         _chunkData = new ChunkData(size, chunkPosition);
 
-        _mapGenerator.GenerateMap(chunkPosition, noiseSeeds, _chunkData, () =>
+*//*        _mapGenerator.GenerateMap(chunkPosition, noiseSeeds, _chunkData, () =>
         {
             _islandSmoother.SmoothHeights(this, terrainRadius);
             onFinished.Invoke();
             //PlaceLandMarks(onFinished, poiSeed, terrainRadius); // Does more than just placing landmarks
-        });
-    }
+        });*//*
+    }*/
 
-    public void DecorateAndDraw(UnityEvent onFinished)
+    public void DecorateAndDraw(float[,] heightMap, int[,] biomeMap, UnityEvent onFinished)
     {
+        //GetComponent<AreaBlender>().PlaceAndBlend(ref _chunkData);
 
-        GetComponent<AreaBlender>().PlaceAndBlend(ref _chunkData);
+        // _chunkData.CalculateBiomes();
 
-        _chunkData.CalculateBiomes();
-        CreateMesh(_chunkData.Size);
+        _heightMap = heightMap;
+        _biomeMap = biomeMap;
+
+        CreateMesh(_heightMap.GetLength(1));
         UpdateMesh();
 
         onFinished.Invoke();
@@ -92,7 +98,7 @@ public class MeshTerrainChunk : MonoBehaviour
         {
             for (int x = 0; x < size - 1; x++)
             {
-                var biomeCode = _chunkData.GetBiome(x,z);
+                var biomeCode = _biomeMap[x,z];
                 
                 int setIndex;
 
@@ -132,7 +138,7 @@ public class MeshTerrainChunk : MonoBehaviour
         {
             for (int x = 0; x <= size - 1; x++)
             {
-                _vertices[i] = new Vector3(x, _chunkData.GetHeight(x, z), z);
+                _vertices[i] = new Vector3(x, _heightMap[x, z], z);
                 i++;
             }
         }
@@ -175,7 +181,7 @@ public class MeshTerrainChunk : MonoBehaviour
         _mesh.RecalculateNormals();
     }
 
-    public void GetChunkDataRef (out ChunkData chunkData)
+    public void GetChunkDataRef(out ChunkData chunkData)
     {
         chunkData = _chunkData;
         return;

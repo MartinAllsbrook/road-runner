@@ -15,19 +15,16 @@ public class Terrain : MonoBehaviour
 
     [Header("Refenences")]
     [SerializeField] private TreeManager treeManager;
-    
     [SerializeField] private SprinkleGenerator sprinkleGenerator;
-    
     [Tooltip("The chunk that will be instantiated to form the terrain")]
     [SerializeField] private GameObject terrainChunk;
+    [SerializeField] private MapGenerator mapGenerator;
 
     [Header("Terrain Generation")]
     [Tooltip("TrueTerrainSize = (terrainRadius x 2 + 1) * chunksize")]
     [Range(0, 2)][SerializeField] private int terrainRadius;
-    
     [Tooltip("The size of an individual chunk")]
     [SerializeField] private int chunkSize;
-    
     [Tooltip("A list of biome to be generated on the terrain")]
     [SerializeField] private Biome[] biomes;
     
@@ -40,7 +37,6 @@ public class Terrain : MonoBehaviour
     [Header("Loading")]
     [SerializeField] private float loadingPauseTime = 0.3f;
 
-    private int _terrainSize; // Size
 
     //private GameObject[,] _activeChunks; 
     private Dictionary<Vector2Int, MeshTerrainChunk> _loadedChunks;
@@ -58,6 +54,11 @@ public class Terrain : MonoBehaviour
     private UnityEvent _onChunkLoaded; // This is an event that is called when all the chunks have been loaded
     private int _numLoadedChunks = 0;
     private int _chunksToLoad;
+
+    private TerrainData _terrainData;
+
+    private int _terrainWidthChunks;
+    private int _terrainWidth;
 
     public delegate void GenericDelegate();
     private GenericDelegate _finalCallback;
@@ -88,7 +89,7 @@ public class Terrain : MonoBehaviour
     }
     #endregion
 
-    private void Start()
+    private void Awake()
     {
         Instance = this; // TODO: Make Better
     }
@@ -107,11 +108,13 @@ public class Terrain : MonoBehaviour
 
         treeManager.Initialize(biomes);
 
-        _terrainSize = terrainRadius * 2 + 1;
-        _chunksToLoad = _terrainSize * _terrainSize;
+        _terrainWidthChunks = terrainRadius * 2 + 1;
+        _chunksToLoad = _terrainWidthChunks * _terrainWidthChunks;
+        _terrainWidth = _terrainWidthChunks * (chunkSize - 1) + 1;
+        _terrainData = new TerrainData(_terrainWidth);
 
-        _onMapsGenerated = new UnityEvent();
-        _onMapsGenerated.AddListener(OnMapGenerated);
+/*        _onMapsGenerated = new UnityEvent();
+        _onMapsGenerated.AddListener(OnMapGenerated);*/
         _onChunkLoaded = new UnityEvent();
         _onChunkLoaded.AddListener(OnChunkLoaded);
 
@@ -145,10 +148,10 @@ public class Terrain : MonoBehaviour
         _sprinkleSeed = Random.Range(0, 10000);
         _treeSeed = Random.Range(0, 10000);
 
-        poiSeeds = new int[_terrainSize, _terrainSize];
-        for (int x = 0; x < _terrainSize; x++)
+        poiSeeds = new int[_terrainWidthChunks, _terrainWidthChunks];
+        for (int x = 0; x < _terrainWidthChunks; x++)
         {
-            for (var z = 0; z < _terrainSize; z++)
+            for (var z = 0; z < _terrainWidthChunks; z++)
             {
                 poiSeeds[x, z] = Random.Range(0, 10000);
             }
@@ -168,18 +171,23 @@ public class Terrain : MonoBehaviour
         yield return SequencePause();
         timer.Restart();
 
+        Debug.Log(_perlinNoiseSeeds);
+        Debug.Log(_terrainData);
+
+        mapGenerator.GenerateMap(new Vector2Int(0,0), _perlinNoiseSeeds, _terrainData, () => { StartCoroutine(WhenMapsGenerated()); });
+
         int chunkWidth = chunkSize - 1;
 
-        for (int x = 0; x < _terrainSize; x++)
+        for (int x = 0; x < _terrainWidthChunks; x++)
         {
-            for (var z = 0; z < _terrainSize; z++)
+            for (var z = 0; z < _terrainWidthChunks; z++)
             {
                 Vector2Int chunkPosition = new Vector2Int(x, z);
 
                 GameObject newChunk = Instantiate(terrainChunk, new Vector3(chunkPosition.x * (chunkWidth), 0, chunkPosition.y * (chunkWidth)), Quaternion.identity, transform);
                 MeshTerrainChunk chunk = newChunk.GetComponent<MeshTerrainChunk>();
 
-                chunk.CreateMaps(_perlinNoiseSeeds, _onMapsGenerated, chunkSize, terrainRadius); // This calls coroutines under the hood
+                //chunk.CreateMaps(_perlinNoiseSeeds, _onMapsGenerated, chunkSize, terrainRadius); // This calls coroutines under the hood
 
                 _loadedChunks.Add(chunkPosition, chunk);
             }
@@ -190,7 +198,7 @@ public class Terrain : MonoBehaviour
     /// <summary>
     /// Tallys the number of maps that have been generated, and when all the maps have been generated, calls WhenMapsGenerated()
     /// </summary>
-    private void OnMapGenerated()
+/*    private void OnMapGenerated()
     {
         _numMapsGenerated++;
         if (_numMapsGenerated >= _chunksToLoad)
@@ -198,7 +206,7 @@ public class Terrain : MonoBehaviour
             StartCoroutine(WhenMapsGenerated());
             CompleteSection("Noise-Map Generation"); // Reported 2,000ms - 3x3 | 5,500ms - 5x5 -> Eh it's coroutine-ified
         }
-    }
+    }*/
 
     #endregion
 
@@ -207,13 +215,15 @@ public class Terrain : MonoBehaviour
     /// </summary>
     private IEnumerator WhenMapsGenerated()
     {
+        CompleteSection("Noise-Map Generation"); // Reported 2,000ms - 3x3 | 5,500ms - 5x5 -> Eh it's coroutine-ified
+
         if (!_testingMode)
             UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.PlacingLandmarks);
     
         yield return SequencePause();
         timer.Restart();
 
-        sprinkleGenerator.FindHeightsAndPlace(_loadedChunks);
+        //sprinkleGenerator.FindHeightsAndPlace(_loadedChunks);
 
         CompleteSection("Landmark / Sprinkle Placement"); // Reported 9ms - 3x3 | 9ms - 5x5 -> Great
 
@@ -223,16 +233,52 @@ public class Terrain : MonoBehaviour
         yield return SequencePause();
         timer.Restart();
 
-        for (int x = 0; x < _terrainSize; x++)
+        _terrainData.CalculateBiomes();
+
+        for (int x = 0; x < _terrainWidthChunks; x++)
         {
-            for (var z = 0; z < _terrainSize; z++)
+            for (var z = 0; z < _terrainWidthChunks; z++)
             {
                 MeshTerrainChunk chunk = _loadedChunks[new Vector2Int(x, z)];
 
-                chunk.DecorateAndDraw(_onChunkLoaded);
+                Vector2Int offset = new Vector2Int(x * (chunkSize - 1), z * (chunkSize - 1));
+                float[,] heightMap = GetSubHeightMap(offset, chunkSize);
+                int[,] biomeMap = GetSubBiomeMap(offset, chunkSize);
+
+                chunk.DecorateAndDraw(heightMap, biomeMap, _onChunkLoaded);
                 yield return null;
             }
         }
+    }
+
+    private float[,] GetSubHeightMap(Vector2Int offset, int chunkSize)
+    {
+        float[,] heightMap = new float[chunkSize, chunkSize];
+
+        for (int i = 0; i < chunkSize; i++)
+        {
+            for (int j = 0; j < chunkSize; j++)
+            {
+                heightMap[i, j] = _terrainData.GetHeight(i + offset.x, j + offset.y);
+            }
+        }
+
+        return heightMap;
+    }
+
+    private int[,] GetSubBiomeMap(Vector2Int offset, int chunkSize)
+    {
+        int[,] biomeMap = new int[chunkSize, chunkSize];
+
+        for (int i = 0; i < chunkSize; i++)
+        {
+            for (int j = 0; j < chunkSize; j++)
+            {
+                biomeMap[i, j] = _terrainData.GetBiome(i + offset.x, j + offset.y);
+            }
+        }
+
+        return biomeMap;
     }
 
     /// <summary>
@@ -259,13 +305,13 @@ public class Terrain : MonoBehaviour
         yield return SequencePause();
         timer.Restart();
 
-        for (int i = 0; i < _terrainSize; i++)
+/*        for (int i = 0; i < _terrainWidthChunks; i++)
         {
-            for (int j = 0; j < _terrainSize; j++)
+            for (int j = 0; j < _terrainWidthChunks; j++)
             {
                 _loadedChunks[new Vector2Int(i, j)].GetComponent<TreeScatter>().PlaceTrees(chunkSize, _treeSeed);
             }
-        }
+        }*/
 
         CompleteSection("Tree Placement"); // Reported 28ms - 3x3 | 103ms - 5x5 -> WOWOWOW That's the power of object pooling
 
