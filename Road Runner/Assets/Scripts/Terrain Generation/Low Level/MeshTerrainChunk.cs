@@ -80,6 +80,19 @@ public class MeshTerrainChunk : MonoBehaviour
         CreateTriangles(size);
         CreateUVs(size);
     }
+    private void CreateVertecies(int size)
+    {
+        _vertices = new Vector3[(size) * (size)];
+
+        for (int i = 0, z = 0; z <= size - 1; z++)
+        {
+            for (int x = 0; x <= size - 1; x++)
+            {
+                _vertices[i] = new Vector3(x, _heightMap[x, z], z);
+                i++;
+            }
+        }
+    }
 
     private void CreateTriangles(int size)
     {
@@ -126,20 +139,6 @@ public class MeshTerrainChunk : MonoBehaviour
             for (int j = 0; j < triangleSet[i].Count; j++)
             {
                 _triangles[i][j] = triangleSet[i][j];
-            }
-        }
-    }
-
-    private void CreateVertecies(int size)
-    {
-        _vertices = new Vector3[(size) * (size)];
-
-        for (int i = 0, z = 0; z <= size - 1; z++)
-        {
-            for (int x = 0; x <= size - 1; x++)
-            {
-                _vertices[i] = new Vector3(x, _heightMap[x, z], z);
-                i++;
             }
         }
     }

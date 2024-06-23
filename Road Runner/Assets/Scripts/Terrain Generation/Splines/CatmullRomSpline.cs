@@ -5,6 +5,8 @@ using UnityEngine;
 public class CatmullRomSpline
 {
     int splineLength;
+    public int Length { get { return splineLength; } }
+
     int numPoints;
 
     Vector2[] points;
@@ -35,7 +37,12 @@ public class CatmullRomSpline
         this.points = points;
     }
 
-    public Vector2 GetPointFromPercent(float t)
+    public Vector2 GetPointFromPercent(float percent)
+    {
+        return GetPointAtDistance(splineLength * percent);
+    }
+
+    public Vector2 GetPointAtDistance(float distance)
     {
         if (points == null)
         {
@@ -43,28 +50,32 @@ public class CatmullRomSpline
             return Vector2.zero;
         }
 
-        if (t < 0)
-        {
-            Debug.LogWarning("CatmullRomSpline t < 0, setting t = 0");
-            t = 0;
-        }
-        else if (t >= 1)
-        {
-            Debug.LogWarning("CatmullRomSpline t > 1, setting t = 1");
-            t = 0.99f;
-        }
-
-        int i = Mathf.FloorToInt(t * splineLength);
-        t = t * splineLength - i;
+        distance = Mathf.Clamp(distance, 0, splineLength);
+        int i = Mathf.FloorToInt(distance);
+        float t = distance - i;
 
         Vector2 p0 = points[i];
         Vector2 p1 = points[i + 1];
         Vector2 p2 = points[i + 2];
         Vector2 p3 = points[i + 3];
 
-        Debug.Log(p1);
-
         return GetPoint(t, p0, p1, p2, p3);
+    }
+
+    public Vector2 GetTangentAtDistance(float distance)
+    {
+        float epsilon = 0.0001f;
+
+        Vector2 p1 = GetPointAtDistance(distance - epsilon);
+        Vector2 p2 = GetPointAtDistance(distance + epsilon);
+
+        return (p2 - p1).normalized;
+    }
+
+    public Vector2 GetNormalAtDistance(float distance)
+    {
+        Vector2 tangent = GetTangentAtDistance(distance);
+        return new Vector2(-tangent.y, tangent.x);
     }
 
     private Vector2 GetPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3)

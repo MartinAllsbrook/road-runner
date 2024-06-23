@@ -101,6 +101,11 @@ public class TerrainData
         return _biomeMap[x, z];
     }
 
+    public float GetHeight(Vector2 point)
+    {
+        return GetHeight(point.x, point.y);
+    }
+
     public float GetHeight(float x, float z)
     {
         int xFloor = (int)Mathf.Floor(x);

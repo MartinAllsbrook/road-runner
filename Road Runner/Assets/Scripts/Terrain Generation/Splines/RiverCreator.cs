@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
-public class RiverCreator : MonoBehaviour
+public class RiverCreator : SplineMeshCreator
 {
     [SerializeField] float riverStartCentrality = 2f;
     [SerializeField] int searchRadius = 25;
     [SerializeField] int numSamples = 10;
+
+    [SerializeField] float riverWidth = 1f;
+    [SerializeField] int riverMeshResolution = 10;
 
     CatmullRomSpline river;
     Random random;
@@ -29,20 +32,22 @@ public class RiverCreator : MonoBehaviour
         List<Vector2> points = CreateRiver(startingPoint, terrainData);
 
         Vector2[] pointsArray = points.ToArray();
-        foreach (Vector2 point in pointsArray)
+/*        foreach (Vector2 point in pointsArray)
         {
             riverTester.DrawPoint(point);
-        }
+        }*/
         if (pointsArray.Length < 4)
         {
             Debug.LogWarning("River has less than 4 points.");
             return;
         }
         river = new CatmullRomSpline(pointsArray);
- 
-
-        riverTester.DrawRiver(river);
+        
+        //riverTester.DrawRiver(river);
+        CreateMesh(river, riverMeshResolution, riverWidth, terrainData);
     }
+
+
 
     private List<Vector2> CreateRiver(Vector2Int startingPoint, TerrainData terrainData)
     {
