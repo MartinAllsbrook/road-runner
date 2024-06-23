@@ -5,7 +5,7 @@ using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 public class TreeScatter : MonoBehaviour
 {
@@ -22,13 +22,13 @@ public class TreeScatter : MonoBehaviour
     [SerializeField] private MyTreeGroup[] treeGroups; // TODO: Delete this
     [SerializeField] private float minHeight;
    
-    private System.Random _random;
+    private Random _random;
     
     public delegate void GenericDelegate();
 
     public void PlaceTrees(TerrainData terrainData, int treeSeed)
     {
-        _random = new System.Random(treeSeed);
+        _random = new Random(treeSeed);
 
         int terrainSize = terrainData.Size;
 

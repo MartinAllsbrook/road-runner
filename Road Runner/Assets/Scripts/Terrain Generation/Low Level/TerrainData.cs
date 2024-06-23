@@ -5,6 +5,15 @@ using UnityEngine;
 public class TerrainData
 {    
     private int _size;
+    public int Size { get { return _size; } }
+
+    private int _outerRadius;
+    public int OuterRadius { get { return _outerRadius; } set { _outerRadius = value; } }
+
+    private int _innerRadius;
+    public int InnerRadius { get { return _innerRadius; } set { _innerRadius = value; } }
+
+
 
     // Maps
     private float[,] _heightMap;
@@ -15,12 +24,6 @@ public class TerrainData
     private Plane[,] _planes;
 
     private static Biome[] _biomes;
-
-    public int Size
-    {
-        get { return _size; }
-        private set { }
-    }
 
     public TerrainData(int size)
     {
@@ -112,6 +115,16 @@ public class TerrainData
         plane.Raycast(ray, out float y);
         // Debug.Log(y);
         return y;
+    }
+
+    public float GetHeight(Vector2Int point)
+    {
+        return GetHeight(point.x, point.y);
+    }
+
+    public float GetHeight(int x, int z)
+    {
+        return _heightMap[x, z];
     }
 
     public float GetMoisture(float x, float z)

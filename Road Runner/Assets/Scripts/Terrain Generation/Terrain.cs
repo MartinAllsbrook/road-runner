@@ -22,6 +22,7 @@ public class Terrain : MonoBehaviour
     [SerializeField] private IslandSmoother islandSmoother;
     [SerializeField] private AreaBlender areaBlender;
     [SerializeField] private TreeScatter treeScatter;
+    [SerializeField] private RiverCreator riverCreator;
 
     [Header("Terrain Generation")]
     [Tooltip("TrueTerrainSize = (terrainRadius x 2 + 1) * chunksize")]
@@ -232,8 +233,11 @@ public class Terrain : MonoBehaviour
         sprinkleGenerator.FindHeightsAndPlace(_terrainData);
         areaBlender.PlaceAndBlend(ref _terrainData);
 
-
         CompleteSection("Landmark / Sprinkle Placement"); // Reported 9ms - 3x3 | 9ms - 5x5 -> Great
+
+        riverCreator.CreateRandomRiverTest(_terrainData, _treeSeed);
+
+        CompleteSection("River Placement"); 
 
         if (!_testingMode)
             UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.DrawingTerrain);

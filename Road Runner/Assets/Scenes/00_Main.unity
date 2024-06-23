@@ -1436,6 +1436,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 417286186679397947, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2158254504
+      objectReference: {fileID: 0}
+    - target: {fileID: 1648839514872105585, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3389971368
+      objectReference: {fileID: 0}
     - target: {fileID: 2648873749012872315, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2500703158
@@ -1480,18 +1488,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5698785632482808166, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: terrainRadius
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5698785632482808166, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: biomes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5698785632482808166, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: biomes.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
     - target: {fileID: 6495417418160160114, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: m_Name
       value: Environment

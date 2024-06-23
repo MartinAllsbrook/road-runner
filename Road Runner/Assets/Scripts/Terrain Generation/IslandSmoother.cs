@@ -14,7 +14,9 @@ public class IslandSmoother : MonoBehaviour
         int terrainSize = terrainData.Size;
         int outterRadius = terrainSize / 2;
         int innerRadius = outterRadius - transitionWidth;
-        
+        terrainData.OuterRadius = outterRadius;
+        terrainData.InnerRadius = innerRadius;
+
         Vector2Int center = new Vector2Int(outterRadius, outterRadius);
 
         for (int x = 0; x < terrainSize; x++)

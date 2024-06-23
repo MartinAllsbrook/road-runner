@@ -9,14 +9,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8762340282045984026}
+  - component: {fileID: 3472110810897631191}
   - component: {fileID: 2079987541488377761}
   - component: {fileID: 3629075484901468618}
-  - component: {fileID: 8463256600902518824}
-  - component: {fileID: 3472110810897631191}
   - component: {fileID: 6863568525783734957}
   - component: {fileID: 1988406556233438263}
   - component: {fileID: 8722520916709219492}
+  - component: {fileID: 8463256600902518824}
   - component: {fileID: 609545300067736749}
+  - component: {fileID: 7819062014431523776}
+  - component: {fileID: 7573667351729496500}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -39,6 +41,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3472110810897631191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316009628726394368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0854f42dfa2c92f4f98f02001576ea04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeManager: {fileID: 8463256600902518824}
+  sprinkleGenerator: {fileID: 2079987541488377761}
+  terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
+  mapGenerator: {fileID: 6863568525783734957}
+  islandSmoother: {fileID: 1988406556233438263}
+  areaBlender: {fileID: 8722520916709219492}
+  treeScatter: {fileID: 609545300067736749}
+  riverCreator: {fileID: 7819062014431523776}
+  terrainRadius: 2
+  chunkSize: 513
+  biomes:
+  - {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
+  loadingPauseTime: 0.3
 --- !u!114 &2079987541488377761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,42 +102,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &8463256600902518824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316009628726394368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 062f068653f6e784eb68a8994c71c2b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3472110810897631191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316009628726394368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0854f42dfa2c92f4f98f02001576ea04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  treeManager: {fileID: 8463256600902518824}
-  sprinkleGenerator: {fileID: 2079987541488377761}
-  terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
-  mapGenerator: {fileID: 6863568525783734957}
-  islandSmoother: {fileID: 1988406556233438263}
-  areaBlender: {fileID: 8722520916709219492}
-  treeScatter: {fileID: 609545300067736749}
-  terrainRadius: 1
-  chunkSize: 513
-  biomes:
-  - {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
-  loadingPauseTime: 0.3
 --- !u!114 &6863568525783734957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +206,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8463256600902518824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316009628726394368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062f068653f6e784eb68a8994c71c2b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &609545300067736749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,3 +234,34 @@ MonoBehaviour:
   numTrees: 64
   treeGroups: []
   minHeight: 0
+--- !u!114 &7819062014431523776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316009628726394368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62e03608eb1dc3d4ba5309ef31c26201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  riverStartCentrality: 2
+  searchRadius: 5
+  numSamples: 10
+  riverTester: {fileID: 0}
+--- !u!114 &7573667351729496500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316009628726394368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba728a8f9abccf49a82ff48eab21100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testingObject: {fileID: 7347250466337594357, guid: 3a7d503e84871f44897e56f24d4057c2, type: 3}
+  drawResolution: 100
+  drawHeight: 100
