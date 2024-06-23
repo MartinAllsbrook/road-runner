@@ -104,6 +104,9 @@ public class EnvironmentManager : NetworkBehaviour
 
     private IEnumerator OnTerrainGenerated() // TODO: Does this really need to be a coroutine
     {
+        Debug.Log(IsClient);
+        Debug.Log(IsHost);
+        Debug.Log(IsServer);
         if (IsServer)
             navMeshManager.BakeNavMesh();
         else

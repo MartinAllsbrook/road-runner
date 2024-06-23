@@ -115,6 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2935390251777952128}
+  - component: {fileID: 1648839514872105585}
   - component: {fileID: 2345219370067186288}
   m_Layer: 0
   m_Name: Environment
@@ -143,6 +144,26 @@ Transform:
   - {fileID: 7718405639156360931}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1648839514872105585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6495417418160160114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &2345219370067186288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,15 +178,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrain: {fileID: 2787950459740836454}
   navMeshManager: {fileID: 8860516609234180564}
-  treeManager: {fileID: 7200173091222445465}
-  sprinkleGenerator: {fileID: 739216961325664784}
-  terrainChunk: {fileID: 9051413243473054194, guid: 0786cf3101d53094e84ad9fbd0728927, type: 3}
-  terrainRadius: 1
-  chunkSize: 513
-  biomes:
-  - {fileID: 11400000, guid: 83a66b8ae8a0c6a4cb363a53d9b74360, type: 2}
-  - {fileID: 11400000, guid: 292b3b25df35e104bb20e5dbb4af2c98, type: 2}
-  - {fileID: 11400000, guid: 867f392ac08caa641827a71a01c245c3, type: 2}
   loadingPauseTime: 0.3
 --- !u!1 &8920093619752223318
 GameObject:
@@ -376,7 +388,7 @@ PrefabInstance:
       objectReference: {fileID: 8515197870878483532, guid: 221280d5d7831f345bb3eb9e1c3a5679, type: 3}
     - target: {fileID: 3629075484901468618, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3225911626
+      value: 1195612565
       objectReference: {fileID: 0}
     - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: terrainRadius
@@ -439,17 +451,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
---- !u!114 &739216961325664784 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2079987541488377761, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-  m_PrefabInstance: {fileID: 1630197851099600305}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be0786971ed2b694db9ec82564ead893, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2787950459740836454 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3472110810897631191, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
@@ -459,17 +460,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0854f42dfa2c92f4f98f02001576ea04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7200173091222445465 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8463256600902518824, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-  m_PrefabInstance: {fileID: 1630197851099600305}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 062f068653f6e784eb68a8994c71c2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &8000000704390887595 stripped

@@ -7,37 +7,36 @@ public class AreaBlender : MonoBehaviour
 {
     [SerializeField] private AnimationCurve authorityCurve;
 
-    public void PlaceAndBlend(ref ChunkData chunkData)
+    public void PlaceAndBlend(ref TerrainData terrainData)
     {
         List<PlacedSprinkle> sprinkleMap = SprinkleGenerator.Instance.GetSprinkleMap();
 
         foreach (PlacedSprinkle placedSprinkle in sprinkleMap)
-            CircleBlend(ref chunkData, placedSprinkle.position, placedSprinkle.height, placedSprinkle.sprinkle.FlatRadius, placedSprinkle.sprinkle.BlendRadius);
+            CircleBlend(ref terrainData, placedSprinkle.position, placedSprinkle.height, placedSprinkle.sprinkle.FlatRadius, placedSprinkle.sprinkle.BlendRadius);
         
-        chunkData.GeneratePlanes(); // TODO: Not this
+        terrainData.GeneratePlanes(); // TODO: Not this
     }
 
-    private void CircleBlend(ref ChunkData chunkData, Vector2Int blendCenter, float height, int flatRadius, int blendRadius)
+    private void CircleBlend(ref TerrainData terrainData, Vector2Int blendCenter, float height, int flatRadius, int blendRadius)
     {
-        Vector2Int worldPosition = chunkData.WorldPosition;
-        int chunkSize = chunkData.Size;
+        int terrainSize = terrainData.Size;
 
-        for (int x = 0; x < chunkSize; x++)
+        for (int x = 0; x < terrainSize; x++)
         {
-            for (int z = 0; z < chunkSize; z++)
+            for (int z = 0; z < terrainSize; z++)
             {
-                Vector2Int point = worldPosition + new Vector2Int(x, z);
+                Vector2Int point = new Vector2Int(x, z);
 
                 float authority = GetTerraformAuthority(point, blendCenter, flatRadius, blendRadius); // 1 - auth because we want this to be inverted
 
-                float terrainHeight = chunkData.GetHeight(x, z);
+                float terrainHeight = terrainData.GetHeight(x, z);
                 float newHeight = Mathf.Lerp(terrainHeight, height, authority);
 
-                chunkData.SetHeight(x, z, newHeight);
+                terrainData.SetHeight(x, z, newHeight);
 
                 if (authority >= 1)
                 {
-                    chunkData.SetDensity(x, z, 0);
+                    terrainData.SetDensity(x, z, 0);
                 }
             }
         }

@@ -19,6 +19,9 @@ public class Terrain : MonoBehaviour
     [Tooltip("The chunk that will be instantiated to form the terrain")]
     [SerializeField] private GameObject terrainChunk;
     [SerializeField] private MapGenerator mapGenerator;
+    [SerializeField] private IslandSmoother islandSmoother;
+    [SerializeField] private AreaBlender areaBlender;
+    [SerializeField] private TreeScatter treeScatter;
 
     [Header("Terrain Generation")]
     [Tooltip("TrueTerrainSize = (terrainRadius x 2 + 1) * chunksize")]
@@ -178,6 +181,7 @@ public class Terrain : MonoBehaviour
 
         int chunkWidth = chunkSize - 1;
 
+        // Initialize all the chunks
         for (int x = 0; x < _terrainWidthChunks; x++)
         {
             for (var z = 0; z < _terrainWidthChunks; z++)
@@ -223,7 +227,11 @@ public class Terrain : MonoBehaviour
         yield return SequencePause();
         timer.Restart();
 
-        //sprinkleGenerator.FindHeightsAndPlace(_loadedChunks);
+        // Smooth into island
+        islandSmoother.SmoothHeights(ref _terrainData);
+        sprinkleGenerator.FindHeightsAndPlace(_terrainData);
+        areaBlender.PlaceAndBlend(ref _terrainData);
+
 
         CompleteSection("Landmark / Sprinkle Placement"); // Reported 9ms - 3x3 | 9ms - 5x5 -> Great
 
@@ -305,13 +313,7 @@ public class Terrain : MonoBehaviour
         yield return SequencePause();
         timer.Restart();
 
-/*        for (int i = 0; i < _terrainWidthChunks; i++)
-        {
-            for (int j = 0; j < _terrainWidthChunks; j++)
-            {
-                _loadedChunks[new Vector2Int(i, j)].GetComponent<TreeScatter>().PlaceTrees(chunkSize, _treeSeed);
-            }
-        }*/
+        treeScatter.PlaceTrees(_terrainData, _treeSeed);
 
         CompleteSection("Tree Placement"); // Reported 28ms - 3x3 | 103ms - 5x5 -> WOWOWOW That's the power of object pooling
 
