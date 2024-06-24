@@ -1436,10 +1436,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 417286186679397947, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 2158254504
-      objectReference: {fileID: 0}
     - target: {fileID: 1648839514872105585, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3389971368
@@ -1447,10 +1443,6 @@ PrefabInstance:
     - target: {fileID: 2648873749012872315, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2500703158
-      objectReference: {fileID: 0}
-    - target: {fileID: 2787950459740836454, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
-      propertyPath: terrainRadius
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2935390251777952128, guid: 41afbda89250ab844bfdcbb6aaef1b7a, type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,3 +1,4 @@
+using Mono.CSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ using Debug = UnityEngine.Debug;
 
 public class MapGenerator : MonoBehaviour
 {
+    [SerializeField] int globalScaleDown = 512;
+
     [Header("Height")]
     [SerializeField] private float[] heightOctaves;
     [SerializeField] private float heightRedistributionFactor;
@@ -26,17 +29,43 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private float[] densityOctaves;
     [SerializeField] private float densityRedistributionFactor;
     [SerializeField] private int maxDensity;
-    
-    private float[,] _generatedMap;
-    
-    private int _size = 513;
 
     public delegate void GenericDelegate();
     public delegate void GenericDelegate<T>(T variable);
 
     #region Map Generation
 
-    // Step 1: Generate Heights
+    public void GenerateMaps(int[] seeds, TerrainData terrainData, GenericDelegate finalCallback)
+    {
+        StartCoroutine(GenerateMapsRoutine(seeds, terrainData, finalCallback));  
+    }
+
+    private IEnumerator GenerateMapsRoutine(int[] seeds, TerrainData terrainData, GenericDelegate finalCallback)
+    {
+        int size = terrainData.Size;
+
+        float[,] heightMap = new float[size, size];
+        float[,] moistureMap = new float[size, size];
+        float[,] strangenessMap = new float[size, size];
+        float[,] densityMap = new float[size, size];
+
+        yield return GenerateNoiseCoroutine(seeds[0], Vector2Int.zero, heightOctaves, heightRedistributionFactor, maxHeight, size, data => { heightMap = data; });
+
+        yield return GenerateNoiseCoroutine(seeds[1], Vector2Int.zero, moistureOctaves, moistureRedistributionFactor, maxMoisture, size, data => { moistureMap = data; });
+
+        yield return GenerateNoiseCoroutine(seeds[2], Vector2Int.zero, strangenessOctaves, strangenessRedistributionFactor, maxStrangeness, size, data => { strangenessMap = data; });
+
+        yield return GenerateNoiseCoroutine(seeds[3], Vector2Int.zero, densityOctaves, densityRedistributionFactor, maxDensity, size, data => { densityMap = data; });
+
+        terrainData.SetMaps(heightMap, moistureMap, strangenessMap, densityMap);
+
+        finalCallback();
+
+        yield return null;
+    }
+
+
+/*    // Step 1: Generate Heights
     public void GenerateMap(Vector2Int tile, int[] seeds, TerrainData chunkData, GenericDelegate finalCallback)
     {
         _size = chunkData.Size;
@@ -94,20 +123,20 @@ public class MapGenerator : MonoBehaviour
                 onFinishedCallback?.Invoke();
             }
         ));
-    }
+    }*/
 
-    IEnumerator GenerateNoiseCoroutine(int seed, Vector2Int position, float[] octaves, float redistributionFactor, int maxValue, GenericDelegate<float[,]> callback)
+    IEnumerator GenerateNoiseCoroutine(int seed, Vector2Int position, float[] octaves, float redistributionFactor, int maxValue, int size, GenericDelegate<float[,]> callback)
     {
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        float[,] noise = new float[_size, _size];
+        float[,] noise = new float[size, size];
 
         Vector2 seedOffset = new Vector2(seed, seed);
-        Vector2 positionOffset = position * (_size - 1);
+        Vector2 positionOffset = position * (size - 1);
         Vector2 offset = positionOffset + seedOffset;
 
-        for (int z = 0; z < _size; z++)
+        for (int z = 0; z < size; z++)
         {
             if (timer.ElapsedMilliseconds > 3)
             {
@@ -116,7 +145,7 @@ public class MapGenerator : MonoBehaviour
                 timer.Start();
             }
 
-            for (int x = 0; x < _size; x++)
+            for (int x = 0; x < size; x++)
             {
                 noise[x, z] = (maxValue * CompileNoise(x, z, offset, octaves, redistributionFactor));
             }
@@ -133,8 +162,8 @@ public class MapGenerator : MonoBehaviour
         float value = 0;
         float octaveSum = 0f;
         
-        float xNorm = (x + offset.x) / _size;
-        float zNorm = (z + offset.y) / _size;
+        float xNorm = (x + offset.x) / globalScaleDown;
+        float zNorm = (z + offset.y) / globalScaleDown;
     
         for (int i = 0; i < octaves.Length; i++)
         {

@@ -61,10 +61,19 @@ MonoBehaviour:
   areaBlender: {fileID: 8722520916709219492}
   treeScatter: {fileID: 609545300067736749}
   riverCreator: {fileID: 7819062014431523776}
-  terrainRadius: 1
+  terrainRadius: 2
   chunkSize: 513
   biomes:
+  - {fileID: 11400000, guid: 83a66b8ae8a0c6a4cb363a53d9b74360, type: 2}
+  - {fileID: 11400000, guid: 292b3b25df35e104bb20e5dbb4af2c98, type: 2}
+  - {fileID: 11400000, guid: 867f392ac08caa641827a71a01c245c3, type: 2}
+  - {fileID: 11400000, guid: 9946f19af8979a841b3561e82f9e0a8e, type: 2}
+  - {fileID: 11400000, guid: 6469e3ac50d9e3848badd6a9550530a3, type: 2}
   - {fileID: 11400000, guid: c7cf4655c4383d44796bdd3bd11cd130, type: 2}
+  numberOfPeaks: 15
+  minPeakSpacing: 50
+  seaLevel: 2
+  peakSearchStep: 2
   loadingPauseTime: 0.3
   testPrefab: {fileID: 100000, guid: 492031f9cbc117d419c5271ccc50b76a, type: 3}
 --- !u!114 &2079987541488377761
@@ -80,7 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprinkleRanks:
-  - numToPlace: 2
+  - numToPlace: 3
     sprinkles:
     - {fileID: 8515197870878483532, guid: 221280d5d7831f345bb3eb9e1c3a5679, type: 3}
 --- !u!114 &3629075484901468618
@@ -95,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1609493009
+  GlobalObjectIdHash: 3782425805
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0

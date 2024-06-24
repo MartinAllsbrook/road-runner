@@ -182,7 +182,7 @@ public class Terrain : MonoBehaviour
         yield return SequencePause();
         timer.Restart();
 
-        mapGenerator.GenerateMap(new Vector2Int(0,0), _perlinNoiseSeeds, _terrainData, () => { StartCoroutine(WhenMapsGenerated()); });
+        mapGenerator.GenerateMaps(_perlinNoiseSeeds, _terrainData, () => { StartCoroutine(WhenMapsGenerated()); });
         yield return null;
     }
 
