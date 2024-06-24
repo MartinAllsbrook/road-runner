@@ -8,28 +8,57 @@ using Debug = UnityEngine.Debug;
 
 public class MapGenerator : MonoBehaviour
 {
+    [System.Serializable]
+    public class NoiseLayer
+    {
+        [SerializeField] float octave;
+        [SerializeField] int contrast;
+        [SerializeField] float midPoint;
+
+        float octaveScaled;
+        float inverseOctave;
+        float oneMinusMidPoint;
+
+        public float Octave { get { return octave; } }
+        public float OctaveScaled { get { return octaveScaled; } }
+        public float InverseOctave { get { return inverseOctave; } }
+        public float MidPoint { get { return midPoint; } }
+        public float OneMinusMidPoint { get { return oneMinusMidPoint; } }
+        public int Contrast { get { return contrast; } }
+
+        public NoiseLayer(float octave, int contrast, float midPoint)
+        {
+            this.octave = octave;
+            this.contrast = contrast;
+            this.midPoint = midPoint;
+        }
+
+        public void CalculateValues(int scaleDown)
+        {
+            octaveScaled = octave / scaleDown;
+            inverseOctave = 1 / octave;
+            oneMinusMidPoint = 1 - midPoint;
+        }
+    }
+
     [Header("Global")]
     [SerializeField] int globalScaleDown = 512;
-    
+
     [Header("Height")]
-    [SerializeField] float[] heightOctaves;
-    [SerializeField] float heightRedistributionFactor;
-    [SerializeField] int maxHeight;
+    [SerializeField] NoiseLayer[] heightLayers = { new NoiseLayer(1, 3, 0.5f), new NoiseLayer(4, 3, 0.5f), new NoiseLayer(8, 3, 0.5f) };
+    [SerializeField] int maxHeight = 100;
     
     [Header("Moisture")]
-    [SerializeField] float[] moistureOctaves;
-    [SerializeField] float moistureRedistributionFactor;
-    [SerializeField] int maxMoisture;
+    [SerializeField] NoiseLayer[] moistureLayers = { new NoiseLayer(1, 3, 0.5f), new NoiseLayer(4, 3, 0.5f), new NoiseLayer(8, 3, 0.5f) };
+    [SerializeField] int maxMoisture = 100;
 
     [Header("Strangeness")]
-    [SerializeField] float[] strangenessOctaves;
-    [SerializeField] float strangenessRedistributionFactor;
-    [SerializeField] int maxStrangeness;
+    [SerializeField] NoiseLayer[] strangenessLayers = { new NoiseLayer(1, 3, 0.5f), new NoiseLayer(4, 3, 0.5f), new NoiseLayer(8, 3, 0.5f) };
+    [SerializeField] int maxStrangeness = 100;
     
     [Header("Density")]
-    [SerializeField] float[] densityOctaves;
-    [SerializeField] float densityRedistributionFactor;
-    [SerializeField] int maxDensity;
+    [SerializeField] NoiseLayer[] densityLayers = { new NoiseLayer(1, 3, 0.5f), new NoiseLayer(4, 3, 0.5f), new NoiseLayer(8, 3, 0.5f) };
+    [SerializeField] int maxDensity = 100;
 
     public delegate void GenericDelegate();
     public delegate void GenericDelegate<T>(T variable);
@@ -47,18 +76,30 @@ public class MapGenerator : MonoBehaviour
     {
         int size = terrainData.Size;
 
+        for (int i = 0; i < heightLayers.Length; i++)
+            heightLayers[i].CalculateValues(globalScaleDown);
+        
+        for (int i = 0; i < moistureLayers.Length; i++)
+            moistureLayers[i].CalculateValues(globalScaleDown);
+
+        for (int i = 0; i < strangenessLayers.Length; i++)
+            strangenessLayers[i].CalculateValues(globalScaleDown);
+
+        for (int i = 0; i < densityLayers.Length; i++)
+            densityLayers[i].CalculateValues(globalScaleDown);
+
         float[,] heightMap = new float[size, size];
         float[,] moistureMap = new float[size, size];
         float[,] strangenessMap = new float[size, size];
         float[,] densityMap = new float[size, size];
 
-        yield return GenerateGenraricMapRoutine(seeds[0], heightOctaves, heightRedistributionFactor, maxHeight, size, data => { heightMap = data; });
+        yield return GenerateGenraricMapRoutine(seeds[0], heightLayers, maxHeight, size, data => { heightMap = data; });
 
-        yield return GenerateGenraricMapRoutine(seeds[1], moistureOctaves, moistureRedistributionFactor, maxMoisture, size, data => { moistureMap = data; });
+        yield return GenerateGenraricMapRoutine(seeds[1], moistureLayers, maxMoisture, size, data => { moistureMap = data; });
 
-        yield return GenerateGenraricMapRoutine(seeds[2], strangenessOctaves, strangenessRedistributionFactor, maxStrangeness, size, data => { strangenessMap = data; });
+        yield return GenerateGenraricMapRoutine(seeds[2], strangenessLayers, maxStrangeness, size, data => { strangenessMap = data; });
 
-        yield return GenerateGenraricMapRoutine(seeds[3], densityOctaves, densityRedistributionFactor, maxDensity, size, data => { densityMap = data; });
+        yield return GenerateGenraricMapRoutine(seeds[3], densityLayers, maxDensity, size, data => { densityMap = data; });
 
         terrainData.SetMaps(heightMap, moistureMap, strangenessMap, densityMap);
 
@@ -67,14 +108,18 @@ public class MapGenerator : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator GenerateGenraricMapRoutine(int seed, float[] octaves, float redistributionFactor, int maxValue, int size, GenericDelegate<float[,]> callback)
+    IEnumerator GenerateGenraricMapRoutine(int seed, NoiseLayer[] noiseLayers, int maxValue, int size, GenericDelegate<float[,]> callback)
     {
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
         float[,] map = new float[size, size];
 
-        Vector2 offset = new Vector2(seed, seed);
+        float inverseOctaveSum = 0f;
+        for (int i = 0; i < noiseLayers.Length; i++)
+        {
+            inverseOctaveSum += noiseLayers[i].InverseOctave;
+        }
 
         for (int z = 0; z < size; z++)
         {
@@ -85,9 +130,11 @@ public class MapGenerator : MonoBehaviour
                 timer.Start();
             }
 
+            float zNorm = z + seed;
             for (int x = 0; x < size; x++)
             {
-                map[x, z] = CompileNoise(x, z, offset, octaves, redistributionFactor) * maxValue;
+                float xNorm = x + seed;
+                map[x, z] = CompileNoise(xNorm, zNorm, noiseLayers, inverseOctaveSum) * maxValue;
             }
         }
         
@@ -97,32 +144,42 @@ public class MapGenerator : MonoBehaviour
         yield return null;
     }
     
-    float CompileNoise(int x, int z, Vector2 offset, float[] octaves, float redistributionFactor)
+    float CompileNoise(float xNorm, float zNorm, NoiseLayer[] noiseLayers, float inverseOctaveSum)
     {
         float value = 0;
-        float octaveSum = 0f;
-        
-        float xNorm = (x + offset.x) / globalScaleDown;
-        float zNorm = (z + offset.y) / globalScaleDown;
-    
-        for (int i = 0; i < octaves.Length; i++)
-        {
-            value += (1/octaves[i]) * CalculateNoise(xNorm, zNorm, octaves[i]);
-            octaveSum += 1/octaves[i];
-        }
-        value /= octaveSum;
 
-        value = Mathf.Pow(value, redistributionFactor);
+        for (int i = 0; i < noiseLayers.Length; i++)
+        {
+            float midPoint = noiseLayers[i].MidPoint;
+            float oneMinusMidPoint = noiseLayers[i].OneMinusMidPoint;
+
+            float rawValue = noiseLayers[i].InverseOctave * CalculateNoise(xNorm, zNorm, noiseLayers[i].OctaveScaled);
+
+            rawValue = (rawValue - midPoint) / oneMinusMidPoint;
+
+            float powValue = rawValue;
+            if (rawValue < 0)
+                rawValue = -rawValue;
+
+            for (int j = 1; j < noiseLayers[i].Contrast; j++)
+                powValue *= rawValue;            
+
+            powValue = powValue * oneMinusMidPoint + midPoint;
+
+            value += powValue;
+        }
+
+        value /= inverseOctaveSum;
 
         return value;
     }
-    
-    float CalculateNoise(float xNorm, float zNorm, float scale)
-    {
-        xNorm *= scale;
-        zNorm *= scale;
 
-        return Mathf.PerlinNoise(xNorm, zNorm);
+    float CalculateNoise(float x, float z, float scale)
+    {
+        x *= scale;
+        z *= scale;
+
+        return Mathf.PerlinNoise(x, z);
     }
 
     #endregion

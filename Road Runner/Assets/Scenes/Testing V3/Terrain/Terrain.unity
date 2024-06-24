@@ -247,8 +247,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrain: {fileID: 1923263261}
-  seed: 888
-  randomSeed: 1
+  seed: 530067
+  randomSeed: 0
 --- !u!4 &472133038
 Transform:
   m_ObjectHideFlags: 0
@@ -474,6 +474,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrain
       objectReference: {fileID: 0}
+    - target: {fileID: 1988406556233438263, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+      propertyPath: transitionWidth
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 3472110810897631191, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: terrainRadius
       value: 2
@@ -481,6 +485,10 @@ PrefabInstance:
     - target: {fileID: 3629075484901468618, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1609493009
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863568525783734957, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+      propertyPath: maxHeight
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: m_LocalPosition.x
