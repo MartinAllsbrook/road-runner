@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrain: {fileID: 1923263261}
-  seed: 123
+  seed: 888
   randomSeed: 1
 --- !u!4 &472133038
 Transform:
@@ -368,37 +368,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrain
       objectReference: {fileID: 0}
-    - target: {fileID: 3472110810897631191, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: testPrefab
-      value: 
-      objectReference: {fileID: 100000, guid: 492031f9cbc117d419c5271ccc50b76a, type: 3}
-    - target: {fileID: 3472110810897631191, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: terrainRadius
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3629075484901468618, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1609493009
-      objectReference: {fileID: 0}
-    - target: {fileID: 7573667351729496500, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: testingObjectPoint
-      value: 
-      objectReference: {fileID: 1160718755220558, guid: 5d5eb8ad08591e445adfb4241b982f84, type: 3}
-    - target: {fileID: 7819062014431523776, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: meshPrefab
-      value: 
-      objectReference: {fileID: 1330649421577568207, guid: 00dbbd14038a6214ea8ef304a8daca15, type: 3}
-    - target: {fileID: 7819062014431523776, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: riverWidth
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7819062014431523776, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: riverTester
-      value: 
-      objectReference: {fileID: 1923263270}
-    - target: {fileID: 7819062014431523776, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: searchRadius
-      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: m_LocalPosition.x
@@ -454,17 +426,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0854f42dfa2c92f4f98f02001576ea04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1923263270 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7573667351729496500, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-  m_PrefabInstance: {fileID: 1923263260}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bba728a8f9abccf49a82ff48eab21100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

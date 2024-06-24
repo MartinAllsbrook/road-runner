@@ -31,7 +31,13 @@ public class Terrain : MonoBehaviour
     [SerializeField] private int chunkSize;
     [Tooltip("A list of biome to be generated on the terrain")]
     [SerializeField] private Biome[] biomes;
-    
+
+    [Header("Peaks")]
+    [SerializeField] int numberOfPeaks = 15;
+    [SerializeField] int minPeakSpacing = 50;
+    [SerializeField] int seaLevel = 2;
+    [SerializeField] int peakSearchStep = 2;
+
     public Biome[] Biomes // TODO: Should this just be a getter?
     {
         get { return biomes; }
@@ -176,29 +182,8 @@ public class Terrain : MonoBehaviour
         yield return SequencePause();
         timer.Restart();
 
-        Debug.Log(_perlinNoiseSeeds);
-        Debug.Log(_terrainData);
-
         mapGenerator.GenerateMap(new Vector2Int(0,0), _perlinNoiseSeeds, _terrainData, () => { StartCoroutine(WhenMapsGenerated()); });
-
-        int chunkWidth = chunkSize - 1;
-
-        // Initialize all the chunks
-        for (int x = 0; x < _terrainWidthChunks; x++)
-        {
-            for (var z = 0; z < _terrainWidthChunks; z++)
-            {
-                Vector2Int chunkPosition = new Vector2Int(x, z);
-
-                GameObject newChunk = Instantiate(terrainChunk, new Vector3(chunkPosition.x * (chunkWidth), 0, chunkPosition.y * (chunkWidth)), Quaternion.identity, transform);
-                MeshTerrainChunk chunk = newChunk.GetComponent<MeshTerrainChunk>();
-
-                //chunk.CreateMaps(_perlinNoiseSeeds, _onMapsGenerated, chunkSize, terrainRadius); // This calls coroutines under the hood
-
-                _loadedChunks.Add(chunkPosition, chunk);
-            }
-        }
-
+        yield return null;
     }
 
     /// <summary>
@@ -222,6 +207,28 @@ public class Terrain : MonoBehaviour
     private IEnumerator WhenMapsGenerated()
     {
         CompleteSection("Noise-Map Generation"); // Reported 2,000ms - 3x3 | 5,500ms - 5x5 -> Eh it's coroutine-ified
+        yield return null;
+
+        int chunkWidth = chunkSize - 1;
+
+        // Initialize all the chunks
+        for (int x = 0; x < _terrainWidthChunks; x++)
+        {
+            for (var z = 0; z < _terrainWidthChunks; z++)
+            {
+                Vector2Int chunkPosition = new Vector2Int(x, z);
+
+                GameObject newChunk = Instantiate(terrainChunk, new Vector3(chunkPosition.x * (chunkWidth), 0, chunkPosition.y * (chunkWidth)), Quaternion.identity, transform);
+                MeshTerrainChunk chunk = newChunk.GetComponent<MeshTerrainChunk>();
+
+                //chunk.CreateMaps(_perlinNoiseSeeds, _onMapsGenerated, chunkSize, terrainRadius); // This calls coroutines under the hood
+
+                _loadedChunks.Add(chunkPosition, chunk);
+            }
+        }
+
+        CompleteSection("Chunk Creation");
+        yield return null;
 
         if (!_testingMode)
             UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.PlacingLandmarks);
@@ -231,12 +238,22 @@ public class Terrain : MonoBehaviour
 
         // Smooth into island
         islandSmoother.SmoothHeights(ref _terrainData);
+        CompleteSection("Smooth Heights");
+        yield return null;
+
         sprinkleGenerator.FindHeightsAndPlace(_terrainData);
+        CompleteSection("Find Height and Place");
+        yield return null;
+
         areaBlender.PlaceAndBlend(ref _terrainData);
+        CompleteSection("Place And Blend");
+        yield return null;
+        yield return SequencePause();
 
-        CompleteSection("Landmark / Sprinkle Placement"); // Reported 9ms - 3x3 | 9ms - 5x5 -> Great
+        _terrainData.FindPeaks(numberOfPeaks, _treeSeed, minPeakSpacing, seaLevel, peakSearchStep);
+        CompleteSection("Find Peaks");
+        yield return null;
 
-        _terrainData.FindPeaks(5, _treeSeed, 50);
         foreach (Vector2Int peak in _terrainData.Peaks)
         {
             Vector3 peakPosition = new Vector3(peak.x, _terrainData.GetHeight(peak), peak.y);
@@ -244,16 +261,16 @@ public class Terrain : MonoBehaviour
         }
 
         CompleteSection("Finding Peaks");
+        yield return null;
 
-        riverCreator.CreateRandomRiverTest(_terrainData, _treeSeed);
+        riverCreator.CreateRivers(_terrainData, _treeSeed);
+        
 
-        CompleteSection("River Placement"); 
+        CompleteSection("River Placement");
+        yield return null;
 
         if (!_testingMode)
             UIManager.Instance.SetLoadingScreenText(UIManager.LoadingScreenTexts.DrawingTerrain);
-    
-        yield return SequencePause();
-        timer.Restart();
 
         _terrainData.CalculateBiomes();
 

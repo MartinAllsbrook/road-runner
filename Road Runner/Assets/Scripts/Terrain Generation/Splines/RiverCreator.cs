@@ -9,17 +9,17 @@ public class RiverCreator : SplineMeshCreator
     [SerializeField] int searchRadius = 25;
     [SerializeField] int numSamples = 10;
 
-    [SerializeField] float riverWidth = 1f;
+    [SerializeField] float riverWidth = 5f;
     [SerializeField] int riverMeshResolution = 10;
 
-    CatmullRomSpline river;
+    CatmullRomSpline[] rivers;
     Random random;
 
     [SerializeField] RiverTester riverTester;
     
     public void CreateRandomRiverTest(TerrainData terrainData, int riverSeed)
     {
-        random = new Random(riverSeed);
+/*        random = new Random(riverSeed);
 
         int terrainSize = terrainData.Size;
         int radius = terrainSize / 2;
@@ -32,10 +32,10 @@ public class RiverCreator : SplineMeshCreator
         List<Vector2> points = CreateRiver(startingPoint, terrainData);
 
         Vector2[] pointsArray = points.ToArray();
-/*        foreach (Vector2 point in pointsArray)
+*//*        foreach (Vector2 point in pointsArray)
         {
             riverTester.DrawPoint(point);
-        }*/
+        }*//*
         if (pointsArray.Length < 4)
         {
             Debug.LogWarning("River has less than 4 points.");
@@ -44,10 +44,33 @@ public class RiverCreator : SplineMeshCreator
         river = new CatmullRomSpline(pointsArray);
         
         //riverTester.DrawRiver(river);
-        CreateMesh(river, riverMeshResolution, riverWidth, terrainData);
+        CreateMesh(river, riverMeshResolution, riverWidth, terrainData);*/
     }
 
+    public void CreateRivers(TerrainData terrainData, int seed)
+    {
+        random = new Random(seed);
 
+        Vector2Int[] peaks = terrainData.Peaks;
+        int numPeaks = peaks.Length;
+
+        rivers = new CatmullRomSpline[numPeaks];
+
+        for (int i = 0; i < numPeaks; i++)
+        {
+            Vector2Int peak = peaks[i];
+            List<Vector2> points = CreateRiver(peak, terrainData);
+
+            Vector2[] pointsArray = points.ToArray();
+            if (pointsArray.Length < 4)
+            {
+                Debug.LogWarning("River has less than 4 points.");
+                continue;
+            }
+            rivers[i] = new CatmullRomSpline(pointsArray);
+            CreateMesh(rivers[i], riverMeshResolution, riverWidth, terrainData);
+        }
+    }
 
     private List<Vector2> CreateRiver(Vector2Int startingPoint, TerrainData terrainData)
     {
@@ -57,8 +80,18 @@ public class RiverCreator : SplineMeshCreator
         Vector2Int currentPoint = startingPoint;
         Vector2Int nextPoint = GetNextRiverPoint(currentPoint, terrainData);
 
+
+        int stepsTaken = 0;
+        int maxSteps = 250;
         while (currentPoint != nextPoint)
         {
+            stepsTaken++;
+            if (stepsTaken > maxSteps)
+            {
+                Debug.LogError("Max steps reached for creating river.");
+                break;
+            }
+
             points.Add(nextPoint);
             currentPoint = nextPoint;
             nextPoint = GetNextRiverPoint(currentPoint, terrainData);
