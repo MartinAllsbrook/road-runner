@@ -17,11 +17,13 @@ public class MapGenerator : MonoBehaviour
 
         float octaveScaled;
         float inverseOctave;
+        float inverseOctaveNormalized;
         float oneMinusMidPoint;
 
         public float Octave { get { return octave; } }
         public float OctaveScaled { get { return octaveScaled; } }
         public float InverseOctave { get { return inverseOctave; } }
+        public float InverseOctaveNormalized { get { return inverseOctaveNormalized; } }
         public float MidPoint { get { return midPoint; } }
         public float OneMinusMidPoint { get { return oneMinusMidPoint; } }
         public int Contrast { get { return contrast; } }
@@ -33,10 +35,11 @@ public class MapGenerator : MonoBehaviour
             this.midPoint = midPoint;
         }
 
-        public void CalculateValues(int scaleDown)
+        public void CalculateValues(int scaleDown, float lowestOctave)
         {
             octaveScaled = octave / scaleDown;
             inverseOctave = 1 / octave;
+            inverseOctaveNormalized = 1 / (octave / lowestOctave);
             oneMinusMidPoint = 1 - midPoint;
         }
     }
@@ -77,16 +80,16 @@ public class MapGenerator : MonoBehaviour
         int size = terrainData.Size;
 
         for (int i = 0; i < heightLayers.Length; i++)
-            heightLayers[i].CalculateValues(globalScaleDown);
+            heightLayers[i].CalculateValues(globalScaleDown, heightLayers[0].Octave);
         
         for (int i = 0; i < moistureLayers.Length; i++)
-            moistureLayers[i].CalculateValues(globalScaleDown);
+            moistureLayers[i].CalculateValues(globalScaleDown, moistureLayers[0].Octave);
 
         for (int i = 0; i < strangenessLayers.Length; i++)
-            strangenessLayers[i].CalculateValues(globalScaleDown);
+            strangenessLayers[i].CalculateValues(globalScaleDown, strangenessLayers[0].Octave);
 
         for (int i = 0; i < densityLayers.Length; i++)
-            densityLayers[i].CalculateValues(globalScaleDown);
+            densityLayers[i].CalculateValues(globalScaleDown, densityLayers[0].Octave);
 
         float[,] heightMap = new float[size, size];
         float[,] moistureMap = new float[size, size];
@@ -143,17 +146,17 @@ public class MapGenerator : MonoBehaviour
         callback(map);
         yield return null;
     }
-    
+
     float CompileNoise(float xNorm, float zNorm, NoiseLayer[] noiseLayers, float inverseOctaveSum)
     {
-        float value = 0;
+        float value = 0.5f;
 
         for (int i = 0; i < noiseLayers.Length; i++)
         {
             float midPoint = noiseLayers[i].MidPoint;
             float oneMinusMidPoint = noiseLayers[i].OneMinusMidPoint;
 
-            float rawValue = noiseLayers[i].InverseOctave * CalculateNoise(xNorm, zNorm, noiseLayers[i].OctaveScaled);
+            float rawValue =  CalculateNoise(xNorm, zNorm, noiseLayers[i].OctaveScaled);
 
             rawValue = (rawValue - midPoint) / oneMinusMidPoint;
 
@@ -162,17 +165,45 @@ public class MapGenerator : MonoBehaviour
                 rawValue = -rawValue;
 
             for (int j = 1; j < noiseLayers[i].Contrast; j++)
-                powValue *= rawValue;            
+                powValue *= rawValue;
 
-            powValue = powValue * oneMinusMidPoint + midPoint;
+            powValue = powValue * noiseLayers[i].InverseOctaveNormalized * oneMinusMidPoint + midPoint; 
 
-            value += powValue;
+            value *= (powValue * 2);         
+        }
+
+        //value *= inverseOctaveSum; 
+
+        return value;
+
+        /* Old / Classic method
+        float value = 0;
+
+        for (int i = 0; i < noiseLayers.Length; i++)
+        {
+            float midPoint = noiseLayers[i].MidPoint;
+            float oneMinusMidPoint = noiseLayers[i].OneMinusMidPoint;
+
+            float rawValue = CalculateNoise(xNorm, zNorm, noiseLayers[i].OctaveScaled);
+
+            rawValue = (rawValue - midPoint) / oneMinusMidPoint;
+
+            float powValue = rawValue;
+            if (rawValue < 0)
+                rawValue = -rawValue;
+
+            for (int j = 1; j < noiseLayers[i].Contrast; j++)
+                powValue *= rawValue;
+
+            powValue = noiseLayers[i].InverseOctave * (powValue * oneMinusMidPoint + midPoint);
+
+            value += powValue; 
         }
 
         value /= inverseOctaveSum;
-
-        return value;
+        */
     }
+
 
     float CalculateNoise(float x, float z, float scale)
     {
