@@ -167,12 +167,12 @@ public class MapGenerator : MonoBehaviour
             for (int j = 1; j < noiseLayers[i].Contrast; j++)
                 powValue *= rawValue;
 
-            powValue = powValue * noiseLayers[i].InverseOctaveNormalized * oneMinusMidPoint + midPoint; 
+            powValue = powValue * noiseLayers[i].InverseOctaveNormalized * oneMinusMidPoint; 
 
-            value *= (powValue * 2);         
+            value += powValue;         
         }
 
-        //value *= inverseOctaveSum; 
+        //value /= inverseOctaveSum; 
 
         return value;
 

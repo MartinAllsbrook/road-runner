@@ -90,9 +90,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprinkleRanks:
-  - numToPlace: 1
-    sprinkles:
-    - {fileID: -2499524654122171120, guid: 326aeaa3294ee42459771883533dd2c2, type: 3}
   - numToPlace: 3
     sprinkles:
     - {fileID: 8515197870878483532, guid: 221280d5d7831f345bb3eb9e1c3a5679, type: 3}
@@ -130,15 +127,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalScaleDown: 512
   heightLayers:
+  - octave: 0.5
+    contrast: 1
+    midPoint: 0.5
   - octave: 0.75
     contrast: 2
-    midPoint: 0.4
-  - octave: 1.5
-    contrast: 2
-    midPoint: 0.6
-  - octave: 3
-    contrast: 2
+    midPoint: 0.55
+  - octave: 1
+    contrast: 1
     midPoint: 0.5
+  - octave: 3
+    contrast: 1
+    midPoint: 0.5
+  - octave: 6
+    contrast: 2
+    midPoint: 0
+  - octave: 8
+    contrast: 3
+    midPoint: 0
   maxHeight: 300
   moistureLayers:
   - octave: 1
