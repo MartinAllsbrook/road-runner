@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6430640824a607e4ab54a90e51fca49d, type: 3}
   m_Name: Lush Waste
   m_EditorClassIdentifier: 
-  height: 20
+  height: 50
   moisture: 75
   strangeness: 65
-  treeGroup: {fileID: 8483833426322165812, guid: 1a5dd4bb296ba934a95f545a3a5d534c, type: 3}
+  treeGroup: {fileID: 6311359453746239817, guid: 0caad5ac6dfc18842ab0da80220c080a, type: 3}
   name: Lush Ruins

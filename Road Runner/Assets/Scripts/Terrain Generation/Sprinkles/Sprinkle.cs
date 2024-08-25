@@ -32,15 +32,16 @@ public class Sprinkle : MonoBehaviour
 
     private void Start()
     {
-        TerrainManager.onTerrainGenerated.AddListener(() =>
-        {
-            AfterTerrainLoadedStart();
-        });
+        if (!Terrain.Instance.Testing)
+            EnvironmentManager.onTerrainGenerated.AddListener(() =>
+            {
+                AfterTerrainLoadedStart();
+            });
     }
 
     private void AfterTerrainLoadedStart()
     {
-        if (!TerrainManager.Instance.IsServer)
+        if (!EnvironmentManager.Instance.IsServer)
         {
             Debug.LogWarning("Disableing Sprinkle on Client");
 

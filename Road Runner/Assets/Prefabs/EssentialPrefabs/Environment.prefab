@@ -115,6 +115,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2935390251777952128}
+  - component: {fileID: 1648839514872105585}
+  - component: {fileID: 2345219370067186288}
   m_Layer: 0
   m_Name: Environment
   m_TagString: Untagged
@@ -142,6 +144,41 @@ Transform:
   - {fileID: 7718405639156360931}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1648839514872105585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6495417418160160114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3782425805
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &2345219370067186288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6495417418160160114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a08310a78dc3ad04fa9f3d64a4b5383d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrain: {fileID: 2787950459740836454}
+  navMeshManager: {fileID: 8860516609234180564}
+  loadingPauseTime: 0.3
 --- !u!1 &8920093619752223318
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,42 +370,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrain
       objectReference: {fileID: 0}
-    - target: {fileID: 2079987541488377761, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: sprinkleRanks.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2079987541488377761, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: sprinkleRanks.Array.data[0].numToPlace
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2079987541488377761, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: sprinkleRanks.Array.data[1].numToPlace
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2079987541488377761, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: sprinkleRanks.Array.data[0].sprinkles.Array.data[0]
-      value: 
-      objectReference: {fileID: 8515197870878483532, guid: 221280d5d7831f345bb3eb9e1c3a5679, type: 3}
     - target: {fileID: 3629075484901468618, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2500703158
+      value: 3782425805
       objectReference: {fileID: 0}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: terrainRadius
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: navMeshManager
-      value: 
-      objectReference: {fileID: 8860516609234180564}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6451836479128290519, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
-      propertyPath: biomes.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 292b3b25df35e104bb20e5dbb4af2c98, type: 2}
     - target: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -414,6 +419,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+--- !u!114 &2787950459740836454 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3472110810897631191, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}
+  m_PrefabInstance: {fileID: 1630197851099600305}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0854f42dfa2c92f4f98f02001576ea04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8000000704390887595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8762340282045984026, guid: 8b52ccb8c5cdca14bba45d7119aa58de, type: 3}

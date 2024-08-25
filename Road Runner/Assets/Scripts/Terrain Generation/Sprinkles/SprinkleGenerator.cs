@@ -112,28 +112,20 @@ public class SprinkleGenerator : MonoBehaviour
         return _sprinkleMap;
     }
 
-    public void FindHeightsAndPlace(Dictionary<Vector2Int, MeshTerrainChunk> loadedChunks)
+    public void FindHeightsAndPlace(TerrainData terrainData)
     {
-        foreach(KeyValuePair<Vector2Int, MeshTerrainChunk> keyValuePair in loadedChunks)
+        foreach (PlacedSprinkle placedSprinkle in _sprinkleMap)
         {
-            MeshTerrainChunk chunk = keyValuePair.Value;
-            chunk.GetChunkDataRef(out ChunkData chunkData);
 
-            foreach (PlacedSprinkle placedSprinkle in _sprinkleMap)
-            {
-                if (chunkData.ContainsPoint(placedSprinkle.position))
-                {
-                    float height = chunkData.GetHeight(placedSprinkle.position.x - chunkData.WorldPosition.x, placedSprinkle.position.y - chunkData.WorldPosition.y);
+            float height = terrainData.GetHeight(placedSprinkle.position.x, placedSprinkle.position.y);
 
-                    placedSprinkle.height = height;
+            placedSprinkle.height = height;
 
-                    Vector3 sprinkleWorldPosition = new Vector3(placedSprinkle.position.x, height, placedSprinkle.position.y);
-                    float roatation = (float)_random.NextDouble() * 360f;
-                    Quaternion sprinkleRotation = Quaternion.Euler(0, roatation, 0);
+            Vector3 sprinkleWorldPosition = new Vector3(placedSprinkle.position.x, height, placedSprinkle.position.y);
+            float roatation = (float)_random.NextDouble() * 360f;
+            Quaternion sprinkleRotation = Quaternion.Euler(0, roatation, 0);
 
-                    Instantiate(placedSprinkle.sprinkle, sprinkleWorldPosition, sprinkleRotation, transform);
-                }
-            }
+            Instantiate(placedSprinkle.sprinkle, sprinkleWorldPosition, sprinkleRotation, transform);
         }
     }
 

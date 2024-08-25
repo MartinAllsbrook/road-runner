@@ -24,7 +24,7 @@ public class RelayUI : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI serverCodeDisplay;
 
-    [SerializeField] private TerrainManager terrainManager;
+    [SerializeField] private EnvironmentManager environmentManager;
 
     [SerializeField] private HUDController hudController;
 
@@ -74,7 +74,7 @@ public class RelayUI : MonoBehaviour
             NetworkManager.Singleton.StartHost();
 
             int seed = int.Parse(worldSeedInput);
-            terrainManager.Set(seed); // Send the seed to the TerrainManager.
+            environmentManager.Set(seed); // Send the seed to the environmentManager.
 
         }
         catch (RelayServiceException e)

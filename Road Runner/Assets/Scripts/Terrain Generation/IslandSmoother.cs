@@ -7,36 +7,35 @@ public class IslandSmoother : MonoBehaviour
 {
     [SerializeField] private AnimationCurve terraformAuthorityCuve;
     [SerializeField] private int transitionWidth;
+    [SerializeField] private int seaLevel;
 
-    public void SmoothHeights(MeshTerrainChunk meshTerrainChunk, int terrainRadius)
+    public void SmoothHeights(ref TerrainData terrainData)
     {
-        meshTerrainChunk.GetChunkDataRef(out ChunkData chunkData);
+        int terrainSize = terrainData.Size;
+        int outterRadius = terrainSize / 2;
+        int innerRadius = outterRadius - transitionWidth;
+        terrainData.OuterRadius = outterRadius;
+        terrainData.InnerRadius = innerRadius;
 
-        int chunkSize = chunkData.Size;
-        Vector2Int chunkPosition = chunkData.ChunkPosition;
-        Vector2Int worldPosition = chunkData.WorldPosition;
+        Vector2Int center = new Vector2Int(outterRadius, outterRadius);
 
-        int worldRadius = (chunkSize - 1) * terrainRadius + ((chunkSize - 1) / 2);
-        int innerWorldRadius = worldRadius - transitionWidth;
-        Vector2Int worldCenter = new Vector2Int(worldRadius, worldRadius);
-
-        for (int x = 0; x < chunkSize; x++)
+        for (int x = 0; x < terrainSize; x++)
         {
-            for (int z = 0; z < chunkSize; z++)
+            for (int z = 0; z < terrainSize; z++)
             {
-                Vector2Int point = worldPosition + new Vector2Int(x, z);
-                Vector2Int centerToPoint = point - worldCenter;
+                Vector2Int point = new Vector2Int(x, z);
+                Vector2Int centerToPoint = point - center;
 
-                float auth = 1 - GetTerraformAuthorityAtPoint(centerToPoint, innerWorldRadius, worldRadius, terraformAuthorityCuve); // 1 - auth because we want this to be inverted
+                float auth = 1 - GetTerraformAuthorityAtPoint(centerToPoint, innerRadius, outterRadius, terraformAuthorityCuve); // 1 - auth because we want this to be inverted
 
-                float terrainHeight = chunkData.GetHeight(x, z);
+                float terrainHeight = terrainData.GetHeight(x, z);
                 float newHeight = Mathf.Lerp(terrainHeight, 0, auth);
 
-                chunkData.SetHeight(x, z, newHeight);
+                terrainData.SetHeight(x, z, newHeight);
 
-                if (newHeight <= 2)
+                if (newHeight <= seaLevel)
                 {
-                    chunkData.SetDensity(x, z, 0);
+                    terrainData.SetDensity(x, z, 0);
                 }
             }
         }

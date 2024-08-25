@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6430640824a607e4ab54a90e51fca49d, type: 3}
   m_Name: Biome_Desert
   m_EditorClassIdentifier: 
-  height: 10
+  height: 25
   moisture: 20
   strangeness: 30
-  treeGroup: {fileID: 6311359453746239817, guid: 0459d3293b6d10d4d9f0e48250d52c43, type: 3}
+  treeGroup: {fileID: 6311359453746239817, guid: 0caad5ac6dfc18842ab0da80220c080a, type: 3}
   name: Desert
