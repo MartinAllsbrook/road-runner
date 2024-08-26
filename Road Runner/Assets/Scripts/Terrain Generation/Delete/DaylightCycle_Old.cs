@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DaylightCycle : MonoBehaviour
+public class DaylightCycle_Old : MonoBehaviour
 {
     [SerializeField] private float dayLength;
     [SerializeField] private AnimationCurve fogColorCurve;
