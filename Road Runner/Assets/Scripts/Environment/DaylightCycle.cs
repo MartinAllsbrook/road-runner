@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DaylightCycle : MonoBehaviour
 {
+    public class TimeOfDay
+    {
+        public float Percent;
+        public float SunAngle;
+        public float Hour;
+    }
+
     [SerializeField] private float cycleLength = 90f;
     [SerializeField] private float nightPercent = 0.333f;
 
@@ -16,11 +24,51 @@ public class DaylightCycle : MonoBehaviour
     [SerializeField] private float sunsetStart = 170f;
     [SerializeField] private float sunsetEnd = 185f;
 
+    public UnityEvent OnDayStart;
+    public UnityEvent OnNightStart;
+
     private float dayLength;
     private float nightLength;
 
     private float timeCounter = 0f;
+    
+    // Time of day formats
     private float timeOfDay = 0f;
+
+    private float percentDay = 0f;
+    public float PercentDay
+    {
+        get { return percentDay; }
+    }
+
+    private bool isDay = false;
+    public bool IsDay
+    {
+        get { return isDay; }
+        private set
+        {
+            if (isDay != value)
+            {
+                isDay = value;
+                if (isDay)
+                {
+                    OnDayStart.Invoke();
+                    //Debug.Log("Day Start");
+                }
+                else
+                {
+                    OnNightStart.Invoke();
+                    //Debug.Log("Night Start");
+                }
+            }
+        }
+    }
+
+    private void Awake()
+    {
+        OnDayStart = new UnityEvent();
+        OnNightStart = new UnityEvent();
+    }
 
     private void Start()
     {
@@ -53,20 +101,26 @@ public class DaylightCycle : MonoBehaviour
         float angle = Mathf.Lerp(-90, 270, percentThroughCycle);
         sun.transform.localRotation = Quaternion.Euler(new Vector3(angle, 0, 0));
 
-        float intensityMultiplier = 0;
+        percentDay = 0;
         if (angle > sunriseEnd && angle < sunsetStart)
         {
-            intensityMultiplier = 1;
+            percentDay = 1;
         }
         else if (angle > sunriseStart && angle < sunriseEnd)
         {
-            intensityMultiplier = Mathf.InverseLerp(sunriseStart, sunriseEnd, angle);
+            percentDay = Mathf.InverseLerp(sunriseStart, sunriseEnd, angle);
+            IsDay = true;
         }
         else if (angle > sunsetStart && angle < sunsetEnd)
         {
-            intensityMultiplier = Mathf.InverseLerp(sunsetEnd, sunsetStart, angle);
+            percentDay = Mathf.InverseLerp(sunsetEnd, sunsetStart, angle);
+            IsDay = false;
+        }
+        else if (angle < sunriseStart || angle > sunsetEnd)
+        {
+            percentDay = 0;
         }
 
-        sun.intensity = intensityMultiplier;
+        sun.intensity = percentDay;
     }
 }
